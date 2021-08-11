@@ -1,3 +1,8 @@
+目前实现小车的基本功能：速度控制、编码器速度分析等
+
+
+
+
 # MSP430F5529库函数使用说明
 ## 1：支持自定义中断服务函数
 可以使用Set_Vector_Handler(VECTORn vector,__interrupt void pfunc_handler(void))函数设置某一中断的中断服务函数（该函数及枚举类型在vector.h里），这样可以不用使用#pragma vector=XXX_VECTOR来定义中断服务函数中断向量位置，且可以使多个中断进入同一个中断服务函数里
