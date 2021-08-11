@@ -1,0 +1,390 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           02/Aug/2021  17:19:16
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_rtc.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW9F45.tmp
+#        (D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_rtc.c -D NDEBUG -D
+#        RAM_VECTOR -lC D:\Dev\IAR\5529_MPU6050\Release\List -lA
+#        D:\Dev\IAR\5529_MPU6050\Release\List -o
+#        D:\Dev\IAR\5529_MPU6050\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\IAR\5529_MPU6050\ -I D:\Dev\IAR\5529_MPU6050\Drivers\inc\ -I
+#        D:\Dev\IAR\5529_MPU6050\Drivers\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\led\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\key\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd_api\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\nrf24l01\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\oled\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\delay\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\2.2TFT\ -I
+#        D:\Dev\IAR\5529_MPU6050\System\ -I D:\Dev\IAR\5529_MPU6050\System\inc\
+#        -I D:\Dev\IAR\5529_MPU6050\System\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\User\ -I D:\Dev\IAR\5529_MPU6050\User\USER\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\mpu6050\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\IAR\5529_MPU6050\Release\List\msp430f5529_rtc.lst
+#    Object file   =  D:\Dev\IAR\5529_MPU6050\Release\Obj\msp430f5529_rtc.r43
+#
+###############################################################################
+
+D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_rtc.c
+      1          #include "msp430f5529_rtc.h"
+
+   \                                 In  segment DATA16_AN, at 0x4a0
+   \   union <unnamed> __data16 _A_RTCCTL01_L
+   \                     _A_RTCCTL01_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x4a8
+   \   union <unnamed> __data16 _A_RTCPS0CTL_L
+   \                     _A_RTCPS0CTL_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x4aa
+   \   union <unnamed> __data16 _A_RTCPS1CTL_L
+   \                     _A_RTCPS1CTL_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x4b0
+   \   union <unnamed> __data16 _A_RTCTIM0_L
+   \                     _A_RTCTIM0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x4b8
+   \   union <unnamed> __data16 _A_RTCAMINHR_L
+   \                     _A_RTCAMINHR_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x4ba
+   \   union <unnamed> __data16 _A_RTCADOWDAY_L
+   \                     _A_RTCADOWDAY_L:
+   \   000000                DS8 2
+      2          #include "msp430f5529_clock.h"
+      3          
+
+   \                                 In  segment DATA20_C, align 2, align-sorted
+      4          const RTC_MemMapPtr  RTC = RTC_BASE_PTR; 
+   \                     RTC:
+   \   000000   A0040000     DC32 4A0H
+      5          /*******************************************************************************
+      6          *  函数名称：RTC_Init(Calendar nowDate)
+      7          *  功能说明：RTC 初始化并设置时间
+      8          *  参数说明：Calendar nowDate : 设置当前时间
+      9          *  函数返回：无
+     10          *  使用示例：Calendar  nowDate;RTC_Init(nowDate);//初始化RTC并设置RTC时间
+     11          *  注意：日历模式下要求ACLK为32768HZ
+     12          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     13          void RTC_Init(Calendar nowDate)
+   \                     RTC_Init:
+     14          {
+     15            ASSERT(g_sClock.ACLK.nHZ == 32768,"RTC_Init","时钟配置不合理，请将ACLK频率配置为32768HZ！");                //日历模式下要求ACLK为32768HZ
+     16            /*uint32_t clock_div_result = g_sClock.ACLK.nHZ;          
+     17            uint16_t clock_div_value = 0;//二分频次数
+     18            while(clock_div_result>1)  //不断分频，直到分频后的值为1或小于1（要求为1）
+     19            {
+     20              clock_div_result = clock_div_result>>1; //二分频一次
+     21              clock_div_value++;                      //分频系数加一
+     22            };
+     23            ASSERT((clock_div_result==1)&&(clock_div_value>=2)&&(clock_div_value<=16));        //要求时钟二分频最多16次，且最少2次，且分频后的频率值为1HZ
+     24            */
+     25            RTCCTL01 = RTCHOLD + RTCMODE + RTCSSEL__RT1PS + RTC_TimeEvent;           //使能日历模式
+   \   000000   B2400068A004 MOV.W   #0x6800, &0x4a0
+     26            
+     27            RTCPS0CTL =   RT0PSHOLD ;             //使用ACLK作为时钟
+   \   000006   B2400001A804 MOV.W   #0x100, &0x4a8
+     28            RTCPS1CTL  =  RT1PSHOLD + RT1SSEL_2; //使用 RTCPS0输出作为时钟源     
+   \   00000C   B2400081AA04 MOV.W   #0x8100, &0x4aa
+     29            
+     30            //RTC->RT1_PSDIV = (clock_div_value <= 9) ? (clock_div_value-2u) : 7u;
+     31            //RTC->RT0_PSDIV = (clock_div_value >  9) ? (clock_div_value-9u) : 0u;
+     32            
+     33            RTC->HOLD = RESET;                 //打开RTC模块 
+   \   000012   B2C00040A004 BIC.W   #0x4000, &0x4a0
+     34            RTC->RT0_PSHOLD = RESET;           //打开RTCPS0CTL
+   \   000018   B2C00001A804 BIC.W   #0x100, &0x4a8
+     35            RTC->RT1_PSHOLD = RESET;           //打开RTCPS1CTL
+   \   00001E   B2C00001AA04 BIC.W   #0x100, &0x4aa
+     36            
+     37            RTC_SetTime(nowDate);    
+   \   000024   11120C00     PUSH.W  0xc(SP)
+   \   000028   11120C00     PUSH.W  0xc(SP)
+   \   00002C   11120C00     PUSH.W  0xc(SP)
+   \   000030   11120C00     PUSH.W  0xc(SP)
+   \   000034   ........     CALLA   #RTC_SetTime
+     38          }
+   \   000038   A1000800     ADDA    #0x8, SP
+   \   00003C   1001         RETA
+   \   00003E                REQUIRE _A_RTCCTL01_L
+   \   00003E                REQUIRE _A_RTCPS0CTL_L
+   \   00003E                REQUIRE _A_RTCPS1CTL_L
+     39          /*******************************************************************************
+     40          *  函数名称：RTC_SetTime(Calendar nowDate)
+     41          *  功能说明：设置当前时间
+     42          *  参数说明：Calendar nowDate : 当前时间
+     43          *  函数返回：无
+     44          *  使用示例：RTC_SetTime(nowDate);  //设置RTC时间
+     45          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     46          void RTC_SetTime(Calendar nowDate)
+   \                     RTC_SetTime:
+     47          {
+     48            (*((Calendar *)(&RTCSEC))) = nowDate;  
+   \   000000   CF01         MOVA    SP, R15
+   \   000002   AF000400     ADDA    #0x4, R15
+   \   000006   B24FB004     MOV.W   @R15+, &0x4b0
+   \   00000A   B24FB204     MOV.W   @R15+, &0x4b2
+   \   00000E   B24FB404     MOV.W   @R15+, &0x4b4
+   \   000012   B24FB604     MOV.W   @R15+, &0x4b6
+     49          }
+   \   000016   1001         RETA
+   \   000018                REQUIRE _A_RTCTIM0_L
+     50          /*******************************************************************************
+     51          *  函数名称：RTC_GetTime(void)
+     52          *  功能说明：获取当前时间
+     53          *  参数说明：无
+     54          *  函数返回：Calendar nowDate : 当前时间
+     55          *  使用示例：Calendar nowDate = RTC_GetTime();  //获取当前时间
+     56          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     57          Calendar RTC_GetTime(void)
+   \                     RTC_GetTime:
+   \                     ??RTC_GetTime_0:
+     58          {
+     59            while(RTC->RDY == RESET);                  //等待时钟准备好读
+   \   000000   B2B00010A004 BIT.W   #0x1000, &0x4a0
+   \   000006   FC27         JEQ     ??RTC_GetTime_0
+   \   000008   9C42B0040000 MOV.W   &0x4b0, 0(R12)
+   \   00000E   9C42B2040200 MOV.W   &0x4b2, 0x2(R12)
+   \   000014   9C42B4040400 MOV.W   &0x4b4, 0x4(R12)
+   \   00001A   9C42B6040600 MOV.W   &0x4b6, 0x6(R12)
+   \   000020   1001         RETA
+   \   000022                REQUIRE _A_RTCTIM0_L
+     60            return (*((Calendar *)(&RTCSEC)));         //因为该寄存器结构与Calendar结构体相同，直接将寄存器值返回
+     61          }
+     62          /*******************************************************************************
+     63          *  函数名称：RTC_SetAlarm    (Calendar alarm_Time,Alarm_Type alarm_type)
+     64          *  功能说明：设置闹钟时间及类型
+     65          *  参数说明：Calendar alarm_Time     :闹钟时间
+     66                       Alarm_Type alarm_type   :闹钟类型
+     67          *  函数返回：无
+     68          *  使用示例：RTC_SetAlarm (alarm_Time,Every_Days); //闹钟时间设置，每天触发一次闹钟事件
+     69          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     70          void RTC_SetAlarm    (Calendar alarm_Time,Alarm_Type alarm_type)
+   \                     RTC_SetAlarm:
+     71          {
+     72            //写入闹钟时间
+     73            RTCAMIN  = alarm_Time.Minutes    ;
+   \   000000   D2410500B804 MOV.B   0x5(SP), &0x4b8
+     74            RTCAHOUR = alarm_Time.Hours      ;
+   \   000006   D2410600B904 MOV.B   0x6(SP), &0x4b9
+     75            RTCADAY  = alarm_Time.DayOfMonth ; 
+   \   00000C   D2410800BB04 MOV.B   0x8(SP), &0x4bb
+     76            
+     77            BIT_VALUE_IN_BYTE(RTCAMIN,7) = BIT_SET;
+   \   000012   F2D08000B804 BIS.B   #0x80, &0x4b8
+     78            BIT_VALUE_IN_BYTE(RTCAHOUR,7) = (alarm_type == Every_Days  ||
+     79                                        alarm_type == Every_Weeks ||
+     80                                        alarm_type == Every_Months 
+     81                                        ) ? BIT_SET : RESET;
+   \   000018   5C93         CMP.B   #0x1, R12
+   \   00001A   0824         JEQ     ??RTC_SetAlarm_6
+   \   00001C   6C93         CMP.B   #0x2, R12
+   \   00001E   0624         JEQ     ??RTC_SetAlarm_6
+   \   000020   7C900300     CMP.B   #0x3, R12
+   \   000024   4E43         MOV.B   #0x0, R14
+   \   000026   22B3         BIT.W   #0x2, SR
+   \   000028   4E63         ADDC.B  #0x0, R14
+   \   00002A   013C         JMP     ??RTC_SetAlarm_3
+   \                     ??RTC_SetAlarm_6:
+   \   00002C   5E43         MOV.B   #0x1, R14
+   \                     ??RTC_SetAlarm_3:
+   \   00002E   5EB3         BIT.B   #0x1, R14
+   \   000030   0420         JNE     ??RTC_SetAlarm_2
+   \   000032   F2C08000B904 BIC.B   #0x80, &0x4b9
+   \   000038   033C         JMP     ??RTC_SetAlarm_4
+   \                     ??RTC_SetAlarm_2:
+   \   00003A   F2D08000B904 BIS.B   #0x80, &0x4b9
+     82            BIT_VALUE_IN_BYTE(RTCADOW,7) = alarm_type == Every_Weeks  ? BIT_SET : RESET;
+   \                     ??RTC_SetAlarm_4:
+   \   000040   6C93         CMP.B   #0x2, R12
+   \   000042   4E43         MOV.B   #0x0, R14
+   \   000044   22B3         BIT.W   #0x2, SR
+   \   000046   4E63         ADDC.B  #0x0, R14
+   \   000048   0420         JNE     ??RTC_SetAlarm_1
+   \   00004A   F2C08000BA04 BIC.B   #0x80, &0x4ba
+   \   000050   033C         JMP     ??RTC_SetAlarm_5
+   \                     ??RTC_SetAlarm_1:
+   \   000052   F2D08000BA04 BIS.B   #0x80, &0x4ba
+     83            BIT_VALUE_IN_BYTE(RTCADAY,7) = alarm_type == Every_Months ? BIT_SET : RESET;
+   \                     ??RTC_SetAlarm_5:
+   \   000058   7C900300     CMP.B   #0x3, R12
+   \   00005C   4E43         MOV.B   #0x0, R14
+   \   00005E   22B3         BIT.W   #0x2, SR
+   \   000060   4E63         ADDC.B  #0x0, R14
+   \   000062   0420         JNE     ??RTC_SetAlarm_0
+   \   000064   F2C08000BB04 BIC.B   #0x80, &0x4bb
+   \   00006A   1001         RETA
+   \                     ??RTC_SetAlarm_0:
+   \   00006C   F2D08000BB04 BIS.B   #0x80, &0x4bb
+     84          }
+   \   000072   1001         RETA
+   \   000074                REQUIRE _A_RTCAMINHR_L
+   \   000074                REQUIRE _A_RTCADOWDAY_L
+     85          /*******************************************************************************
+     86          *  函数名称：RTC_ITConfig   (RTC_IRQn irqn, STATUS ITState)
+     87          *  功能说明: 设置RTC某一个中断是否使能
+     88          *  参数说明：RTC_IRQn irqn   : 中断事件选择
+     89                       STATUS ITState  : 是否使能中断
+     90          *  函数返回：无
+     91          *  使用示例：RTC_ITConfig   (RTC_Alarm_IRQn, ENABLE);  //使能闹钟中断
+     92          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2, keep-with-next
+     93          void RTC_ITConfig   (RTC_IRQn irqn, STATUS ITState)
+   \                     RTC_ITConfig:
+     94          {
+     95            if(ITState != DISABLE)
+   \   000000   4D93         CMP.B   #0x0, R13
+   \   000002   1F42A004     MOV.W   &0x4a0, R15
+   \   000006   4E4F         MOV.B   R15, R14
+   \   000008   0424         JEQ     ??RTC_ITConfig_1
+     96            {
+     97              RTC->IE |= irqn;
+   \   00000A   5E0F         RRUM.W  #0x4, R14
+   \   00000C   4C4C         MOV.B   R12, R12
+   \   00000E   0EDC         BIS.W   R12, R14
+   \   000010   033C         JMP     ??RTC_ITConfig_0
+     98            }
+     99            else
+    100            {
+    101              RTC->IE &=~ irqn;
+   \                     ??RTC_ITConfig_1:
+   \   000012   5E0F         RRUM.W  #0x4, R14
+   \   000014   4C4C         MOV.B   R12, R12
+   \   000016   0ECC         BIC.W   R12, R14
+   \                     ??RTC_ITConfig_0:
+   \   000018   5E0E         RLAM.W  #0x4, R14
+   \   00001A   3EF07000     AND.W   #0x70, R14
+   \   00001E   3FF08FFF     AND.W   #0xff8f, R15
+    102            }
+   \   000022                REQUIRE ?Subroutine0
+   \   000022                // Fall through to label ?Subroutine0
+    103          }
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   0FDE         BIS.W   R14, R15
+   \   000002   824FA004     MOV.W   R15, &0x4a0
+   \   000006   1001         RETA
+    104          /*******************************************************************************
+    105          *  函数名称：RTC_GetITStatus(RTC_IRQn irqn)
+    106          *  功能说明：获取RTC某一位中断标志
+    107          *  参数说明：RTC_IRQn irqn : 中断事件选择
+    108          *  函数返回：STATUS : TRUE 中断事件发生，FALSE 中断事件未发生
+    109          *  使用示例：if(TRUE == RTC_GetITStatus(RTC_Alarm_IRQn)){...}  //判断闹钟时间是否发生
+    110          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    111          STATUS RTC_GetITStatus(RTC_IRQn irqn)
+   \                     RTC_GetITStatus:
+    112          {
+    113            return ((RTC->IFG & irqn) ? TRUE : FALSE);
+   \   000000   1E42A004     MOV.W   &0x4a0, R14
+   \   000004   4EFC         AND.B   R12, R14
+   \   000006   7EB00700     BIT.B   #0x7, R14
+   \   00000A   0220         JNE     ??RTC_GetITStatus_0
+   \   00000C   4C43         MOV.B   #0x0, R12
+   \   00000E   1001         RETA
+   \                     ??RTC_GetITStatus_0:
+   \   000010   5C43         MOV.B   #0x1, R12
+   \   000012   1001         RETA
+    114          }
+    115          /*******************************************************************************
+    116          *  函数名称：RTC_ClearITPendingBit(RTC_IRQn irqn)
+    117          *  功能说明：清除RTC某一位中断标志
+    118          *  参数说明：RTC_IRQn irqn : 中断事件选择
+    119          *  函数返回：无
+    120          *  使用示例：RTC_ClearITPendingBit(RTC_Alarm_IRQn); //清除RTC闹钟中断标志位
+    121          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+    122          void RTC_ClearITPendingBit(RTC_IRQn irqn)
+   \                     RTC_ClearITPendingBit:
+    123          {
+    124            RTC->IFG &=~ irqn;
+   \   000000   1F42A004     MOV.W   &0x4a0, R15
+   \   000004   4E4F         MOV.B   R15, R14
+   \   000006   4ECC         BIC.B   R12, R14
+   \   000008   3EF00700     AND.W   #0x7, R14
+   \   00000C   3FF0F8FF     AND.W   #0xfff8, R15
+   \   000010   ....         JMP     ?Subroutine0
+   \   000012   0343         NOP
+    125          }
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   RTC_ClearITPendingBit
+      4   RTC_GetITStatus
+      4   RTC_GetTime
+      4   RTC_ITConfig
+     12   RTC_Init
+       12   -> RTC_SetTime
+      4   RTC_SetAlarm
+      4   RTC_SetTime
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  ?Subroutine0
+       4  RTC
+      20  RTC_ClearITPendingBit
+      20  RTC_GetITStatus
+      34  RTC_GetTime
+      34  RTC_ITConfig
+      62  RTC_Init
+     116  RTC_SetAlarm
+      24  RTC_SetTime
+       2  _A_RTCADOWDAY_L
+       2  _A_RTCAMINHR_L
+       2  _A_RTCCTL01_L
+       2  _A_RTCPS0CTL_L
+       2  _A_RTCPS1CTL_L
+       2  _A_RTCTIM0_L
+
+ 
+ 318 bytes in segment CODE
+  12 bytes in segment DATA16_AN
+   4 bytes in segment DATA20_C
+ 
+ 318 bytes of CODE  memory
+   4 bytes of CONST memory
+   0 bytes of DATA  memory (+ 12 bytes shared)
+
+Errors: none
+Warnings: none

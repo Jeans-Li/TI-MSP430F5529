@@ -1,0 +1,353 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           02/Aug/2021  17:19:19
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\IAR\5529_MPU6050\System\src\startup_msp430f5529.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EWAA99.tmp
+#        (D:\Dev\IAR\5529_MPU6050\System\src\startup_msp430f5529.c -D NDEBUG -D
+#        RAM_VECTOR -lC D:\Dev\IAR\5529_MPU6050\Release\List -lA
+#        D:\Dev\IAR\5529_MPU6050\Release\List -o
+#        D:\Dev\IAR\5529_MPU6050\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\IAR\5529_MPU6050\ -I D:\Dev\IAR\5529_MPU6050\Drivers\inc\ -I
+#        D:\Dev\IAR\5529_MPU6050\Drivers\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\led\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\key\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd_api\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\nrf24l01\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\oled\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\delay\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\2.2TFT\ -I
+#        D:\Dev\IAR\5529_MPU6050\System\ -I D:\Dev\IAR\5529_MPU6050\System\inc\
+#        -I D:\Dev\IAR\5529_MPU6050\System\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\User\ -I D:\Dev\IAR\5529_MPU6050\User\USER\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\mpu6050\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  
+#        D:\Dev\IAR\5529_MPU6050\Release\List\startup_msp430f5529.lst
+#    Object file   =  
+#        D:\Dev\IAR\5529_MPU6050\Release\Obj\startup_msp430f5529.r43
+#
+###############################################################################
+
+D:\Dev\IAR\5529_MPU6050\System\src\startup_msp430f5529.c
+      1          #include "msp430f5529_system.h"
+      2          #include "include.h"
+      3          #include "intrinsics.h"
+      4          
+      5          static void RAM_data_Init(void);
+      6          static void SystemInit(void);
+      7          #ifdef DEBUG
+      8          static void Start_Show(void);
+      9          #endif
+     10          #if 0
+     11          /*******************************************************************************
+     12          *  函数名称：Reset_Handler(void)
+     13          *  功能说明：复位中断服务函数
+     14          *  参数说明：无
+     15          *  函数返回：无
+     16          *  使用示例：无
+     17          *  注意事项：需要修改工程配置，勾选linker目录下的override default program,并选择Defined by Applicat选项
+     18          ********************************************************************************/
+     19          extern void main();
+     20          #pragma vector=RESET_VECTOR
+     21          __interrupt void Reset_Handler(void)
+     22          {
+     23            SystemInit();
+     24            main();
+     25            while(1);
+     26          }
+     27          #else
+     28          /*******************************************************************************
+     29          *  函数名称：__low_level_init(void)
+     30          *  功能说明：启动函数，在主函数之前调用
+     31          *  参数说明：无
+     32          *  函数返回：无
+     33          *  使用示例：无
+     34          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2, root
+     35          __intrinsic int __low_level_init(void)
+   \                     __low_level_init:
+   \   000000                REQUIRE ?cstart_call_low_level_init
+     36          {
+     37              SystemInit();
+   \   000000   ........     CALLA   #DisableWatchDog
+   \   000004   ........     CALLA   #Set_VectorTable_To_RAM
+   \   000008   ........     CALLA   #RAM_data_Init
+   \   00000C   3E404078     MOV.W   #0x7840, R14
+   \   000010   3F407D01     MOV.W   #0x17d, R15
+   \   000014   4D43         MOV.B   #0x0, R13
+   \   000016   6C43         MOV.B   #0x2, R12
+   \   000018   ........     CALLA   #CLOCK_DCO_PLLConfig
+   \   00001C   4D43         MOV.B   #0x0, R13
+   \   00001E   7C400300     MOV.B   #0x3, R12
+   \   000022   ........     CALLA   #CLOCK_MCLK_Config
+   \   000026   4D43         MOV.B   #0x0, R13
+   \   000028   7C400500     MOV.B   #0x5, R12
+   \   00002C   ........     CALLA   #CLOCK_SMCLK_Config
+   \   000030   4D43         MOV.B   #0x0, R13
+   \   000032   6C43         MOV.B   #0x2, R12
+   \   000034   ........     CALLA   #CLOCK_ACLK_Config
+     38              return 0;//0-不初始化参数,1-初始化参数
+   \   000038   0C43         MOV.W   #0x0, R12
+   \   00003A   1001         RETA
+     39          }
+     40          #endif
+     41          /*******************************************************************************
+     42          *  函数名称：SystemInit (void)
+     43          *  功能说明：启动函数，在主函数之前调用
+     44          *  参数说明：无
+     45          *  函数返回：无
+     46          *  使用示例：无
+     47          ********************************************************************************/
+     48          void SystemInit (void)
+     49          {   
+     50              DisableWatchDog();            //关闭看门狗
+     51          #ifdef RAM_VECTOR
+     52              Set_VectorTable_To_RAM();     //设置中断向量映射到RAM区域
+     53          #else
+     54              Set_VectorTable_To_FLASH();   //设置中断向量映射到FLASH区域
+     55          #endif
+     56              RAM_data_Init();              //初始化数据  
+     57              /*******************************时钟初始化*********************************/
+     58              CLOCK_DCO_PLLConfig(FLL_REF,FLLREF_DIV,DCO_CLK_HZ);             //初始化DCO频率
+     59              CLOCK_MCLK_Config (MCLK_SOURCE , MCLK_DIV);               //设置时钟源及时钟分频
+     60              CLOCK_SMCLK_Config(SMCLK_SOURCE, SMCLK_DIV);              //设置时钟源及时钟分频
+     61              CLOCK_ACLK_Config (ACLK_SOURCE , ACLK_DIV);               //设置时钟源及时钟分频
+     62              /**************************************************************************/
+     63          #if(defined(DEBUG))
+     64          #if(defined(DEBUG_UART_PRINT))
+     65              UART_Init(PRINT_UART, PRINT_BAUD);          //调试模式下，如果选择使用串口作为信息打印则初始化UART模块
+     66          #endif
+     67              Start_Show();
+     68          #endif
+     69          }
+     70          //启动后打印提示信息
+     71          #ifdef DEBUG
+     72          void Start_Show()
+     73          {
+     74              DEBUG_PRINTF("\nMSP430F5529 测试程序!\n");  //调试模式下打印信息
+     75              DEBUG_PRINTF("\n MCLK 频率:%ld HZ\n",g_sClock.MCLK.nHZ);
+     76              DEBUG_PRINTF("SMCLK 频率:%ld HZ\n",  g_sClock.SMCLK.nHZ);
+     77              DEBUG_PRINTF(" ACLK 频率:%ld HZ\n",  g_sClock.ACLK.nHZ);  
+     78          #ifdef DELAY_TIMER
+     79              DEBUG_PRINTF("\n使用定时器延时,定时器:%s\n",TOSTRING(DELAY_TIMER));
+     80          #else
+     81              DEBUG_PRINTF("\n使用软件模拟延时\n%s\n",TOSTRING(DELAY_MS(ms)));
+     82          #endif
+     83          }
+     84          #endif
+     85          /*******************************************************************************
+     86          *  函数名称：RAM_data_Init(void)
+     87          *  功能说明：复制中断向量表 和 必要的数据到 RAM里
+     88          *  参数说明：无
+     89          *  函数返回：无
+     90          *  使用示例：无
+     91          ********************************************************************************/
+     92          #pragma section = "DATA16_I"
+     93          #pragma section = "DATA20_I"
+     94          #pragma section = "DATA16_ID"
+     95          #pragma section = "DATA20_ID"
+     96          #pragma section = "DATA16_Z"
+     97          #pragma section = "DATA20_Z"
+     98          #pragma section = "TLS16_I"
+     99          #pragma section = "TLS16_ID"
+    100          #pragma section = "CODE_I"
+    101          #pragma section = "CODE_ID"
+    102          //#pragma section = "INTVEC"
+
+   \                                 In  segment CODE, align 2
+    103          void RAM_data_Init(void)
+   \                     RAM_data_Init:
+    104          {
+   \   000000   0A14         PUSHM.A #0x1, R10
+    105              uint32_t n;
+    106              //初始化中断向量表
+    107              //ISR_TYPE *vector_rom = __section_begin("INTVEC");
+    108              VectorTableCopyToRAM();                       //从FLASH中复制中断向量表到RAM
+   \   000002   ........     CALLA   #VectorTableCopyToRAM
+    109              /* 把已赋初值的变量从ROM里复制数据到RAM里 */
+    110              uint8_t *data_ram = __section_begin("DATA16_I");        //已赋初值的变量的地址在RAM里
+   \   000006   ........     MOVA    #SFB(DATA16_I), R15
+   \   00000A   ........     MOVA    #SFB(DATA16_ID), R14
+    111              uint8_t *data_rom = __section_begin("DATA16_ID");       //已赋初值的变量的数据存放在ROM里，需要赋值到RAM里
+    112              uint8_t *data_rom_end = __section_end("DATA16_ID");
+    113              n = data_rom_end - data_rom;
+   \   00000E   3C40....     MOV.W   #LWRD((SFE(DATA16_ID) & 0xfffff) - (SFB(DATA16_ID) & 0xfffff)), R12
+   \   000012   3D40....     MOV.W   #LWRD((SFE(DATA16_ID) & 0xfffff) - (SFB(DATA16_ID) & 0xfffff) >> 16), R13
+   \   000016   ........     CALLA   #?Subroutine0
+    114          
+    115              /* 复制初始化数据到RAM里 */
+    116              while (n--)
+    117              {
+    118                  *data_ram++ = *data_rom++; 
+    119              }
+    120              /* 把已赋初值的变量从ROM里复制数据到RAM里 */
+    121              data_ram = __section_begin("DATA20_I");                //已赋初值的变量的地址在RAM里
+   \                     ??CrossCallReturnLabel_0:
+   \   00001A   ........     MOVA    #SFB(DATA20_I), R15
+   \   00001E   ........     MOVA    #SFB(DATA20_ID), R14
+    122              data_rom = __section_begin("DATA20_ID");               //已赋初值的变量的数据存放在ROM里，需要赋值到RAM里
+    123              data_rom_end = __section_end("DATA20_ID");
+    124              n = data_rom_end - data_rom;
+   \   000022   3C40....     MOV.W   #LWRD((SFE(DATA20_ID) & 0xfffff) - (SFB(DATA20_ID) & 0xfffff)), R12
+   \   000026   3D40....     MOV.W   #LWRD((SFE(DATA20_ID) & 0xfffff) - (SFB(DATA20_ID) & 0xfffff) >> 16), R13
+   \   00002A   ........     CALLA   #?Subroutine0
+    125          
+    126              /* 复制初始化数据到RAM里 */
+    127              while (n--)
+   \                     ??CrossCallReturnLabel_1:
+   \   00002E   ........     MOVA    #SFB(DATA16_Z), R15
+    128              {
+    129                  *data_ram++ = *data_rom++;
+    130              }
+    131              
+    132              /* 没赋初值或者初值为0的变量，需要清除其RAM里的数据，确保值为0 */
+    133              uint8_t *bss_start = __section_begin("DATA16_Z");
+    134              uint8_t *bss_end = __section_end("DATA16_Z");
+    135          
+    136              /* 清除没赋初值或者初值为0的变量数据值 */
+    137              n = bss_end - bss_start;
+   \   000032   3C40....     MOV.W   #LWRD((SFE(DATA16_Z) & 0xfffff) - (SFB(DATA16_Z) & 0xfffff)), R12
+   \   000036   3D40....     MOV.W   #LWRD((SFE(DATA16_Z) & 0xfffff) - (SFB(DATA16_Z) & 0xfffff) >> 16), R13
+   \   00003A   ........     CALLA   #?Subroutine1
+    138              while(n--)
+   \                     ??CrossCallReturnLabel_4:
+   \   00003E   ........     MOVA    #SFB(DATA20_Z), R15
+    139              {
+    140                  *bss_start++ = 0;
+    141              }
+    142              /* 没赋初值或者初值为0的变量，需要清除其RAM里的数据，确保值为0 */
+    143              bss_start = __section_begin("DATA20_Z");
+    144              bss_end = __section_end("DATA20_Z");
+    145          
+    146              /* 清除没赋初值或者初值为0的变量数据值 */
+    147              n = bss_end - bss_start;
+   \   000042   3C40....     MOV.W   #LWRD((SFE(DATA20_Z) & 0xfffff) - (SFB(DATA20_Z) & 0xfffff)), R12
+   \   000046   3D40....     MOV.W   #LWRD((SFE(DATA20_Z) & 0xfffff) - (SFB(DATA20_Z) & 0xfffff) >> 16), R13
+   \   00004A   ........     CALLA   #?Subroutine1
+    148              while(n--)
+    149              {
+    150                  *bss_start++ = 0;
+    151              }
+    152             
+    153               /* 赋值用 __ramfunc 声明的函数的的代码段到 RAM，可以加快代码的运行        */
+    154              uint8_t *code_relocate_ram = __section_begin("CODE_I");
+   \                     ??CrossCallReturnLabel_5:
+   \   00004E   ........     MOVA    #SFB(CODE_I), R15
+   \   000052   ........     MOVA    #SFB(CODE_ID), R14
+    155              uint8_t *code_relocate = __section_begin("CODE_ID");
+    156              uint8_t *code_relocate_end = __section_end("CODE_ID");
+    157          
+    158              /* 从ROM里复制函数代码到RAM里 */
+    159              n = code_relocate_end - code_relocate;
+   \   000056   3C40....     MOV.W   #LWRD((SFE(CODE_ID) & 0xfffff) - (SFB(CODE_ID) & 0xfffff)), R12
+   \   00005A   3D40....     MOV.W   #LWRD((SFE(CODE_ID) & 0xfffff) - (SFB(CODE_ID) & 0xfffff) >> 16), R13
+   \   00005E   ........     CALLA   #?Subroutine0
+    160              while (n--)
+    161              {
+    162                  *code_relocate_ram++ = *code_relocate++;
+    163              }
+    164              
+    165              /* 赋值 Thread-local storage for main thread(require custom runtime library)到RAM*/
+    166              uint8_t *tls_ram = __section_begin("TLS16_I");
+   \                     ??CrossCallReturnLabel_2:
+   \   000062   ........     MOVA    #SFB(TLS16_I), R15
+   \   000066   ........     MOVA    #SFB(TLS16_ID), R14
+    167              uint8_t *tls_start = __section_begin("TLS16_ID");
+    168              uint8_t *tls_end   = __section_end("TLS16_ID");
+    169          
+    170              /* 从ROM里复制函数代码到RAM里 */
+    171              n = tls_end - tls_start;
+   \   00006A   3C40....     MOV.W   #LWRD((SFE(TLS16_ID) & 0xfffff) - (SFB(TLS16_ID) & 0xfffff)), R12
+   \   00006E   3D40....     MOV.W   #LWRD((SFE(TLS16_ID) & 0xfffff) - (SFB(TLS16_ID) & 0xfffff) >> 16), R13
+   \   000072   ........     CALLA   #?Subroutine0
+    172              while (n--)
+    173              {
+    174                  *tls_ram++ = *tls_start++;
+    175              }
+    176          }
+   \                     ??CrossCallReturnLabel_3:
+   \   000076   0A16         POPM.A  #0x1, R10
+   \   000078   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine1:
+   \   000000   0E4C         MOV.W   R12, R14
+   \   000002   EE0D         ADDA    R13, R14
+   \   000004   0924         JEQ     ??RAM_data_Init_8
+   \   000006   3C53         ADD.W   #0xffff, R12
+   \   000008   3D63         ADDC.W  #0xffff, R13
+   \                     ??RAM_data_Init_2:
+   \   00000A   CF430000     MOV.B   #0x0, 0(R15)
+   \   00000E   AF000100     ADDA    #0x1, R15
+   \   000012   3C53         ADD.W   #0xffff, R12
+   \   000014   3D63         ADDC.W  #0xffff, R13
+   \   000016   F92F         JC      ??RAM_data_Init_2
+   \                     ??RAM_data_Init_8:
+   \   000018   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine0:
+   \   000000   0A4C         MOV.W   R12, R10
+   \   000002   EA0D         ADDA    R13, R10
+   \   000004   0924         JEQ     ??RAM_data_Init_6
+   \   000006   3C53         ADD.W   #0xffff, R12
+   \   000008   3D63         ADDC.W  #0xffff, R13
+   \                     ??RAM_data_Init_0:
+   \   00000A   FF4E0000     MOV.B   @R14+, 0(R15)
+   \   00000E   AF000100     ADDA    #0x1, R15
+   \   000012   3C53         ADD.W   #0xffff, R12
+   \   000014   3D63         ADDC.W  #0xffff, R13
+   \   000016   F92F         JC      ??RAM_data_Init_0
+   \                     ??RAM_data_Init_6:
+   \   000018   1001         RETA
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      8   RAM_data_Init
+        8   -> VectorTableCopyToRAM
+      4   __low_level_init
+        4   -> CLOCK_ACLK_Config
+        4   -> CLOCK_DCO_PLLConfig
+        4   -> CLOCK_MCLK_Config
+        4   -> CLOCK_SMCLK_Config
+        4   -> DisableWatchDog
+        4   -> RAM_data_Init
+        4   -> Set_VectorTable_To_RAM
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      26  ?Subroutine0
+      26  ?Subroutine1
+     122  RAM_data_Init
+      60  __low_level_init
+
+ 
+ 234 bytes in segment CODE
+ 
+ 234 bytes of CODE memory
+
+Errors: none
+Warnings: none

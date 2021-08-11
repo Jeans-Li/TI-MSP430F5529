@@ -1,0 +1,2444 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// IAR C/C++ Compiler V7.10.1.973/W32 for MSP430          02/Aug/2021  17:19:17
+// Copyright 1996-2017 IAR Systems AB.
+// Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+//
+//    __rt_version  =  3
+//    __double_size =  32
+//    __reg_r4      =  free
+//    __reg_r5      =  free
+//    __pic         =  no
+//    __core        =  430X
+//    __data_model  =  large
+//    __code_model  =  large
+//    Source file   =  D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_timer.c
+//    Command line  =  
+//        -f C:\Users\Jeans\AppData\Local\Temp\EWA14B.tmp
+//        (D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_timer.c -D NDEBUG -D
+//        RAM_VECTOR -lC D:\Dev\IAR\5529_MPU6050\Release\List -lA
+//        D:\Dev\IAR\5529_MPU6050\Release\List -o
+//        D:\Dev\IAR\5529_MPU6050\Release\Obj --debug -D__MSP430F5529__ -e
+//        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+//        D:\Dev\IAR\5529_MPU6050\ -I D:\Dev\IAR\5529_MPU6050\Drivers\inc\ -I
+//        D:\Dev\IAR\5529_MPU6050\Drivers\src\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\led\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\key\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\lcd\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\lcd_api\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\nrf24l01\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\oled\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\delay\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\2.2TFT\ -I
+//        D:\Dev\IAR\5529_MPU6050\System\ -I
+//        D:\Dev\IAR\5529_MPU6050\System\inc\ -I
+//        D:\Dev\IAR\5529_MPU6050\System\src\ -I D:\Dev\IAR\5529_MPU6050\User\
+//        -I D:\Dev\IAR\5529_MPU6050\User\USER\ -I
+//        D:\Dev\IAR\5529_MPU6050\HardWare\mpu6050\ --core=430X
+//        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+//        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+//    Locale        =  Chinese (Simplified)_CHN.936
+//    List file     =  
+//        D:\Dev\IAR\5529_MPU6050\Release\List\msp430f5529_timer.s43
+//
+///////////////////////////////////////////////////////////////////////////////
+
+        NAME msp430f5529_timer
+
+        RTMODEL "__SystemLibrary", "DLib"
+        RTMODEL "__code_model", "large"
+        RTMODEL "__core", "430X"
+        RTMODEL "__data_model", "large"
+        RTMODEL "__double_size", "32"
+        RTMODEL "__pic", "no"
+        RTMODEL "__reg_r4", "free"
+        RTMODEL "__reg_r5", "free"
+        RTMODEL "__rt_version", "3"
+
+        RSEG CSTACK:DATA:SORT:NOROOT(0)
+
+        EXTERN ?DivMod32u
+        EXTERN __iar_HWMUL
+        EXTERN _Cast32uto32f
+        EXTERN _Mul32f
+        EXTERN _Cast32fto32u
+        EXTERN _Div32f
+        EXTERN ?longjmp_r4
+        EXTERN ?longjmp_r5
+        EXTERN ?setjmp_r4
+        EXTERN ?setjmp_r5
+
+        PUBWEAK ?setjmp_save_r4
+        PUBWEAK ?setjmp_save_r5
+        PUBLIC TIMERX
+        PUBLIC TIMER_CHANEL_PIN
+        PUBLIC TIMER_CLK_PIN
+        PUBLIC TIMER_Capture_CalTime_Us
+        PUBLIC TIMER_Capture_Clear
+        PUBLIC TIMER_Capture_GetValue
+        PUBLIC TIMER_Capture_Init
+        PUBLIC TIMER_Capture_SetMode
+        PUBLIC TIMER_ClearITPendingBit
+        PUBLIC TIMER_Delay_Us
+        PUBLIC TIMER_GetChannelCounterValue
+        PUBLIC TIMER_GetChannelPinInValue
+        PUBLIC TIMER_GetChannelPinOutValue
+        PUBLIC TIMER_GetCounterValue
+        PUBLIC TIMER_GetITStatus
+        PUBLIC TIMER_ITConfig
+        PUBLIC TIMER_Interval_Us
+        PUBLIC TIMER_PRECISON
+        PUBLIC TIMER_PWM_MultiChannel_Init
+        PUBLIC TIMER_PWM_SetChannelDuty
+        PUBLIC TIMER_PWM_SetChannelOutmod
+        PUBLIC TIMER_PWM_SetFrequency
+        PUBLIC TIMER_Pluse_Clear
+        PUBLIC TIMER_Pluse_GetValue
+        PUBLIC TIMER_Pluse_Init
+        PUBLIC TIMER_Run
+        PUBLIC TIMER_SetChannelCounterValue
+        PUBLIC TIMER_SetCounterValue
+        PUBLIC TIMER_Stop
+        PUBLIC TIMER_Timer_GetTime_Us
+        PUBLIC TIMER_Timer_Init
+        PUBLIC TIMER_Timer_Start
+        PUBLIC TIMER_Timer_Stop
+        
+          CFI Names cfiNames0
+          CFI StackFrame CFA SP DATA
+          CFI Resource PC:20, SP:20, SR:16, R4L:16, R4H:4, R4:20, R5L:16, R5H:4
+          CFI Resource R5:20, R6L:16, R6H:4, R6:20, R7L:16, R7H:4, R7:20, R8L:16
+          CFI Resource R8H:4, R8:20, R9L:16, R9H:4, R9:20, R10L:16, R10H:4
+          CFI Resource R10:20, R11L:16, R11H:4, R11:20, R12L:16, R12H:4, R12:20
+          CFI Resource R13L:16, R13H:4, R13:20, R14L:16, R14H:4, R14:20, R15L:16
+          CFI Resource R15H:4, R15:20
+          CFI ResourceParts R4 R4H, R4L
+          CFI ResourceParts R5 R5H, R5L
+          CFI ResourceParts R6 R6H, R6L
+          CFI ResourceParts R7 R7H, R7L
+          CFI ResourceParts R8 R8H, R8L
+          CFI ResourceParts R9 R9H, R9L
+          CFI ResourceParts R10 R10H, R10L
+          CFI ResourceParts R11 R11H, R11L
+          CFI ResourceParts R12 R12H, R12L
+          CFI ResourceParts R13 R13H, R13L
+          CFI ResourceParts R14 R14H, R14L
+          CFI ResourceParts R15 R15H, R15L
+          CFI EndNames cfiNames0
+        
+          CFI Common cfiCommon0 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L Undefined
+          CFI R12H Undefined
+          CFI R12 Undefined
+          CFI R13L Undefined
+          CFI R13H Undefined
+          CFI R13 Undefined
+          CFI R14L Undefined
+          CFI R14H Undefined
+          CFI R14 Undefined
+          CFI R15L Undefined
+          CFI R15H Undefined
+          CFI R15 Undefined
+          CFI EndCommon cfiCommon0
+        
+        
+          CFI Common cfiCommon1 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L SameValue
+          CFI R12H SameValue
+          CFI R12 Concat
+          CFI R13L SameValue
+          CFI R13H SameValue
+          CFI R13 Concat
+          CFI R14L SameValue
+          CFI R14H SameValue
+          CFI R14 Concat
+          CFI R15L SameValue
+          CFI R15H SameValue
+          CFI R15 Concat
+          CFI EndCommon cfiCommon1
+        
+        EXTERN g_sClock
+        EXTERN GPIO_MultiBits_Init
+
+// D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_timer.c
+//    1 #include "msp430f5529_timer.h"
+//    2 #include "msp430f5529_clock.h"
+//    3 #include "msp430f5529_gpio.h"
+//    4 #include "msp430f5529_system.h"
+//    5 #include "stdarg.h"
+//    6 
+//    7 //定义4个指针数组保存 TIMERX 的地址
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(1)
+//    8 const TIMER_MemMapPtr TIMERX[TIMER_NUM] ={TIMER_A0_BASE_PTR,TIMER_A1_BASE_PTR,TIMER_A2_BASE_PTR,TIMER_B0_BASE_PTR};
+TIMERX:
+        DATA32
+        DC32 340H, 380H, 400H, 3C0H
+//    9 //定义数组保存占空比最大值
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(1)
+//   10 const uint32_t TIMER_PRECISON[TIMER_NUM]={TIMER_PWM_A0_PRECISON,TIMER_PWM_A1_PRECISON,TIMER_PWM_A2_PRECISON,TIMER_PWM_B0_PRECISON};
+TIMER_PRECISON:
+        DATA32
+        DC32 1000, 1000, 1000, 20000
+//   11 //定义通道引脚
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(0)
+//   12 const GPIO_PIN TIMER_CHANEL_PIN[TIMER_NUM][TIMER_CH_NUM]=
+TIMER_CHANEL_PIN:
+        DATA8
+        DC8 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 0, 0, 0, 0, 7, 1, 0, 1, 1, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 1, 3, 1, 4, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 4, 6, 4, 7
+        DC8 6, 4, 6, 5, 6, 6, 2, 5, 2, 6
+//   13 {// CH0    CH1    CH2    CH3    CH4    CH5    CH6
+//   14   {{P1,1},{P1,2},{P1,3},{P1,4},{P1,5}},                  //TIMER_A0
+//   15   {{P1,7},{P2,0},{P2,1}},                                //TIMER_A1
+//   16   {{P2,3},{P2,4},{P2,5}},                                //TIMER_A2
+//   17   {{P5,6},{P5,7},{P7,4},{P7,5},{P7,6},{P3,5},{P3,6}}     //TIMER_B0
+//   18 };//通道引脚
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(0)
+//   19 const GPIO_PIN TIMER_CLK_PIN[TIMER_NUM] =
+TIMER_CLK_PIN:
+        DATA8
+        DC8 0, 0, 0, 6, 1, 2, 6, 7
+//   20 {
+//   21   {P1,0},                                                //TIMER_A0
+//   22   {P1,6},                                                //TIMER_A1
+//   23   {P2,2},                                                //TIMER_A2
+//   24   {P7,7}                                                 //TIMER_B0
+//   25 };//外部时钟输入引脚
+//   26 /*******************************************************************************
+//   27 *  函数名称：TIMER_PWM_MultiChannel_Init(TIMERn timer, uint32_t fre, uint8_t ChannelNum,...)
+//   28 *  功能说明：定时器PWM输出初始化(可以多个通道同时初始化)
+//   29 *  参数说明：TIMERn timer       ：定时器模块
+//   30              uint32_t fre         ：频率
+//   31              uint8_t ChannelNum   ：要初始化的通道数
+//   32              ...                ：初始化的通道
+//   33 *  函数返回：不成功则返回ERROR，成功则返回SUCCESS
+//   34 *  使用例程：实例一：（使用函数初始化时需要输入初始化通道数，初始化通道数可以为0，如：TIMER_PWM_MultiChannel_Init(TIMER_A0, 1000, 0);）
+//   35              TIMER_PWM_MultiChannel_Init(TIMER_A0, 1000, 3, TIMER_CH1, TIMER_CH2, TIMER_CH4);
+//   36              //定时器TIMER_A0初始化输出PWM波，频率为1000Hz,初始化3个通道，分别是：TIMER_CH1,TIMER_CH2,TIMER_CH4
+//   37              实例二：(使用宏定义初始化时不需要输入初始化通道数)
+//   38              TIMER_PWM_Init(TIMER_B0,1000,TIMER_CH1,TIMER_CH2,TIMER_CH3,TIMER_CH4,TIMER_CH5,TIMER_CH6);
+//   39              //定时器TIMER_B0初始化输出PWM波，频率为1000Hz,初始化6个通道：TIMER_CH1,TIMER_CH2,TIMER_CH3,TIMER_CH4,TIMER_CH5,TIMER_CH6
+//   40 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   41 STATUS TIMER_PWM_MultiChannel_Init(TIMERn timer, uint32_t fre, uint8_t ChannelNum,...)
+TIMER_PWM_MultiChannel_Init:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function TIMER_PWM_MultiChannel_Init
+//   42 {
+        PUSHM.A #0x8, R11
+          CFI R4L Frame(CFA, -36)
+          CFI R4H Frame(CFA, -34)
+          CFI R5L Frame(CFA, -32)
+          CFI R5H Frame(CFA, -30)
+          CFI R6L Frame(CFA, -28)
+          CFI R6H Frame(CFA, -26)
+          CFI R7L Frame(CFA, -24)
+          CFI R7H Frame(CFA, -22)
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+36
+        SUBA    #0x4, SP
+          CFI CFA SP+40
+        MOV.B   R12, R4
+        MOV.W   R14, R6
+        MOV.W   R15, R7
+//   43 #ifdef DELAY_TIMER
+//   44   ASSERT((timer != DELAY_TIMER),
+//   45          "TIMER_PWM_MultiChannel_Init",
+//   46          "定时器已经设置为默认延时功能，不能再作为其他功能使用");       //不允许这种情况下还宏定义该定时器作为延时所用的定时器，请在system.h里修改DELAY_TIMER宏定义
+//   47 #endif
+//   48   ASSERT((timer==TIMER_A0&&ChannelNum<=TIMER_CH4)
+//   49        ||(timer==TIMER_A1&&ChannelNum<=TIMER_CH2)
+//   50        ||(timer==TIMER_A2&&ChannelNum<=TIMER_CH2)
+//   51        ||(timer==TIMER_B0&&ChannelNum<=TIMER_CH6),
+//   52        "TIMER_PWM_MultiChannel_Init",
+//   53        "定时器通道参数超出范围！"); //断言检测输入参数*/
+//   54   
+//   55   va_list ap;
+//   56   va_start(ap,ChannelNum);
+        MOVA    SP, R15
+        ADDA    #0x28, R15
+        MOVA    R15, 0(SP)
+//   57   for(int i=0;i < ChannelNum;i++)           //根据初始化的通道数，逐一初始化通道
+        CMP.B   #0x0, R13
+        JEQ     ??TIMER_PWM_MultiChannel_Init_2
+        MOV.B   R13, R8
+        MOV.B   R12, R10
+//   58   {
+//   59     TIMER_CHn ch = va_arg(ap, TIMER_CHn);  //读取要初始化的通道
+??TIMER_PWM_MultiChannel_Init_0:
+        ADDX.A  #0x2, 0(SP)
+        MOVA    @SP, R9
+        MOVX.B  0xffffe(R9), R9
+//   60     if((ch == TIMER_CH0) || (ch >= TIMER_CH_NUM))   //判断通道值是否合理
+        CMP.B   #0x0, R9
+        JEQ     ??TIMER_PWM_MultiChannel_Init_3
+        CMP.B   #0x7, R9
+        JNC     ??TIMER_PWM_MultiChannel_Init_4
+//   61     {
+//   62       return ERROR;                                 //不合理返回ERROR
+??TIMER_PWM_MultiChannel_Init_3:
+        MOV.B   #0x0, R12
+        JMP     ??TIMER_PWM_MultiChannel_Init_1
+//   63     }
+//   64     //初始化端口
+//   65     GPIO_Init(TIMER_CHANEL_PIN[timer][ch].Port,TIMER_CHANEL_PIN[timer][ch].Pin,GPO|SEL);
+??TIMER_PWM_MultiChannel_Init_4:
+        ADDA    R9, R9
+        MOV.W   R10, R14
+        MOV.W   #0x0, R15
+        RLA.W   R14
+        MOV.W   R14, R12
+        RLA.W   R14
+        ADD.W   R14, R12
+        RLA.W   R14
+        ADD.W   R12, R14
+        ADDC.W  #0x0, R15
+        PUSHM.W #0x2, R15
+          CFI CFA SP+44
+        POPM.A  #0x1, R15
+          CFI CFA SP+40
+        ADDA    R9, R15
+        ADDA    #TIMER_CHANEL_PIN, R15
+        MOV.W   #0x102, R14
+        MOV.W   #0x1, R13
+        MOV.B   0x1(R15), R12
+        SUB.B   #0x1, R12
+        JN      ??TIMER_PWM_MultiChannel_Init_5
+        RPT     R12
+        RLAX.W  R13
+??TIMER_PWM_MultiChannel_Init_5:
+        MOV.B   @R15, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   #GPIO_MultiBits_Init
+//   66     //初始化占空比及输出波形
+//   67     TIMERX[timer]->CCR[ch] = 0u;
+        MOV.W   R10, R15
+        RLAM.A  #0x2, R15
+        MOVX.A  TIMERX(R15), R14
+        ADDA    R9, R14
+        MOV.W   #0x0, 0x12(R14)
+//   68     TIMERX[timer]->CCTL[ch].IE = RESET;               //关闭通道中断
+        BIC.W   #0x10, 0x2(R14)
+//   69     TIMERX[timer]->CCTL[ch].OUTMOD = DEFAULT_PWM_OUTMOD;      //输出波形设置
+        BIS.W   #0xe0, 0x2(R14)
+//   70     TIMERX[timer]->CCTL[ch].CAPMODE = RESET;          //比较模式
+        BIC.W   #0x100, 0x2(R14)
+//   71   }
+        ADD.W   #0xffff, R8
+        JNE     ??TIMER_PWM_MultiChannel_Init_0
+//   72   va_end(ap);
+//   73   
+//   74   return TIMER_PWM_SetFrequency(timer,fre);
+??TIMER_PWM_MultiChannel_Init_2:
+        MOV.W   R6, R14
+        MOV.W   R7, R15
+        MOV.B   R4, R12
+          CFI FunCall TIMER_PWM_SetFrequency
+        CALLA   #TIMER_PWM_SetFrequency
+??TIMER_PWM_MultiChannel_Init_1:
+        ADDA    #0x4, SP
+          CFI CFA SP+36
+        POPM.A  #0x8, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R4H SameValue
+          CFI R5H SameValue
+          CFI R6H SameValue
+          CFI R7H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R4L SameValue
+          CFI R5L SameValue
+          CFI R6L SameValue
+          CFI R7L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+//   75 }
+          CFI EndBlock cfiBlock0
+//   76 /*******************************************************************************
+//   77 *  函数名称：TIMER_PWM_SetChannelOutmod(TIMERn timer,TIMER_CHn ch,TIMER_OUTMODn outmod)
+//   78 *  功能说明：PWM输出波形设置
+//   79 *  参数说明：TIMERn timer       ：定时器模块
+//   80              TIMER_CHn ch       ：定时器通道
+//   81              TIMER_PWM_OUTMODn outmod ：输出波形模式
+//   82 *  函数返回：无
+//   83 *  使用例程：TIMER_PWM_SetChannelOutmod(TIMER_A0,TIMER_CH1,TIMER_PWM_OUTMOD3);  //修改定时器A0的TIMER_CH1通道输出波形
+//   84 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//   85 void TIMER_PWM_SetChannelOutmod(TIMERn timer,TIMER_CHn ch,TIMER_PWM_OUTMODn outmod)
+TIMER_PWM_SetChannelOutmod:
+          CFI Block cfiBlock1 Using cfiCommon0
+          CFI Function TIMER_PWM_SetChannelOutmod
+          CFI NoCalls
+//   86 {
+//   87   TIMERX[timer]->CCTL[ch].OUTMOD = outmod;      //输出波形设置
+        CALLA   #?Subroutine18
+??CrossCallReturnLabel_17:
+        MOV.B   R14, R14
+        RLAM.W  #0x4, R14
+        RLAM.W  #0x1, R14
+        AND.W   #0xe0, R14
+        MOV.W   0x2(R15), R13
+        AND.W   #0xff1f, R13
+          CFI EndBlock cfiBlock1
+        REQUIRE ?Subroutine3
+        // Fall through to label ?Subroutine3
+//   88 }
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine3:
+          CFI Block cfiBlock2 Using cfiCommon0
+          CFI NoFunction
+        BIS.W   R14, R13
+        MOV.W   R13, 0x2(R15)
+        RETA
+          CFI EndBlock cfiBlock2
+//   89 /*******************************************************************************
+//   90 *  函数名称：TIMER_PWM_SetFrequency(TIMERn timer,uint32_t fre)
+//   91 *  功能说明：定时器PWM频率设置(注意这里没有更改各个通道的占空比，所以修改频率后占空比变了，需要从新设置占空比)
+//   92 *  参数说明：TIMERn timer       ：定时器模块
+//   93              uint32_t fre         ：频率
+//   94 *  函数返回：不成功则返回ERROR，成功则返回SUCCESS
+//   95 *  使用例程：TIMER_PWM_SetFrequency(TIMER_B0,1000);       //将定时器B输出频率修改为1000Hz
+//   96 ********************************************************************************/
+//   97 STATUS  TIMER_PWM_SetFrequency(TIMERn timer,uint32_t fre)
+//   98 {
+//   99   if(fre == 0u)
+//  100   {
+//  101     TIMERX[timer]->MC = TIMER_MC_STOP;              //暂停输出PWM波
+//  102     return SUCCESS;
+//  103   }
+//  104   
+//  105   TIMERX[timer]->CLR = BIT_SET;
+//  106   TIMERX[timer]->SSEL = TIMER_SSEL_SMCLK;           //先选择时钟源为SMCLK
+//  107   TIMERX[timer]->ID = 0u;                           //分频系数清零
+//  108   //时钟大小
+//  109   uint32_t Counter_Value = g_sClock.SMCLK.nHZ/fre;                 //计算计数值
+//  110   while(Counter_Value > 65536u)        //这里不是0xffff，因为后面会-1，所以是(0xffff+1)=65536
+//  111   {  //分频一次
+//  112      TIMERX[timer]->ID ++;          
+//  113      Counter_Value >>= 1;          
+//  114      
+//  115      if((TIMERX[timer]->ID == 3u) && (Counter_Value > 65536))   //这个时候意味得选择更低频率的时钟了
+//  116      {
+//  117        if(TIMERX[timer]->SSEL == TIMER_SSEL_ACLK)   //如果时钟已经是最低的ACLK了，那么意味着设置的频率太低了，失败返回ERROR
+//  118        {
+//  119          return ERROR;
+//  120        }
+//  121        //更换为更低的ACLK，从新配置
+//  122        TIMERX[timer]->SSEL = TIMER_SSEL_ACLK;
+//  123        TIMERX[timer]->ID = 0u;  
+//  124        Counter_Value = g_sClock.ACLK.nHZ/fre; 
+//  125        continue;  
+//  126      } 
+//  127   }
+//  128   if(Counter_Value <= 1)//出现这种情况,说明频率不合适
+//  129   {
+//  130     return ERROR; 
+//  131   }
+//  132 
+//  133   TIMERX[timer]->CCR[0] = (uint16_t)(Counter_Value - 1u);//为什么要减一？？因为TAR/TBR计数器从CCR0变化到0还有一个计数周期
+//  134   TIMERX[timer]->IE = RESET;                      //关闭中断
+//  135   TIMERX[timer]->MC = TIMER_MC_UP;                //增计数模式
+//  136   
+//  137   return SUCCESS;
+//  138 }
+//  139 /*******************************************************************************
+//  140 *  函数名称：TIMER_PWM_SetChannelDuty(TIMERn timer,TIMER_CHn ch,uint32_t duty)
+//  141 *  功能说明：PWM输出占空比设置
+//  142 *  参数说明：TIMERn timer       ：定时器模块
+//  143              TIMER_CHn ch       ：定时器通道
+//  144              uint32_t duty      ：占空比
+//  145 *  函数返回：无
+//  146 *  使用例程：TIMER_PWM_SetChannelDuty(TIMER_A0,TIMER_CH1,800);  //修改定时器A0的TIMER_CH1通道占空比为(800/TIMAR_A0_PRECISON)*100%
+//  147 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  148 void  TIMER_PWM_SetChannelDuty(TIMERn timer,TIMER_CHn ch,uint32_t duty)
+TIMER_PWM_SetChannelDuty:
+          CFI Block cfiBlock3 Using cfiCommon0
+          CFI Function TIMER_PWM_SetChannelDuty
+//  149 {
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+        MOV.B   R13, R10
+        MOV.W   R14, R8
+        MOV.W   R15, R9
+//  150   ASSERT((timer==TIMER_A0&&ch<=TIMER_CH4)
+//  151        ||(timer==TIMER_A1&&ch<=TIMER_CH2)
+//  152        ||(timer==TIMER_A2&&ch<=TIMER_CH2)
+//  153        ||(timer==TIMER_B0&&ch<=TIMER_CH6),
+//  154        "TIMER_PWM_SetChannelDuty",
+//  155        "定时器通道参数超出范围！"); //断言检测输入参数
+//  156   
+//  157   ASSERT(duty <= TIMER_PRECISON[timer],
+//  158          "TIMER_PWM_SetChannelDuty",
+//  159          "定时器占空比参数超出范围！");      //用断言检测 占空比是否合理
+//  160   
+//  161   TIMERX[timer]->CCR[ch] = (uint16_t)((duty * (TIMERX[timer]->CCR[0]+1))/TIMER_PRECISON[timer]);
+        MOV.B   R12, R12
+        RLAM.A  #0x2, R12
+        MOVA    R12, R15
+        MOVX.A  TIMERX(R12), R11
+        MOVX.W  TIMER_PRECISON(R12), R14
+        MOVX.W  TIMER_PRECISON + 2(R15), R15
+        MOV.W   0x12(R11), R13
+        ADD.W   #0x1, R13
+        PUSH.W  SR
+          CFI CFA SP+22
+        DINT
+        NOP
+        MOV.W   R13, &__iar_HWMUL + 16         // MPY32L
+        MOV.W   R8, &__iar_HWMUL + 32          // OP2L
+        MOV.W   R9, &__iar_HWMUL + 34          // OP2H
+        MOV.W   &__iar_HWMUL + 36, R12         // RES0
+        MOV.W   &__iar_HWMUL + 38, R13         // RES1
+        NOP
+        POP.W   SR
+          CFI CFA SP+20
+          CFI FunCall ?DivMod32u
+        CALLA   #?DivMod32u
+        ADDA    R10, R11
+        ADDA    R10, R11
+        MOV.W   R12, 0x12(R11)
+//  162 }
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock3
+//  163 /*******************************************************************************
+//  164 *  函数名称：TIMER_Interval_Us(TIMERn timer,uint32_t us)
+//  165 *  功能说明：定时器定时初始化(单位：us)
+//  166 *  参数说明：TIMERn timer       ：定时器模块
+//  167              uint32_t us          : 定时时间
+//  168 *  函数返回：不成功则返回ERROR，成功则返回SUCCESS
+//  169 *  使用例程：TIMER_Interval_Us(TIMER_B0,2500);  //TB定时间隔2.5ms中断
+//  170 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  171 STATUS  TIMER_Interval_Us(TIMERn timer,uint32_t us)
+TIMER_Interval_Us:
+          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Function TIMER_Interval_Us
+//  172 {
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+//  173 #ifdef DELAY_TIMER
+//  174   ASSERT((timer != DELAY_TIMER),
+//  175          "TIMER_Interval_Us",
+//  176          "定时器已经设置为默认延时功能，不能再作为其他功能使用");       //不允许这种情况下还宏定义该定时器作为延时所用的定时器，请在system.h里修改DELAY_TIMER宏定义
+//  177 #endif
+//  178   TIMERX[timer]->CLR = BIT_SET;
+        CALLA   #?Subroutine7
+//  179   TIMERX[timer]->SSEL = TIMER_SSEL_SMCLK;
+//  180   TIMERX[timer]->ID = 0u;
+//  181   //计数值
+//  182   uint32_t Counter_Value = (uint32_t)(us * g_sClock.SMCLK.fMHZ);
+??CrossCallReturnLabel_4:
+        JMP     ??TIMER_Interval_Us_2
+//  183   while(Counter_Value > 65536)
+//  184   {
+//  185      TIMERX[timer]->ID ++; 
+??TIMER_Interval_Us_0:
+        CALLA   #?Subroutine6
+//  186      Counter_Value >>= 1;  
+//  187      if((TIMERX[timer]->ID == 3u) && (Counter_Value > 65536))   //这个时候意味得选择更低频率的时钟了
+??CrossCallReturnLabel_1:
+        JNE     ??TIMER_Interval_Us_4
+        CMP.W   #0x1, R13
+        JNC     ??TIMER_Interval_Us_4
+        JNE     ??TIMER_Interval_Us_5
+        CMP.W   #0x1, R12
+        JNC     ??TIMER_Interval_Us_4
+//  188      {
+//  189       if(TIMERX[timer]->SSEL == TIMER_SSEL_ACLK) //如果时钟已经是最低的ACLK了，那么意味着设置的频率太低了，失败返回ERROR
+??TIMER_Interval_Us_5:
+        CALLA   #?Subroutine15
+??CrossCallReturnLabel_11:
+        JEQ     ??TIMER_Interval_Us_1
+//  190       {
+//  191         return ERROR;
+//  192       }
+//  193       //更换为更低的ACLK，从新配置
+//  194       TIMERX[timer]->SSEL = TIMER_SSEL_ACLK;
+        CALLA   #?Subroutine8
+//  195       TIMERX[timer]->ID = 0u;  
+//  196       Counter_Value = (uint32_t)(us * g_sClock.ACLK.fMHZ);
+??TIMER_Interval_Us_2:
+          CFI FunCall _Mul32f
+        CALLA   #_Mul32f
+          CFI FunCall _Cast32fto32u
+        CALLA   #_Cast32fto32u
+//  197       continue;  
+//  198      } 
+//  199   }
+??TIMER_Interval_Us_4:
+        CMP.W   #0x1, R13
+        JNC     ??TIMER_Interval_Us_6
+        JNE     ??TIMER_Interval_Us_0
+        CMP.W   #0x1, R12
+        JC      ??TIMER_Interval_Us_0
+//  200   if(Counter_Value <= 1)//出现这种情况,说明频率不合适
+??TIMER_Interval_Us_6:
+        CMP.W   #0x0, R13
+        JNE     ??TIMER_Interval_Us_7
+        CMP.W   #0x2, R12
+        JC      ??TIMER_Interval_Us_7
+//  201   {
+//  202     return ERROR; 
+??TIMER_Interval_Us_1:
+        MOV.B   #0x0, R12
+        JMP     ??TIMER_Interval_Us_3
+//  203   }
+//  204   
+//  205   TIMERX[timer]->CCR[0] = (uint16_t)(Counter_Value - 1u);//为什么要减一？？因为TAR/TBR计数器从CCR0变化到0还有一个计数周期
+??TIMER_Interval_Us_7:
+        CALLA   #?Subroutine9
+//  206   TIMERX[timer]->CCTL[0].CAPMODE = RESET;          //比较模式
+//  207   TIMERX[timer]->IE = RESET;             //关闭溢出中断
+//  208   TIMERX[timer]->CCTL[0].IE = RESET;     //关闭通道中断
+//  209   TIMERX[timer]->MC = TIMER_MC_UP;      //增计数模式
+//  210   
+//  211   return SUCCESS;
+??CrossCallReturnLabel_33:
+        MOV.B   #0x1, R12
+??TIMER_Interval_Us_3:
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+//  212 }
+          CFI EndBlock cfiBlock4
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine15:
+          CFI Block cfiCond5 Using cfiCommon0
+          CFI Function TIMER_PWM_SetFrequency
+          CFI Conditional ??CrossCallReturnLabel_10
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond6 Using cfiCommon0
+          CFI (cfiCond6) Function TIMER_Interval_Us
+          CFI (cfiCond6) Conditional ??CrossCallReturnLabel_11
+          CFI (cfiCond6) R8L Frame(CFA, -20)
+          CFI (cfiCond6) R8H Frame(CFA, -18)
+          CFI (cfiCond6) R9L Frame(CFA, -16)
+          CFI (cfiCond6) R9H Frame(CFA, -14)
+          CFI (cfiCond6) R10L Frame(CFA, -12)
+          CFI (cfiCond6) R10H Frame(CFA, -10)
+          CFI (cfiCond6) R11L Frame(CFA, -8)
+          CFI (cfiCond6) R11H Frame(CFA, -6)
+          CFI (cfiCond6) CFA SP+24
+          CFI Block cfiCond7 Using cfiCommon0
+          CFI (cfiCond7) Function TIMER_Delay_Us
+          CFI (cfiCond7) Conditional ??CrossCallReturnLabel_12
+          CFI (cfiCond7) R8L Frame(CFA, -20)
+          CFI (cfiCond7) R8H Frame(CFA, -18)
+          CFI (cfiCond7) R9L Frame(CFA, -16)
+          CFI (cfiCond7) R9H Frame(CFA, -14)
+          CFI (cfiCond7) R10L Frame(CFA, -12)
+          CFI (cfiCond7) R10H Frame(CFA, -10)
+          CFI (cfiCond7) R11L Frame(CFA, -8)
+          CFI (cfiCond7) R11H Frame(CFA, -6)
+          CFI (cfiCond7) CFA SP+24
+          CFI Block cfiPicker8 Using cfiCommon1
+          CFI (cfiPicker8) NoFunction
+          CFI (cfiPicker8) Picker
+        MOV.W   @R8, R14
+        SWPB    R14
+        AND.B   #0x3, R14
+        CMP.B   #0x1, R14
+        RETA
+          CFI EndBlock cfiCond5
+          CFI EndBlock cfiCond6
+          CFI EndBlock cfiCond7
+          CFI EndBlock cfiPicker8
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine9:
+          CFI Block cfiCond9 Using cfiCommon0
+          CFI Function TIMER_Interval_Us
+          CFI Conditional ??CrossCallReturnLabel_33
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond10 Using cfiCommon0
+          CFI (cfiCond10) Function TIMER_Delay_Us
+          CFI (cfiCond10) Conditional ??CrossCallReturnLabel_34
+          CFI (cfiCond10) R8L Frame(CFA, -20)
+          CFI (cfiCond10) R8H Frame(CFA, -18)
+          CFI (cfiCond10) R9L Frame(CFA, -16)
+          CFI (cfiCond10) R9H Frame(CFA, -14)
+          CFI (cfiCond10) R10L Frame(CFA, -12)
+          CFI (cfiCond10) R10H Frame(CFA, -10)
+          CFI (cfiCond10) R11L Frame(CFA, -8)
+          CFI (cfiCond10) R11H Frame(CFA, -6)
+          CFI (cfiCond10) CFA SP+24
+          CFI Block cfiPicker11 Using cfiCommon1
+          CFI (cfiPicker11) NoFunction
+          CFI (cfiPicker11) Picker
+        ADD.W   #0xffff, R12
+        MOV.W   R12, 0x12(R8)
+        BIC.W   #0x100, 0x2(R8)
+        BIC.W   #0x2, 0(R8)
+        BIC.W   #0x10, 0x2(R8)
+          CFI EndBlock cfiCond9
+          CFI EndBlock cfiCond10
+          CFI EndBlock cfiPicker11
+        REQUIRE ??Subroutine21_0
+        // Fall through to label ??Subroutine21_0
+
+        RSEG `CODE`:CODE:NOROOT(1)
+??Subroutine21_0:
+          CFI Block cfiCond12 Using cfiCommon0
+          CFI Function TIMER_PWM_SetFrequency
+          CFI Conditional ??TIMER_PWM_SetFrequency_2
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond13 Using cfiCommon0
+          CFI (cfiCond13) Function TIMER_Interval_Us
+          CFI (cfiCond13) Conditional ??CrossCallReturnLabel_33
+          CFI (cfiCond13) R8L Frame(CFA, -20)
+          CFI (cfiCond13) R8H Frame(CFA, -18)
+          CFI (cfiCond13) R9L Frame(CFA, -16)
+          CFI (cfiCond13) R9H Frame(CFA, -14)
+          CFI (cfiCond13) R10L Frame(CFA, -12)
+          CFI (cfiCond13) R10H Frame(CFA, -10)
+          CFI (cfiCond13) R11L Frame(CFA, -8)
+          CFI (cfiCond13) R11H Frame(CFA, -6)
+          CFI (cfiCond13) CFA SP+24
+          CFI Block cfiCond14 Using cfiCommon0
+          CFI (cfiCond14) Function TIMER_Delay_Us
+          CFI (cfiCond14) Conditional ??CrossCallReturnLabel_34
+          CFI (cfiCond14) R8L Frame(CFA, -20)
+          CFI (cfiCond14) R8H Frame(CFA, -18)
+          CFI (cfiCond14) R9L Frame(CFA, -16)
+          CFI (cfiCond14) R9H Frame(CFA, -14)
+          CFI (cfiCond14) R10L Frame(CFA, -12)
+          CFI (cfiCond14) R10H Frame(CFA, -10)
+          CFI (cfiCond14) R11L Frame(CFA, -8)
+          CFI (cfiCond14) R11H Frame(CFA, -6)
+          CFI (cfiCond14) CFA SP+24
+          CFI Block cfiPicker15 Using cfiCommon1
+          CFI (cfiPicker15) NoFunction
+          CFI (cfiPicker15) Picker
+        MOV.W   @R8, R15
+        AND.W   #0xffcf, R15
+        BIS.W   #0x10, R15
+        MOV.W   R15, 0(R8)
+        RETA
+          CFI EndBlock cfiCond12
+          CFI EndBlock cfiCond13
+          CFI EndBlock cfiCond14
+          CFI EndBlock cfiPicker15
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine6:
+          CFI Block cfiCond16 Using cfiCommon0
+          CFI Function TIMER_PWM_SetFrequency
+          CFI Conditional ??CrossCallReturnLabel_0
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond17 Using cfiCommon0
+          CFI (cfiCond17) Function TIMER_Interval_Us
+          CFI (cfiCond17) Conditional ??CrossCallReturnLabel_1
+          CFI (cfiCond17) R8L Frame(CFA, -20)
+          CFI (cfiCond17) R8H Frame(CFA, -18)
+          CFI (cfiCond17) R9L Frame(CFA, -16)
+          CFI (cfiCond17) R9H Frame(CFA, -14)
+          CFI (cfiCond17) R10L Frame(CFA, -12)
+          CFI (cfiCond17) R10H Frame(CFA, -10)
+          CFI (cfiCond17) R11L Frame(CFA, -8)
+          CFI (cfiCond17) R11H Frame(CFA, -6)
+          CFI (cfiCond17) CFA SP+24
+          CFI Block cfiCond18 Using cfiCommon0
+          CFI (cfiCond18) Function TIMER_Delay_Us
+          CFI (cfiCond18) Conditional ??CrossCallReturnLabel_2
+          CFI (cfiCond18) R8L Frame(CFA, -20)
+          CFI (cfiCond18) R8H Frame(CFA, -18)
+          CFI (cfiCond18) R9L Frame(CFA, -16)
+          CFI (cfiCond18) R9H Frame(CFA, -14)
+          CFI (cfiCond18) R10L Frame(CFA, -12)
+          CFI (cfiCond18) R10H Frame(CFA, -10)
+          CFI (cfiCond18) R11L Frame(CFA, -8)
+          CFI (cfiCond18) R11H Frame(CFA, -6)
+          CFI (cfiCond18) CFA SP+24
+          CFI Block cfiPicker19 Using cfiCommon1
+          CFI (cfiPicker19) NoFunction
+          CFI (cfiPicker19) Picker
+        MOV.W   @R8, R15
+        MOV.B   R15, R14
+        RRUM.W  #0x4, R14
+        RRUM.W  #0x2, R14
+        ADD.W   #0x1, R14
+        RLAM.W  #0x4, R14
+        RLAM.W  #0x2, R14
+        AND.W   #0xc0, R14
+        AND.W   #0xff3f, R15
+        BIS.W   R14, R15
+        MOV.W   R15, 0(R8)
+        RRUM.W  #0x1, R13
+        RRC.W   R12
+        MOV.W   @R8, R14
+        AND.B   #0xc0, R14
+        CMP.B   #0xc0, R14
+        RETA
+          CFI EndBlock cfiCond16
+          CFI EndBlock cfiCond17
+          CFI EndBlock cfiCond18
+          CFI EndBlock cfiPicker19
+//  213 /*******************************************************************************
+//  214 *  函数名称：TIMER_Delay_Us(TIMERn timer,uint32_t us)
+//  215 *  功能说明：定时器延时（单位：ms）
+//  216 *  参数说明：TIMERn timer       ：定时器模块
+//  217              uint32_t us          : 定时时间
+//  218 *  函数返回：不成功则返回ERROR，成功则返回SUCCESS
+//  219 *  使用例程：TIMER_Delay_Us(TIMER_B0 ,5000);      //在此处延时5ms
+//  220 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  221 STATUS TIMER_Delay_Us(TIMERn timer,uint32_t us)
+TIMER_Delay_Us:
+          CFI Block cfiBlock20 Using cfiCommon0
+          CFI Function TIMER_Delay_Us
+//  222 {
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+//  223   TIMERX[timer]->CLR = BIT_SET;
+        CALLA   #?Subroutine7
+//  224   TIMERX[timer]->SSEL = TIMER_SSEL_SMCLK;
+//  225   TIMERX[timer]->ID = 0u;
+//  226   //计数值
+//  227   uint32_t Counter_Value = (uint32_t)(us * g_sClock.SMCLK.fMHZ);
+??CrossCallReturnLabel_3:
+        JMP     ??TIMER_Delay_Us_3
+//  228   while(Counter_Value > 65536)
+//  229   {
+//  230      TIMERX[timer]->ID ++; 
+??TIMER_Delay_Us_0:
+        CALLA   #?Subroutine6
+//  231      Counter_Value >>= 1;  
+//  232      if((TIMERX[timer]->ID == 3u) && (Counter_Value > 65536))   //这个时候意味得选择更低频率的时钟了
+??CrossCallReturnLabel_2:
+        JNE     ??TIMER_Delay_Us_5
+        CMP.W   #0x1, R13
+        JNC     ??TIMER_Delay_Us_5
+        JNE     ??TIMER_Delay_Us_6
+        CMP.W   #0x1, R12
+        JNC     ??TIMER_Delay_Us_5
+//  233      {
+//  234       if(TIMERX[timer]->SSEL == TIMER_SSEL_ACLK) //如果时钟已经是最低的ACLK了，那么意味着设置的频率太低了，失败返回ERROR
+??TIMER_Delay_Us_6:
+        CALLA   #?Subroutine15
+??CrossCallReturnLabel_12:
+        JEQ     ??TIMER_Delay_Us_2
+//  235       {
+//  236         return ERROR;
+//  237       }
+//  238       //更换为更低的ACLK，从新配置
+//  239       TIMERX[timer]->SSEL = TIMER_SSEL_ACLK;
+        CALLA   #?Subroutine8
+//  240       TIMERX[timer]->ID = 0u;  
+//  241       Counter_Value = (uint32_t)(us * g_sClock.ACLK.fMHZ);
+??TIMER_Delay_Us_3:
+          CFI FunCall _Mul32f
+        CALLA   #_Mul32f
+          CFI FunCall _Cast32fto32u
+        CALLA   #_Cast32fto32u
+//  242       continue;  
+//  243      } 
+//  244   }
+??TIMER_Delay_Us_5:
+        CMP.W   #0x1, R13
+        JNC     ??TIMER_Delay_Us_7
+        JNE     ??TIMER_Delay_Us_0
+        CMP.W   #0x1, R12
+        JC      ??TIMER_Delay_Us_0
+//  245   if(Counter_Value <= 1)//出现这种情况,说明频率不合适
+??TIMER_Delay_Us_7:
+        CMP.W   #0x0, R13
+        JNE     ??TIMER_Delay_Us_8
+        CMP.W   #0x2, R12
+        JC      ??TIMER_Delay_Us_8
+//  246   {
+//  247     return ERROR; 
+??TIMER_Delay_Us_2:
+        MOV.B   #0x0, R12
+        JMP     ??TIMER_Delay_Us_4
+//  248   }
+//  249   
+//  250   TIMERX[timer]->CCR[0] = (uint16_t)(Counter_Value - 1u);//为什么要减一？？因为TAR/TBR计数器从CCR0变化到0还有一个计数周期
+??TIMER_Delay_Us_8:
+        CALLA   #?Subroutine9
+//  251   TIMERX[timer]->CCTL[0].CAPMODE = RESET;          //比较模式
+//  252   TIMERX[timer]->IE = RESET;             //关闭溢出中断
+//  253   TIMERX[timer]->CCTL[0].IE = RESET;     //关闭通道中断
+//  254   TIMERX[timer]->MC = TIMER_MC_UP;
+//  255   
+//  256   TIMERX[timer]->CCTL[0].CTL = 0;
+??CrossCallReturnLabel_34:
+        MOV.W   #0x0, 0x2(R8)
+//  257   TIMERX[timer]->IFG = RESET;
+        BIC.W   #0x1, 0(R8)
+//  258   while(TIMERX[timer]->IFG == RESET);
+??TIMER_Delay_Us_1:
+        MOV.W   @R8, R9
+        BIT.W   #0x1, R9
+        JEQ     ??TIMER_Delay_Us_1
+//  259   TIMERX[timer]->CTL = 0;
+        MOV.W   #0x0, 0(R8)
+//  260   
+//  261   return SUCCESS;
+        MOV.B   #0x1, R12
+??TIMER_Delay_Us_4:
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+//  262 }
+          CFI EndBlock cfiBlock20
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine8:
+          CFI Block cfiCond21 Using cfiCommon0
+          CFI Function TIMER_Interval_Us
+          CFI Conditional ??TIMER_Interval_Us_2
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond22 Using cfiCommon0
+          CFI (cfiCond22) Function TIMER_Delay_Us
+          CFI (cfiCond22) Conditional ??TIMER_Delay_Us_3
+          CFI (cfiCond22) R8L Frame(CFA, -20)
+          CFI (cfiCond22) R8H Frame(CFA, -18)
+          CFI (cfiCond22) R9L Frame(CFA, -16)
+          CFI (cfiCond22) R9H Frame(CFA, -14)
+          CFI (cfiCond22) R10L Frame(CFA, -12)
+          CFI (cfiCond22) R10H Frame(CFA, -10)
+          CFI (cfiCond22) R11L Frame(CFA, -8)
+          CFI (cfiCond22) R11H Frame(CFA, -6)
+          CFI (cfiCond22) CFA SP+24
+          CFI Block cfiPicker23 Using cfiCommon1
+          CFI (cfiPicker23) NoFunction
+          CFI (cfiPicker23) Picker
+        CALLA   #?Subroutine17
+??CrossCallReturnLabel_16:
+        MOV.W   R10, R12
+        MOV.W   R11, R13
+        MOVX.W  &g_sClock + 32, R14
+        MOVX.W  &g_sClock + 34, R15
+        RETA
+          CFI EndBlock cfiCond21
+          CFI EndBlock cfiCond22
+          CFI EndBlock cfiPicker23
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine17:
+          CFI Block cfiCond24 Using cfiCommon0
+          CFI Function TIMER_PWM_SetFrequency
+          CFI Conditional ??CrossCallReturnLabel_15
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond25 Using cfiCommon0
+          CFI (cfiCond25) Function TIMER_Interval_Us
+          CFI (cfiCond25) Conditional ??CrossCallReturnLabel_16, ??TIMER_Interval_Us_2
+          CFI (cfiCond25) R8L Frame(CFA, -20)
+          CFI (cfiCond25) R8H Frame(CFA, -18)
+          CFI (cfiCond25) R9L Frame(CFA, -16)
+          CFI (cfiCond25) R9H Frame(CFA, -14)
+          CFI (cfiCond25) R10L Frame(CFA, -12)
+          CFI (cfiCond25) R10H Frame(CFA, -10)
+          CFI (cfiCond25) R11L Frame(CFA, -8)
+          CFI (cfiCond25) R11H Frame(CFA, -6)
+          CFI (cfiCond25) CFA SP+28
+          CFI Block cfiCond26 Using cfiCommon0
+          CFI (cfiCond26) Function TIMER_Delay_Us
+          CFI (cfiCond26) Conditional ??CrossCallReturnLabel_16, ??TIMER_Delay_Us_3
+          CFI (cfiCond26) R8L Frame(CFA, -20)
+          CFI (cfiCond26) R8H Frame(CFA, -18)
+          CFI (cfiCond26) R9L Frame(CFA, -16)
+          CFI (cfiCond26) R9H Frame(CFA, -14)
+          CFI (cfiCond26) R10L Frame(CFA, -12)
+          CFI (cfiCond26) R10H Frame(CFA, -10)
+          CFI (cfiCond26) R11L Frame(CFA, -8)
+          CFI (cfiCond26) R11H Frame(CFA, -6)
+          CFI (cfiCond26) CFA SP+28
+          CFI Block cfiPicker27 Using cfiCommon1
+          CFI (cfiPicker27) NoFunction
+          CFI (cfiPicker27) Picker
+        MOV.W   @R8, R15
+        AND.W   #0xfcff, R15
+        BIS.W   #0x100, R15
+        MOV.W   R15, 0(R8)
+        AND.W   #0xff3f, 0(R8)
+        RETA
+          CFI EndBlock cfiCond24
+          CFI EndBlock cfiCond25
+          CFI EndBlock cfiCond26
+          CFI EndBlock cfiPicker27
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine7:
+          CFI Block cfiCond28 Using cfiCommon0
+          CFI Function TIMER_Interval_Us
+          CFI Conditional ??CrossCallReturnLabel_4
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond29 Using cfiCommon0
+          CFI (cfiCond29) Function TIMER_Delay_Us
+          CFI (cfiCond29) Conditional ??CrossCallReturnLabel_3
+          CFI (cfiCond29) R8L Frame(CFA, -20)
+          CFI (cfiCond29) R8H Frame(CFA, -18)
+          CFI (cfiCond29) R9L Frame(CFA, -16)
+          CFI (cfiCond29) R9H Frame(CFA, -14)
+          CFI (cfiCond29) R10L Frame(CFA, -12)
+          CFI (cfiCond29) R10H Frame(CFA, -10)
+          CFI (cfiCond29) R11L Frame(CFA, -8)
+          CFI (cfiCond29) R11H Frame(CFA, -6)
+          CFI (cfiCond29) CFA SP+24
+          CFI Block cfiPicker30 Using cfiCommon1
+          CFI (cfiPicker30) NoFunction
+          CFI (cfiPicker30) Picker
+        MOV.B   R12, R12
+        RLAM.A  #0x2, R12
+        MOVX.A  TIMERX(R12), R8
+        BIS.W   #0x4, 0(R8)
+        MOV.W   @R8, R11
+        AND.W   #0xfcff, R11
+        BIS.W   #0x200, R11
+        MOV.W   R11, 0(R8)
+        AND.W   #0xff3f, 0(R8)
+        MOV.W   R14, R12
+        MOV.W   R15, R13
+          CFI (cfiCond28) FunCall TIMER_Interval_Us _Cast32uto32f
+          CFI (cfiCond29) FunCall TIMER_Delay_Us _Cast32uto32f
+        CALLA   #_Cast32uto32f
+        MOV.W   R12, R10
+        MOV.W   R13, R11
+          CFI EndBlock cfiCond28
+          CFI EndBlock cfiCond29
+          CFI EndBlock cfiPicker30
+        REQUIRE ?Subroutine20
+        // Fall through to label ?Subroutine20
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine20:
+          CFI Block cfiCond31 Using cfiCommon0
+          CFI Function TIMER_Interval_Us
+          CFI Conditional ??CrossCallReturnLabel_4
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond32 Using cfiCommon0
+          CFI (cfiCond32) Function TIMER_Delay_Us
+          CFI (cfiCond32) Conditional ??CrossCallReturnLabel_3
+          CFI (cfiCond32) R8L Frame(CFA, -20)
+          CFI (cfiCond32) R8H Frame(CFA, -18)
+          CFI (cfiCond32) R9L Frame(CFA, -16)
+          CFI (cfiCond32) R9H Frame(CFA, -14)
+          CFI (cfiCond32) R10L Frame(CFA, -12)
+          CFI (cfiCond32) R10H Frame(CFA, -10)
+          CFI (cfiCond32) R11L Frame(CFA, -8)
+          CFI (cfiCond32) R11H Frame(CFA, -6)
+          CFI (cfiCond32) CFA SP+24
+          CFI Block cfiCond33 Using cfiCommon0
+          CFI (cfiCond33) Function TIMER_Capture_CalTime_Us
+          CFI (cfiCond33) Conditional ??CrossCallReturnLabel_32, ??CrossCallReturnLabel_13
+          CFI (cfiCond33) R10L Frame(CFA, -12)
+          CFI (cfiCond33) R10H Frame(CFA, -10)
+          CFI (cfiCond33) R11L Frame(CFA, -8)
+          CFI (cfiCond33) R11H Frame(CFA, -6)
+          CFI (cfiCond33) CFA SP+20
+          CFI Block cfiCond34 Using cfiCommon0
+          CFI (cfiCond34) Function TIMER_Timer_GetTime_Us
+          CFI (cfiCond34) Conditional ??CrossCallReturnLabel_32, ??CrossCallReturnLabel_14
+          CFI (cfiCond34) CFA SP+12
+          CFI Block cfiPicker35 Using cfiCommon1
+          CFI (cfiPicker35) NoFunction
+          CFI (cfiPicker35) Picker
+        MOVX.W  &g_sClock + 20, R14
+        MOVX.W  &g_sClock + 22, R15
+        RETA
+          CFI EndBlock cfiCond31
+          CFI EndBlock cfiCond32
+          CFI EndBlock cfiCond33
+          CFI EndBlock cfiCond34
+          CFI EndBlock cfiPicker35
+//  263 /*******************************************************************************
+//  264 *  函数名称：TIMER_Pluse_Init    (TIMERn timer)
+//  265 *  功能说明：定时器脉冲计数初始化
+//  266 *  参数说明：TIMERn timer       ：定时器模块
+//  267 *  函数返回：不成功则返回ERROR，成功则返回SUCCESS
+//  268 *  使用例程：TIMER_Pluse_Init    (TIMER_A1);    //定时器TA1初始化为脉冲计数功能
+//  269 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  270 STATUS  TIMER_Pluse_Init    (TIMERn timer)
+TIMER_Pluse_Init:
+          CFI Block cfiBlock36 Using cfiCommon0
+          CFI Function TIMER_Pluse_Init
+//  271 { 
+        PUSHM.A #0x2, R11
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+12
+//  272 #ifdef DELAY_TIMER
+//  273   ASSERT((timer != DELAY_TIMER),
+//  274          "TIMER_Pluse_Init",
+//  275          "定时器已经设置为默认延时功能，不能再作为其他功能使用");       //不允许这种情况下还宏定义该定时器作为延时所用的定时器，请在system.h里修改DELAY_TIMER宏定义
+//  276 #endif 
+//  277   //端口设置为输入方向//选择第二功能
+//  278   GPIO_Init(TIMER_CLK_PIN[timer].Port,TIMER_CLK_PIN[timer].Pin,GPI|SEL);
+        MOV.B   R12, R10
+        MOV.W   R10, R15
+        RLA.W   R15
+        MOV.W   #0x101, R14
+        MOV.W   #0x1, R13
+        MOVX.B  TIMER_CLK_PIN + 1(R15), R12
+        SUB.B   #0x1, R12
+        JN      ??TIMER_Pluse_Init_0
+        RPT     R12
+        RLAX.W  R13
+??TIMER_Pluse_Init_0:
+        MOVX.B  TIMER_CLK_PIN(R15), R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   #GPIO_MultiBits_Init
+//  279   
+//  280   TIMERX[timer]->CLR = BIT_SET;                       
+        MOV.W   R10, R15
+        RLAM.A  #0x2, R15
+        MOVX.A  TIMERX(R15), R11
+        BIS.W   #0x4, 0(R11)
+//  281   TIMERX[timer]->SSEL = TIMER_SSEL_INCLK;             //时钟源选择为外部输入
+        BIS.W   #0x300, 0(R11)
+//  282   TIMERX[timer]->ID = 0u;                             //不分频
+        AND.W   #0xff3f, 0(R11)
+//  283   TIMERX[timer]->MC = TIMER_MC_CONTINOUS;             //连续计数模式
+        MOV.W   @R11, R15
+        AND.W   #0xffcf, R15
+        BIS.W   #0x20, R15
+        MOV.W   R15, 0(R11)
+//  284   TIMERX[timer]->IE = RESET;                          //禁止溢出中断
+        BIC.W   #0x2, 0(R11)
+//  285   
+//  286   return SUCCESS;
+        MOV.B   #0x1, R12
+        POPM.A  #0x2, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI CFA SP+4
+        RETA
+//  287 }
+          CFI EndBlock cfiBlock36
+//  288 /*******************************************************************************
+//  289 *  函数名称：TIMER_Pluse_GetValue(TIMERn timer,uint16_t overflowTime)
+//  290 *  功能说明：定时器脉冲计数值获取
+//  291 *  参数说明：TIMERn timer       ：定时器模块
+//  292              uint16_t overflowTime ：计数器溢出次数
+//  293 *  函数返回：定时器脉冲计数值
+//  294 *  使用例程：
+//  295              int32 pulse = TIMER_Pluse_GetValue(TIMER_A1,0);    //在没有发生溢出的情况下读取脉冲个数
+//  296              TIMER_Pluse_Clear   (TIMER_A1);                    //读取后应该要清零
+//  297 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  298 uint32_t TIMER_Pluse_GetValue(TIMERn timer,uint16_t overflowTime)
+TIMER_Pluse_GetValue:
+//  299 {
+//  300   return (TIMERX[timer]->R + (overflowTime*65536u));
+        REQUIRE ?Subroutine1
+        // Fall through to label ?Subroutine1
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine1:
+          CFI Block cfiBlock37 Using cfiCommon0
+          CFI NoFunction
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_29:
+          CFI EndBlock cfiBlock37
+        REQUIRE ??Subroutine22_0
+        // Fall through to label ??Subroutine22_0
+
+        RSEG `CODE`:CODE:NOROOT(1)
+??Subroutine22_0:
+          CFI Block cfiBlock38 Using cfiCommon0
+          CFI NoFunction
+        MOV.W   0x10(R15), R12
+        RETA
+          CFI EndBlock cfiBlock38
+//  301 }
+//  302 /*******************************************************************************
+//  303 *  函数名称：TIMER_Pluse_Clear   (TIMERn timer)
+//  304 *  功能说明：定时器脉冲计数值清零
+//  305 *  参数说明：TIMERn timer       ：定时器模块
+//  306 *  函数返回：无
+//  307 *  使用例程：
+//  308              int32 pulse = TIMER_Pluse_Read    (TIMER_A1,0);    //在没有发生溢出的情况下读取脉冲个数
+//  309              TIMER_Pluse_Clear   (TIMER_A1);                    //读取后应该要清零
+//  310 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  311 void   TIMER_Pluse_Clear   (TIMERn timer)
+TIMER_Pluse_Clear:
+          CFI Block cfiBlock39 Using cfiCommon0
+          CFI Function TIMER_Pluse_Clear
+          CFI NoCalls
+//  312 {
+//  313   TIMERX[timer]->R = 0;
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_22:
+          CFI EndBlock cfiBlock39
+        REQUIRE ?Subroutine5
+        // Fall through to label ?Subroutine5
+//  314 }
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine5:
+          CFI Block cfiBlock40 Using cfiCommon0
+          CFI NoFunction
+        MOV.W   #0x0, 0x10(R15)
+        RETA
+          CFI EndBlock cfiBlock40
+//  315 /*******************************************************************************
+//  316 *  函数名称：TIMER_Capture_Init(TIMERn timer,TIMER_CHn ch,TIMER_CAPTUREn capmode)
+//  317 *  功能说明：定时器捕获初始化
+//  318 *  参数说明：TIMERn timer        ：定时器模块
+//  319              TIMER_CHn ch        ：定时器通道
+//  320              TIMER_CAPTUREn capmode：捕获模式
+//  321 *  函数返回：不成功则返回ERROR，成功则返回SUCCESS
+//  322 *  使用例程：TIMER_Capture_Init(TIMER_A0,TIMER_CH1,CAP_Rising);         //定时器TA0 CCR1通道初始化为边缘捕获，上升沿捕获
+//  323 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  324 STATUS TIMER_Capture_Init(TIMERn timer,TIMER_CHn ch,TIMER_CAPTUREn capmode)
+TIMER_Capture_Init:
+          CFI Block cfiBlock41 Using cfiCommon0
+          CFI Function TIMER_Capture_Init
+//  325 {
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+        MOV.B   R14, R10
+//  326 #ifdef DELAY_TIMER
+//  327   ASSERT((timer != DELAY_TIMER),
+//  328          "TIMER_Capture_Init",
+//  329          "定时器已经设置为默认延时功能，不能再作为其他功能使用");       //不允许这种情况下还宏定义该定时器作为延时所用的定时器，请在system.h里修改DELAY_TIMER宏定义
+//  330 #endif
+//  331   ASSERT((timer==TIMER_A0&&ch<=TIMER_CH4)
+//  332        ||(timer==TIMER_A1&&ch<=TIMER_CH2)
+//  333        ||(timer==TIMER_A2&&ch<=TIMER_CH2)
+//  334        ||(timer==TIMER_B0&&ch<=TIMER_CH6),
+//  335        "TIMER_Capture_Init",
+//  336        "定时器通道参数超出范围！"); //断言检测输入参数
+//  337  
+//  338   TIMERX[timer]->CCTL[ch].CAPMODE = BIT_SET;                //设为捕获模式
+        MOV.B   R12, R12
+        MOV.W   R12, R14
+        MOV.W   #0x0, R15
+        MOV.W   R12, R11
+        RLAM.A  #0x2, R11
+        MOVX.A  TIMERX(R11), R11
+        MOV.B   R13, R13
+        ADDA    R13, R13
+        MOVA    R13, R8
+        MOVA    R11, R9
+        ADDA    R13, R9
+        BIS.W   #0x100, 0x2(R9)
+//  339   TIMERX[timer]->CCTL[ch].CM = capmode;                 //选择捕获沿
+        RPT     #0x6
+        RLAX.B  R10
+        SWPB    R10
+        MOV.W   0x2(R9), R13
+        AND.W   #0x3fff, R13
+        BIS.W   R10, R13
+        MOV.W   R13, 0x2(R9)
+//  340   
+//  341   TIMERX[timer]->CCTL[ch].CCIS = (timer == TIMER_B0) ? TIMER_CCIS_1 : TIMER_CCIS_0;
+        CMP.B   #0x3, R12
+        MOV.W   #0x0, R13
+        BIT.W   #0x2, SR
+        ADDC.B  #0x0, R13
+        RPT     #0x4
+        RLAX.B  R13
+        SWPB    R13
+        MOV.W   0x2(R9), R10
+        AND.W   #0xcfff, R10
+        BIS.W   R13, R10
+        MOV.W   R10, 0x2(R9)
+//  342   
+//  343   TIMERX[timer]->CLR = BIT_SET;
+        BIS.W   #0x4, 0(R11)
+//  344   TIMERX[timer]->SSEL = TIMER_SSEL_SMCLK;
+        MOV.W   @R11, R13
+        AND.W   #0xfcff, R13
+        BIS.W   #0x200, R13
+        MOV.W   R13, 0(R11)
+//  345   TIMERX[timer]->ID = 0u; //这里选择子系统时钟，除非频率特别低时才使用辅助时钟
+        AND.W   #0xff3f, 0(R11)
+//  346   TIMERX[timer]->IE = RESET;              //关闭溢出中断
+        BIC.W   #0x2, 0(R11)
+//  347   TIMERX[timer]->CCTL[ch].IE = RESET;     //关闭通道中断
+        BIC.W   #0x10, 0x2(R9)
+//  348   TIMERX[timer]->MC = TIMER_MC_CONTINOUS;             //连续计数模式
+        MOV.W   @R11, R13
+        AND.W   #0xffcf, R13
+        BIS.W   #0x20, R13
+        MOV.W   R13, 0(R11)
+//  349   
+//  350   //端口设置为输入方,选择第二功能
+//  351   GPIO_Init(TIMER_CHANEL_PIN[timer][ch].Port,TIMER_CHANEL_PIN[timer][ch].Pin,GPI|SEL);
+        RLA.W   R14
+        MOV.W   R14, R10
+        RLA.W   R14
+        ADD.W   R14, R10
+        RLA.W   R14
+        ADD.W   R10, R14
+        ADDC.W  #0x0, R15
+        PUSHM.W #0x2, R15
+          CFI CFA SP+24
+        POPM.A  #0x1, R15
+          CFI CFA SP+20
+        ADDA    R8, R15
+        ADDA    #TIMER_CHANEL_PIN, R15
+        MOV.W   #0x101, R14
+        MOV.W   #0x1, R13
+        MOV.B   0x1(R15), R10
+        SUB.B   #0x1, R10
+        JN      ??TIMER_Capture_Init_0
+        RPT     R10
+        RLAX.W  R13
+??TIMER_Capture_Init_0:
+        MOV.B   @R15, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   #GPIO_MultiBits_Init
+//  352   
+//  353   return SUCCESS;
+        MOV.B   #0x1, R12
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+//  354 }
+          CFI EndBlock cfiBlock41
+//  355 /*******************************************************************************
+//  356 *  函数名称：TIMER_Capture_SetMode(TIMERn timer, TIMER_CHn ch, TIMER_CAPTUREn cap_mode)
+//  357 *  功能说明：定时器捕获边沿设置
+//  358 *  参数说明：TIMERn timer        ：定时器模块
+//  359              TIMER_CHn ch        ：定时器通道
+//  360              TIMER_CAPTUREn capmode：捕获模式
+//  361 *  函数返回：无
+//  362 *  使用例程：TIMER_Capture_SetMode(TIMER_A0,TIMER_CH1,CAP_Rising);         //定时器TA0 CCR1通道初始化为边缘捕获，上升沿捕获
+//  363 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  364 void   TIMER_Capture_SetMode   (TIMERn timer, TIMER_CHn ch, TIMER_CAPTUREn cap_mode)
+TIMER_Capture_SetMode:
+          CFI Block cfiBlock42 Using cfiCommon0
+          CFI Function TIMER_Capture_SetMode
+          CFI NoCalls
+//  365 {
+//  366    TIMERX[timer]->CCTL[ch].CM = cap_mode;                 //设置捕获沿
+        CALLA   #?Subroutine18
+??CrossCallReturnLabel_18:
+        RPT     #0x6
+        RLAX.B  R14
+        SWPB    R14
+        MOV.W   0x2(R15), R13
+        AND.W   #0x3fff, R13
+        JMP     ?Subroutine3
+        NOP
+//  367 }
+          CFI EndBlock cfiBlock42
+//  368 /*******************************************************************************
+//  369 *  函数名称：TIMER_Capture_Clear     (TIMERn timer,TIMER_CHn ch)
+//  370 *  功能说明：某一通道读取数据清零
+//  371 *  参数说明：TIMERn timer       ：定时器模块
+//  372              TIMER_CHn ch       ：定时器通道
+//  373 *  函数返回：
+//  374 *  使用例程：int16 overflowTime;  //定义变量，在定时器溢出中断里对该值增一
+//  375              ......
+//  376              data=TIMER_Capture_GetTime_Us(TIMER_A0,TIMER_CH1,overflowTime)
+//  377              TIMER_Capture_Clear(TIMER_A0,TIMER_CH1);  //清零
+//  378              overflowTime=0;       //清零
+//  379 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  380 void   TIMER_Capture_Clear     (TIMERn timer,TIMER_CHn ch)
+TIMER_Capture_Clear:
+          CFI Block cfiBlock43 Using cfiCommon0
+          CFI Function TIMER_Capture_Clear
+          CFI NoCalls
+//  381 {
+//  382   ASSERT((timer==TIMER_A0&&ch<=TIMER_CH4)
+//  383        ||(timer==TIMER_A1&&ch<=TIMER_CH2)
+//  384        ||(timer==TIMER_A2&&ch<=TIMER_CH2)
+//  385        ||(timer==TIMER_B0&&ch<=TIMER_CH6),
+//  386        "TIMER_Capture_Clear",
+//  387        "定时器通道参数超出范围！"); //断言检测输入参数
+//  388   
+//  389   TIMERX[timer]->CCR[ch] = 0u;
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_23:
+        MOV.B   R13, R13
+        MOVA    R15, R14
+        ADDA    R13, R14
+        ADDA    R13, R14
+        MOV.W   #0x0, 0x12(R14)
+//  390   TIMERX[timer]->R = 0u;
+        JMP     ?Subroutine5
+        NOP
+//  391 }
+          CFI EndBlock cfiBlock43
+//  392 /*******************************************************************************
+//  393 *  函数名称：TIMER_Capture_GetValue(TIMERn timer,TIMER_CHn ch)
+//  394 *  功能说明：读取发生捕获时定时器该通道计数值
+//  395 *  参数说明：TIMERn timer       ：定时器模块
+//  396              TIMER_CHn ch       ：定时器通道
+//  397 *  函数返回：
+//  398 *  使用例程：
+//  399              uint16_t value = TIMER_Capture_GetValue(TIMER_A0,TIMER_CH1);  //读取发生捕获时的时间
+//  400 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  401 uint16_t TIMER_Capture_GetValue(TIMERn timer,TIMER_CHn ch)
+TIMER_Capture_GetValue:
+//  402 {
+//  403   ASSERT((timer==TIMER_A0&&ch<=TIMER_CH4)
+//  404        ||(timer==TIMER_A1&&ch<=TIMER_CH2)
+//  405        ||(timer==TIMER_A2&&ch<=TIMER_CH2)
+//  406        ||(timer==TIMER_B0&&ch<=TIMER_CH6),
+//  407        "TIMER_Capture_GetValue",
+//  408        "定时器通道参数超出范围！"); //断言检测输入参数
+//  409   
+//  410   return TIMERX[timer]->CCR[ch];
+        REQUIRE ?Subroutine0
+        // Fall through to label ?Subroutine0
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine0:
+          CFI Block cfiBlock44 Using cfiCommon0
+          CFI NoFunction
+        CALLA   #?Subroutine18
+??CrossCallReturnLabel_20:
+        MOV.W   0x12(R15), R12
+        RETA
+          CFI EndBlock cfiBlock44
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine18:
+          CFI Block cfiCond45 Using cfiCommon0
+          CFI Function TIMER_PWM_SetChannelOutmod
+          CFI Conditional ??CrossCallReturnLabel_17
+          CFI CFA SP+8
+          CFI Block cfiCond46 Using cfiCommon0
+          CFI (cfiCond46) Function TIMER_Capture_SetMode
+          CFI (cfiCond46) Conditional ??CrossCallReturnLabel_18
+          CFI (cfiCond46) CFA SP+8
+          CFI Block cfiCond47 Using cfiCommon0
+          CFI (cfiCond47) Function TIMER_Capture_GetValue
+          CFI (cfiCond47) Conditional ??CrossCallReturnLabel_20
+          CFI (cfiCond47) CFA SP+8
+          CFI Block cfiCond48 Using cfiCommon0
+          CFI (cfiCond48) Function TIMER_GetChannelCounterValue
+          CFI (cfiCond48) Conditional ??CrossCallReturnLabel_20
+          CFI (cfiCond48) CFA SP+8
+          CFI Block cfiCond49 Using cfiCommon0
+          CFI (cfiCond49) Function TIMER_SetChannelCounterValue
+          CFI (cfiCond49) Conditional ??CrossCallReturnLabel_19
+          CFI (cfiCond49) CFA SP+8
+          CFI Block cfiCond50 Using cfiCommon0
+          CFI (cfiCond50) Function TIMER_GetChannelPinInValue
+          CFI (cfiCond50) Conditional ??CrossCallReturnLabel_21, ??CrossCallReturnLabel_5
+          CFI (cfiCond50) CFA SP+12
+          CFI Block cfiCond51 Using cfiCommon0
+          CFI (cfiCond51) Function TIMER_GetChannelPinOutValue
+          CFI (cfiCond51) Conditional ??CrossCallReturnLabel_21, ??CrossCallReturnLabel_6
+          CFI (cfiCond51) CFA SP+12
+          CFI Block cfiPicker52 Using cfiCommon1
+          CFI (cfiPicker52) NoFunction
+          CFI (cfiPicker52) Picker
+        MOV.B   R12, R12
+        RLAM.A  #0x2, R12
+        MOVX.A  TIMERX(R12), R15
+        MOV.B   R13, R13
+        ADDA    R13, R15
+        ADDA    R13, R15
+        RETA
+          CFI EndBlock cfiCond45
+          CFI EndBlock cfiCond46
+          CFI EndBlock cfiCond47
+          CFI EndBlock cfiCond48
+          CFI EndBlock cfiCond49
+          CFI EndBlock cfiCond50
+          CFI EndBlock cfiCond51
+          CFI EndBlock cfiPicker52
+//  411 }
+//  412 /*******************************************************************************
+//  413 *  函数名称：TIMER_Capture_CalTime_Us(uint16_t start_value,uint16_t stop_value,uint16_t overflowTime)
+//  414 *  功能说明：读取发生捕获时定时器该通道计数值
+//  415 *  参数说明：uint16_t start_value  ：捕获起始值
+//  416              uint16_t stop_value   ：捕获结束值
+//  417              uint16_t overflowTime ：计数器溢出次数
+//  418 *  函数返回：
+//  419 *  使用例程：uint16 overflowTime;  //定义变量，在定时器溢出中断里对该值增一
+//  420              ......
+//  421              TIMER_Capture_CalTime_Us(0,TIMER_Capture_GetValue  (TIMER_A0,TIMER_CH1),overflowTime);  //读取发生捕获时的时间
+//  422              overflowTime=0;       //清零
+//  423 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  424 uint32_t TIMER_Capture_CalTime_Us(uint16_t start_value,uint16_t stop_value,uint16_t overflowTime)
+TIMER_Capture_CalTime_Us:
+          CFI Block cfiBlock53 Using cfiCommon0
+          CFI Function TIMER_Capture_CalTime_Us
+//  425 {
+        PUSHM.A #0x2, R11
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+12
+//  426   return (uint32_t)((((int32_t)stop_value - (int32_t)start_value) + (uint32_t)overflowTime*65536)/g_sClock.SMCLK.fMHZ);
+        MOV.W   R13, R10
+        MOV.W   #0x0, R13
+        SUB.W   R12, R10
+        SUBC.W  #0x0, R13
+        ADD.W   R14, R13
+        MOV.W   R10, R12
+        CALLA   #?Subroutine16
+??CrossCallReturnLabel_13:
+          CFI FunCall _Cast32fto32u
+        CALLA   #_Cast32fto32u
+        POPM.A  #0x2, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI CFA SP+4
+        RETA
+//  427 }
+          CFI EndBlock cfiBlock53
+//  428 /*******************************************************************************
+//  429 *  函数名称：TIMER_Timer_Init      (TIMERn timer)
+//  430 *  功能说明：计时功能初始化
+//  431 *  参数说明：TIMERn timer       ：定时器模块
+//  432 *  函数返回：不成功则返回ERROR，成功则返回SUCCESS
+//  433 *  使用例程：TIMER_Timer_Init      (TIMER_A1);     //定时器TA1初始化为计时器
+//  434 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  435 STATUS   TIMER_Timer_Init      (TIMERn timer)
+TIMER_Timer_Init:
+          CFI Block cfiBlock54 Using cfiCommon0
+          CFI Function TIMER_Timer_Init
+          CFI NoCalls
+//  436 {
+//  437 #ifdef DELAY_TIMER
+//  438  ASSERT((timer != DELAY_TIMER),
+//  439          "TIMER_Timer_Init",
+//  440          "定时器已经设置为默认延时功能，不能再作为其他功能使用");       //不允许这种情况下还宏定义该定时器作为延时所用的定时器，请在system.h里修改DELAY_TIMER宏定义
+//  441 #endif
+//  442   TIMERX[timer]->CLR = BIT_SET;
+        MOV.B   R12, R12
+        RLAM.A  #0x2, R12
+        MOVX.A  TIMERX(R12), R14
+        BIS.W   #0x4, 0(R14)
+//  443   TIMERX[timer]->SSEL = TIMER_SSEL_SMCLK;             //这里选择子系统时钟
+        MOV.W   @R14, R15
+        AND.W   #0xfcff, R15
+        BIS.W   #0x200, R15
+        MOV.W   R15, 0(R14)
+//  444   TIMERX[timer]->ID = 0u; 
+        AND.W   #0xff3f, 0(R14)
+//  445   TIMERX[timer]->MC = TIMER_MC_STOP;                  //先停止计数计数
+        AND.W   #0xffcf, 0(R14)
+//  446   TIMERX[timer]->IE = RESET;                          //禁止溢出中断
+        BIC.W   #0x2, 0(R14)
+//  447   
+//  448   return SUCCESS;
+        MOV.B   #0x1, R12
+        RETA
+//  449 }
+          CFI EndBlock cfiBlock54
+//  450 /*******************************************************************************
+//  451 *  函数名称：TIMER_Timer_Start(TIMERn timer)
+//  452 *  功能说明：计时功能开始计时
+//  453 *  参数说明：TIMERn timer       ：定时器模块
+//  454 *  函数返回：无
+//  455 *  使用例程：TIMER_Timer_Start(TIMER_A1);      //计时器开始计时
+//  456 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  457 void   TIMER_Timer_Start(TIMERn timer)
+TIMER_Timer_Start:
+          CFI Block cfiBlock55 Using cfiCommon0
+          CFI Function TIMER_Timer_Start
+          CFI NoCalls
+//  458 {
+//  459   TIMERX[timer]->R = 0u;
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_24:
+        MOV.W   #0x0, 0x10(R15)
+//  460   TIMERX[timer]->MC = TIMER_MC_CONTINUOUS;
+          CFI EndBlock cfiBlock55
+        REQUIRE ?Subroutine2
+        // Fall through to label ?Subroutine2
+//  461 }
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine2:
+          CFI Block cfiBlock56 Using cfiCommon0
+          CFI NoFunction
+        MOV.W   @R15, R14
+        AND.W   #0xffcf, R14
+        BIS.W   #0x20, R14
+        MOV.W   R14, 0(R15)
+        RETA
+          CFI EndBlock cfiBlock56
+//  462 /*******************************************************************************
+//  463 *  函数名称：TIMER_Timer_Stop (TIMERn timer)
+//  464 *  功能说明：计时功能停止计时
+//  465 *  参数说明：TIMERn timer       ：定时器模块
+//  466 *  函数返回：返回当前计数值
+//  467 *  使用例程：TIMER_Timer_Stop (TIMER_A1);   //计时器停止计时
+//  468 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  469 uint16_t   TIMER_Timer_Stop (TIMERn timer)
+TIMER_Timer_Stop:
+          CFI Block cfiBlock57 Using cfiCommon0
+          CFI Function TIMER_Timer_Stop
+          CFI NoCalls
+//  470 {
+//  471    TIMERX[timer]->MC = TIMER_MC_STOP;
+        CALLA   #?Subroutine12
+//  472    return TIMERX[timer]->R;
+??CrossCallReturnLabel_7:
+        JMP     ??Subroutine22_0
+        NOP
+//  473 }
+          CFI EndBlock cfiBlock57
+//  474 /*******************************************************************************
+//  475 *  函数名称：TIMER_Timer_GetTime_Us(TIMERn timer,uint16_t overflowTime)
+//  476 *  功能说明：计时时间读取
+//  477 *  参数说明：TIMERn timer       ：定时器模块
+//  478              uint16_t overflowTime ：计数器溢出次数
+//  479 *  函数返回：返回计时时间 （单位：us）
+//  480 *  使用例程：int16 overflowTime;  //定义变量，在定时器溢出中断里对该值增一
+//  481              ......
+//  482              TIMER_Timer_GetTime_Us(TIMAER_A1,overflowTime);  //读取计时时间
+//  483              overflowTime=0;       //清零
+//  484 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  485 uint32_t TIMER_Timer_GetTime_Us(TIMERn timer,uint16_t overflowTime)
+TIMER_Timer_GetTime_Us:
+          CFI Block cfiBlock58 Using cfiCommon0
+          CFI Function TIMER_Timer_GetTime_Us
+//  486 {
+//  487   return (uint32_t)((TIMERX[timer]->R + overflowTime*65536u)/g_sClock.SMCLK.fMHZ);
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_25:
+        MOV.W   0x10(R15), R12
+        CALLA   #?Subroutine16
+??CrossCallReturnLabel_14:
+          CFI TailCall _Cast32fto32u
+        BRA     #_Cast32fto32u
+//  488 }
+          CFI EndBlock cfiBlock58
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine16:
+          CFI Block cfiCond59 Using cfiCommon0
+          CFI Function TIMER_Capture_CalTime_Us
+          CFI Conditional ??CrossCallReturnLabel_13
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+16
+          CFI Block cfiCond60 Using cfiCommon0
+          CFI (cfiCond60) Function TIMER_Timer_GetTime_Us
+          CFI (cfiCond60) Conditional ??CrossCallReturnLabel_14
+          CFI (cfiCond60) CFA SP+8
+          CFI Block cfiPicker61 Using cfiCommon1
+          CFI (cfiPicker61) NoFunction
+          CFI (cfiPicker61) Picker
+          CFI (cfiCond59) FunCall TIMER_Capture_CalTime_Us _Cast32uto32f
+          CFI (cfiCond60) FunCall TIMER_Timer_GetTime_Us _Cast32uto32f
+        CALLA   #_Cast32uto32f
+        CALLA   #?Subroutine20
+??CrossCallReturnLabel_32:
+          CFI (cfiCond59) TailCall TIMER_Capture_CalTime_Us _Div32f
+          CFI (cfiCond60) TailCall TIMER_Timer_GetTime_Us _Div32f
+        BRA     #_Div32f
+          CFI EndBlock cfiCond59
+          CFI EndBlock cfiCond60
+          CFI EndBlock cfiPicker61
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine19:
+          CFI Block cfiCond62 Using cfiCommon0
+          CFI Function TIMER_Pluse_GetValue
+          CFI Conditional ??CrossCallReturnLabel_29
+          CFI CFA SP+8
+          CFI Block cfiCond63 Using cfiCommon0
+          CFI (cfiCond63) Function TIMER_GetCounterValue
+          CFI (cfiCond63) Conditional ??CrossCallReturnLabel_29
+          CFI (cfiCond63) CFA SP+8
+          CFI Block cfiCond64 Using cfiCommon0
+          CFI (cfiCond64) Function TIMER_Pluse_Clear
+          CFI (cfiCond64) Conditional ??CrossCallReturnLabel_22
+          CFI (cfiCond64) CFA SP+8
+          CFI Block cfiCond65 Using cfiCommon0
+          CFI (cfiCond65) Function TIMER_Capture_Clear
+          CFI (cfiCond65) Conditional ??CrossCallReturnLabel_23
+          CFI (cfiCond65) CFA SP+8
+          CFI Block cfiCond66 Using cfiCommon0
+          CFI (cfiCond66) Function TIMER_Timer_Start
+          CFI (cfiCond66) Conditional ??CrossCallReturnLabel_24
+          CFI (cfiCond66) CFA SP+8
+          CFI Block cfiCond67 Using cfiCommon0
+          CFI (cfiCond67) Function TIMER_Timer_GetTime_Us
+          CFI (cfiCond67) Conditional ??CrossCallReturnLabel_25
+          CFI (cfiCond67) CFA SP+8
+          CFI Block cfiCond68 Using cfiCommon0
+          CFI (cfiCond68) Function TIMER_Run
+          CFI (cfiCond68) Conditional ??CrossCallReturnLabel_26
+          CFI (cfiCond68) CFA SP+8
+          CFI Block cfiCond69 Using cfiCommon0
+          CFI (cfiCond69) Function TIMER_SetCounterValue
+          CFI (cfiCond69) Conditional ??CrossCallReturnLabel_27
+          CFI (cfiCond69) CFA SP+8
+          CFI Block cfiCond70 Using cfiCommon0
+          CFI (cfiCond70) Function TIMER_ITConfig
+          CFI (cfiCond70) Conditional ??CrossCallReturnLabel_28
+          CFI (cfiCond70) CFA SP+8
+          CFI Block cfiCond71 Using cfiCommon0
+          CFI (cfiCond71) Function TIMER_Timer_Stop
+          CFI (cfiCond71) Conditional ??CrossCallReturnLabel_30, ??CrossCallReturnLabel_7
+          CFI (cfiCond71) CFA SP+12
+          CFI Block cfiCond72 Using cfiCommon0
+          CFI (cfiCond72) Function TIMER_Stop
+          CFI (cfiCond72) Conditional ??CrossCallReturnLabel_30
+          CFI (cfiCond72) CFA SP+8
+          CFI Block cfiCond73 Using cfiCommon0
+          CFI (cfiCond73) Function TIMER_GetITStatus
+          CFI (cfiCond73) Conditional ??CrossCallReturnLabel_31, ??CrossCallReturnLabel_8
+          CFI (cfiCond73) CFA SP+12
+          CFI Block cfiCond74 Using cfiCommon0
+          CFI (cfiCond74) Function TIMER_ClearITPendingBit
+          CFI (cfiCond74) Conditional ??CrossCallReturnLabel_31, ??CrossCallReturnLabel_9
+          CFI (cfiCond74) CFA SP+12
+          CFI Block cfiPicker75 Using cfiCommon1
+          CFI (cfiPicker75) NoFunction
+          CFI (cfiPicker75) Picker
+        MOV.B   R12, R12
+        RLAM.A  #0x2, R12
+        MOVX.A  TIMERX(R12), R15
+        RETA
+          CFI EndBlock cfiCond62
+          CFI EndBlock cfiCond63
+          CFI EndBlock cfiCond64
+          CFI EndBlock cfiCond65
+          CFI EndBlock cfiCond66
+          CFI EndBlock cfiCond67
+          CFI EndBlock cfiCond68
+          CFI EndBlock cfiCond69
+          CFI EndBlock cfiCond70
+          CFI EndBlock cfiCond71
+          CFI EndBlock cfiCond72
+          CFI EndBlock cfiCond73
+          CFI EndBlock cfiCond74
+          CFI EndBlock cfiPicker75
+//  489 /*******************************************************************************
+//  490 *  函数名称：TIMER_Run (TIMERn timer)
+//  491 *  功能说明：定时器工作
+//  492 *  参数说明：TIMERn timer       ：定时器模块
+//  493 *  函数返回：无
+//  494 *  使用例程：TIMER_Clear_Counter (TIMAER_A1)；  //启动定时器A1
+//  495 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  496 void   TIMER_Run (TIMERn timer)
+TIMER_Run:
+          CFI Block cfiBlock76 Using cfiCommon0
+          CFI Function TIMER_Run
+          CFI NoCalls
+//  497 {
+//  498   TIMERX[timer]->MC = TIMER_MC_CONTINUOUS;
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_26:
+        JMP     ?Subroutine2
+        NOP
+//  499 }
+          CFI EndBlock cfiBlock76
+//  500 /*******************************************************************************
+//  501 *  函数名称：TIMER_Stop (TIMERn timer)
+//  502 *  功能说明：定时器工作
+//  503 *  参数说明：TIMERn timer       ：定时器模块
+//  504 *  函数返回：无
+//  505 *  使用例程：TIMER_Stop(TIMAER_A1)；  //停止定时器A1
+//  506 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  507 void   TIMER_Stop (TIMERn timer)
+TIMER_Stop:
+//  508 {
+//  509   TIMERX[timer]->MC = TIMER_MC_STOP;
+        REQUIRE ?Subroutine12
+        // Fall through to label ?Subroutine12
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine12:
+          CFI Block cfiCond77 Using cfiCommon0
+          CFI Function TIMER_Timer_Stop
+          CFI Conditional ??CrossCallReturnLabel_7
+          CFI CFA SP+8
+          CFI Block cfiBlock78 Using cfiCommon0
+          CFI (cfiBlock78) NoFunction
+          CFI Block cfiPicker79 Using cfiCommon1
+          CFI (cfiPicker79) NoFunction
+          CFI (cfiPicker79) Picker
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_30:
+        AND.W   #0xffcf, 0(R15)
+        RETA
+          CFI EndBlock cfiCond77
+          CFI EndBlock cfiBlock78
+          CFI EndBlock cfiPicker79
+//  510 }
+//  511 /*******************************************************************************
+//  512 *  函数名称：TIMER_GetCounterValue (TIMERn timer)
+//  513 *  功能说明：读取定时器计数值
+//  514 *  参数说明：TIMERn timer  ：定时器模块
+//  515 *  函数返回：uint16_t      ：计数值
+//  516 *  使用例程：uint16_t value = TIMER_GetCounterValue(TIMAER_A1)；  //读取定时器A1计数值
+//  517 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  518 uint16_t   TIMER_GetCounterValue (TIMERn timer)
+TIMER_GetCounterValue:
+          CFI Block cfiBlock80 Using cfiCommon0
+          CFI Function TIMER_GetCounterValue
+          CFI NoCalls
+//  519 {
+//  520   return TIMERX[timer]->R;
+        JMP     ?Subroutine1
+        NOP
+//  521 }
+          CFI EndBlock cfiBlock80
+//  522 /*******************************************************************************
+//  523 *  函数名称：TIMER_SetCounterValue(TIMERn timer,uint16_t value)
+//  524 *  功能说明：设置定时器计数值
+//  525 *  参数说明：TIMERn timer       ：定时器模块
+//  526              uint16_t value     ：计数值
+//  527 *  函数返回：无
+//  528 *  使用例程：TIMER_SetCounterValue(TIMAER_A1,0)；  //设置定时器A1计数值为0
+//  529 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  530 void   TIMER_SetCounterValue (TIMERn timer,uint16_t value)
+TIMER_SetCounterValue:
+          CFI Block cfiBlock81 Using cfiCommon0
+          CFI Function TIMER_SetCounterValue
+          CFI NoCalls
+//  531 {
+//  532   TIMERX[timer]->R = value;
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_27:
+        MOV.W   R13, 0x10(R15)
+//  533 }
+        RETA
+          CFI EndBlock cfiBlock81
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+TIMER_GetChannelCounterValue:
+          CFI Block cfiBlock82 Using cfiCommon0
+          CFI Function TIMER_GetChannelCounterValue
+          CFI NoCalls
+        JMP     ?Subroutine0
+        NOP
+          CFI EndBlock cfiBlock82
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+TIMER_PWM_SetFrequency:
+          CFI Block cfiBlock83 Using cfiCommon0
+          CFI Function TIMER_PWM_SetFrequency
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+        MOV.W   R14, R10
+        MOV.W   R15, R11
+        MOV.B   R12, R12
+        RLAM.A  #0x2, R12
+        MOVX.A  TIMERX(R12), R8
+        MOV.W   R14, R15
+        ADDA    R11, R15
+        JNE     ??TIMER_PWM_SetFrequency_5
+        AND.W   #0xffcf, 0(R8)
+        JMP     ??TIMER_PWM_SetFrequency_2
+??TIMER_PWM_SetFrequency_5:
+        BIS.W   #0x4, 0(R8)
+        MOV.W   @R8, R15
+        AND.W   #0xfcff, R15
+        BIS.W   #0x200, R15
+        MOV.W   R15, 0(R8)
+        AND.W   #0xff3f, 0(R8)
+        MOVX.W  &g_sClock + 12, R12
+        MOVX.W  &g_sClock + 14, R13
+        JMP     ??TIMER_PWM_SetFrequency_3
+??TIMER_PWM_SetFrequency_0:
+        CALLA   #?Subroutine6
+??CrossCallReturnLabel_0:
+        JNE     ??TIMER_PWM_SetFrequency_6
+        CMP.W   #0x1, R13
+        JNC     ??TIMER_PWM_SetFrequency_6
+        JNE     ??TIMER_PWM_SetFrequency_7
+        CMP.W   #0x1, R12
+        JNC     ??TIMER_PWM_SetFrequency_6
+??TIMER_PWM_SetFrequency_7:
+        CALLA   #?Subroutine15
+??CrossCallReturnLabel_10:
+        JEQ     ??TIMER_PWM_SetFrequency_1
+        CALLA   #?Subroutine17
+??CrossCallReturnLabel_15:
+        MOVX.W  &g_sClock + 24, R12
+        MOVX.W  &g_sClock + 26, R13
+        MOV.W   R10, R14
+??TIMER_PWM_SetFrequency_3:
+        MOV.W   R11, R15
+          CFI FunCall ?DivMod32u
+        CALLA   #?DivMod32u
+??TIMER_PWM_SetFrequency_6:
+        CMP.W   #0x1, R13
+        JNC     ??TIMER_PWM_SetFrequency_8
+        JNE     ??TIMER_PWM_SetFrequency_0
+        CMP.W   #0x1, R12
+        JC      ??TIMER_PWM_SetFrequency_0
+??TIMER_PWM_SetFrequency_8:
+        CMP.W   #0x0, R13
+        JNE     ??TIMER_PWM_SetFrequency_9
+        CMP.W   #0x2, R12
+        JC      ??TIMER_PWM_SetFrequency_9
+??TIMER_PWM_SetFrequency_1:
+        MOV.B   #0x0, R12
+        JMP     ??TIMER_PWM_SetFrequency_4
+??TIMER_PWM_SetFrequency_9:
+        ADD.W   #0xffff, R12
+        MOV.W   R12, 0x12(R8)
+        BIC.W   #0x2, 0(R8)
+        CALLA   #??Subroutine21_0
+??TIMER_PWM_SetFrequency_2:
+        MOV.B   #0x1, R12
+??TIMER_PWM_SetFrequency_4:
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock83
+//  534 /*******************************************************************************
+//  535 *  函数名称：TIMER_GetChannelCounterValue (TIMERn timer,TIMER_CHn ch)
+//  536 *  功能说明：读取定时器通道计数值
+//  537 *  参数说明：TIMERn timer       ：定时器模块
+//  538              TIMER_CHn ch       ：定时器通道             
+//  539 *  函数返回：uint16_t value     ：该通道的计数值
+//  540 *  使用例程：uint16_t value = TIMER_GetChannelCounterValue(TIMAER_A1,TIMER_CH4)；  //读取定时器A1通道4计数值
+//  541 ********************************************************************************/
+//  542 uint16_t   TIMER_GetChannelCounterValue (TIMERn timer,TIMER_CHn ch)
+//  543 {
+//  544   ASSERT((timer==TIMER_A0&&ch<=TIMER_CH4)
+//  545        ||(timer==TIMER_A1&&ch<=TIMER_CH2)
+//  546        ||(timer==TIMER_A2&&ch<=TIMER_CH2)
+//  547        ||(timer==TIMER_B0&&ch<=TIMER_CH6),
+//  548        "TIMER_GetChannelCounterValue",
+//  549        "定时器通道参数超出范围！"); //断言检测输入参数
+//  550   
+//  551   return TIMERX[timer]->CCR[ch];
+//  552 }
+//  553 /*******************************************************************************
+//  554 *  函数名称：TIMER_SetChannelCounterValue(TIMERn timer,uint16_t value)
+//  555 *  功能说明：设置定时器计数值
+//  556 *  参数说明：TIMERn timer       ：定时器模块
+//  557              TIMER_CHn ch       ：定时器通道
+//  558              uint16_t value     ：计数值
+//  559 *  函数返回：无
+//  560 *  使用例程：TIMER_SetChannelCounterValue(TIMAER_A1,TIMER_CH4,0)；  //设置定时器A1通道4计数值为0
+//  561 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//  562 void   TIMER_SetChannelCounterValue (TIMERn timer,TIMER_CHn ch,uint16_t value)
+TIMER_SetChannelCounterValue:
+          CFI Block cfiBlock84 Using cfiCommon0
+          CFI Function TIMER_SetChannelCounterValue
+          CFI NoCalls
+//  563 {
+//  564   ASSERT((timer==TIMER_A0&&ch<=TIMER_CH4)
+//  565        ||(timer==TIMER_A1&&ch<=TIMER_CH2)
+//  566        ||(timer==TIMER_A2&&ch<=TIMER_CH2)
+//  567        ||(timer==TIMER_B0&&ch<=TIMER_CH6),
+//  568        "TIMER_SetChannelCounterValue",
+//  569        "定时器通道参数超出范围！"); //断言检测输入参数
+//  570   
+//  571   TIMERX[timer]->CCR[ch] = value;
+        CALLA   #?Subroutine18
+??CrossCallReturnLabel_19:
+        MOV.W   R14, 0x12(R15)
+//  572 }
+        RETA
+          CFI EndBlock cfiBlock84
+//  573 /*******************************************************************************
+//  574 *  函数名称：TIMER_GetChannelPinInValue(TIMERn timer, TIMER_CHn ch)
+//  575 *  功能说明：获取通道输入值
+//  576 *  参数说明：TIMERn timer       ：定时器模块
+//  577              TIMER_CHn ch       ：定时器通道
+//  578 *  函数返回：STATUS : BIT_SET-输入高电平 RESET-输入低电平
+//  579 *  使用例程：STATUS status = TIMER_GetChannelInValue(TIMAER_A1, TIMER_CH1);  //读取定时器A1通道1输入电平
+//  580 ********************************************************************************/
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  581 STATUS TIMER_GetChannelPinInValue (TIMERn timer, TIMER_CHn ch)
+TIMER_GetChannelPinInValue:
+          CFI Block cfiBlock85 Using cfiCommon0
+          CFI Function TIMER_GetChannelPinInValue
+          CFI NoCalls
+//  582 {
+//  583   return (TIMERX[timer]->CCTL[ch].CH_CCI) ? BIT_SET : RESET;
+        CALLA   #?Subroutine10
+??CrossCallReturnLabel_5:
+        BIT.B   #0x8, R14
+          CFI EndBlock cfiBlock85
+        REQUIRE ?Subroutine4
+        // Fall through to label ?Subroutine4
+//  584 }
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine4:
+          CFI Block cfiBlock86 Using cfiCommon0
+          CFI NoFunction
+        SUBC.W  R12, R12
+        ADD.B   #0x1, R12
+        RETA
+          CFI EndBlock cfiBlock86
+//  585 /*******************************************************************************
+//  586 *  函数名称：TIMER_GetChannelPinOutValue(TIMERn timer, TIMER_CHn ch)
+//  587 *  功能说明：获取通道输出值
+//  588 *  参数说明：TIMERn timer       ：定时器模块
+//  589              TIMER_CHn ch       ：定时器通道
+//  590 *  函数返回：STATUS : BIT_SET-输出高电平 RESET-输出低电平
+//  591 *  使用例程：STATUS status = TIMER_GetChannelOutValue(TIMAER_A1, TIMER_CH1);  //读取定时器A1通道1输出电平
+//  592 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//  593 STATUS TIMER_GetChannelPinOutValue(TIMERn timer, TIMER_CHn ch)
+TIMER_GetChannelPinOutValue:
+          CFI Block cfiBlock87 Using cfiCommon0
+          CFI Function TIMER_GetChannelPinOutValue
+          CFI NoCalls
+//  594 {
+//  595   return (TIMERX[timer]->CCTL[ch].CH_OUT) ? BIT_SET : RESET;
+        CALLA   #?Subroutine10
+??CrossCallReturnLabel_6:
+        BIT.B   #0x4, R14
+        JMP     ?Subroutine4
+        NOP
+//  596 }
+          CFI EndBlock cfiBlock87
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine10:
+          CFI Block cfiCond88 Using cfiCommon0
+          CFI Function TIMER_GetChannelPinInValue
+          CFI Conditional ??CrossCallReturnLabel_5
+          CFI CFA SP+8
+          CFI Block cfiCond89 Using cfiCommon0
+          CFI (cfiCond89) Function TIMER_GetChannelPinOutValue
+          CFI (cfiCond89) Conditional ??CrossCallReturnLabel_6
+          CFI (cfiCond89) CFA SP+8
+          CFI Block cfiPicker90 Using cfiCommon1
+          CFI (cfiPicker90) NoFunction
+          CFI (cfiPicker90) Picker
+        CALLA   #?Subroutine18
+??CrossCallReturnLabel_21:
+        MOV.W   0x2(R15), R14
+        RETA
+          CFI EndBlock cfiCond88
+          CFI EndBlock cfiCond89
+          CFI EndBlock cfiPicker90
+//  597 /*******************************************************************************
+//  598 *  函数名称：TIMER_ITConfig (TIMERn timer,TIMER_IRQn irqn,STATUS ITState)
+//  599 *  功能说明：设置是否使能TIMER的某一个中断
+//  600 *  参数说明：TIMERn timer       ：定时器模块
+//  601              TIMER_IRQn irqn    ：中断事件
+//  602              STATUS ITState     ：是否使能中断
+//  603 *  函数返回：无
+//  604 *  使用例程：TIMER_ITConfig (TIMAER_A1,TIMER_CCR0_IRQn,ENABLE); //使能定时器1通道0中断，即定时中断
+//  605 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//  606 void  TIMER_ITConfig (TIMERn timer,TIMER_IRQn irqn,STATUS ITState)
+TIMER_ITConfig:
+          CFI Block cfiBlock91 Using cfiCommon0
+          CFI Function TIMER_ITConfig
+          CFI NoCalls
+//  607 {
+//  608   if(irqn == TIMER_OverFlow_IRQn)
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_28:
+        MOV.B   R14, R14
+        CMP.B   #0x7, R13
+        JNE     ??TIMER_ITConfig_4
+//  609   {
+//  610     TIMERX[timer]->IE = ITState;
+        BIT.W   #0x1, R14
+        JNE     ??TIMER_ITConfig_2
+        BIC.W   #0x2, 0(R15)
+        RETA
+??TIMER_ITConfig_2:
+        BIS.W   #0x2, 0(R15)
+        RETA
+//  611   }
+//  612   else
+//  613   {
+//  614     TIMERX[timer]->CCTL[irqn].IE = ITState;
+??TIMER_ITConfig_4:
+        MOV.B   R13, R13
+        ADDA    R13, R15
+        ADDA    R13, R15
+        BIT.W   #0x1, R14
+        JNE     ??TIMER_ITConfig_3
+        BIC.W   #0x10, 0x2(R15)
+        RETA
+??TIMER_ITConfig_3:
+        BIS.W   #0x10, 0x2(R15)
+//  615   }
+//  616 }
+        RETA
+          CFI EndBlock cfiBlock91
+//  617 /*******************************************************************************
+//  618 *  函数名称：TIMER_GetITStatus(TIMERn timer,TIMER_IRQn irqn)
+//  619 *  功能说明：获取TIMER的某一个中断标志
+//  620 *  参数说明：TIMERn timer       ：定时器模块
+//  621              TIMER_IRQn irqn    ：中断事件
+//  622 *  函数返回：STATUS : TRUE-中断事件发生 FALSE-中断事件未发生
+//  623 *  使用例程：if(TRUE == TIMER_GetITStatus(TIMAER_A1,TIMER_CCR1_IRQn)){...} //判断定时器A1通道1中断事件是否发生
+//  624 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//  625 STATUS TIMER_GetITStatus(TIMERn timer,TIMER_IRQn irqn)
+TIMER_GetITStatus:
+          CFI Block cfiBlock92 Using cfiCommon0
+          CFI Function TIMER_GetITStatus
+          CFI NoCalls
+//  626 {
+//  627   if(irqn == TIMER_OverFlow_IRQn)
+        CALLA   #?Subroutine13
+??CrossCallReturnLabel_8:
+        JNE     ??TIMER_GetITStatus_0
+//  628   {
+//  629     return ((TIMERX[timer]->IFG == BIT_SET) ? TRUE : FALSE);
+        MOV.W   @R15, R12
+        AND.B   #0x1, R12
+        RETA
+//  630   }
+//  631   else
+//  632   {
+//  633     return ((TIMERX[timer]->CCTL[irqn].IFG == BIT_SET) ? TRUE : FALSE);
+??TIMER_GetITStatus_0:
+        MOV.B   R13, R13
+        ADDA    R13, R15
+        ADDA    R13, R15
+        MOV.W   0x2(R15), R12
+        AND.B   #0x1, R12
+        RETA
+//  634   }
+//  635 }
+          CFI EndBlock cfiBlock92
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine13:
+          CFI Block cfiCond93 Using cfiCommon0
+          CFI Function TIMER_GetITStatus
+          CFI Conditional ??CrossCallReturnLabel_8
+          CFI CFA SP+8
+          CFI Block cfiCond94 Using cfiCommon0
+          CFI (cfiCond94) Function TIMER_ClearITPendingBit
+          CFI (cfiCond94) Conditional ??CrossCallReturnLabel_9
+          CFI (cfiCond94) CFA SP+8
+          CFI Block cfiPicker95 Using cfiCommon1
+          CFI (cfiPicker95) NoFunction
+          CFI (cfiPicker95) Picker
+        CALLA   #?Subroutine19
+??CrossCallReturnLabel_31:
+        CMP.B   #0x7, R13
+        RETA
+          CFI EndBlock cfiCond93
+          CFI EndBlock cfiCond94
+          CFI EndBlock cfiPicker95
+//  636 /*******************************************************************************
+//  637 *  函数名称：TIMER_ClearITPendingBit(TIMERn timer,TIMER_IRQn irqn)
+//  638 *  功能说明：清除TIMER的某一个中断标志
+//  639 *  参数说明：TIMERn timer       ：定时器模块
+//  640              TIMER_IRQn irqn    ：中断事件
+//  641 *  函数返回：无
+//  642 *  使用例程：TIMER_ClearITPendingBit(TIMAER_A1,TIMER_CCR1_IRQn);   //清除定时器通道1中断标志位
+//  643 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//  644 void  TIMER_ClearITPendingBit(TIMERn timer,TIMER_IRQn irqn)
+TIMER_ClearITPendingBit:
+          CFI Block cfiBlock96 Using cfiCommon0
+          CFI Function TIMER_ClearITPendingBit
+          CFI NoCalls
+//  645 {
+//  646   if(irqn == TIMER_OverFlow_IRQn)
+        CALLA   #?Subroutine13
+??CrossCallReturnLabel_9:
+        JNE     ??TIMER_ClearITPendingBit_0
+//  647   {
+//  648     TIMERX[timer]->IFG = RESET;
+        BIC.W   #0x1, 0(R15)
+        RETA
+//  649   }
+//  650   else
+//  651   {
+//  652     TIMERX[timer]->CCTL[irqn].IFG = RESET;
+??TIMER_ClearITPendingBit_0:
+        MOV.B   R13, R13
+        ADDA    R13, R15
+        ADDA    R13, R15
+        BIC.W   #0x1, 0x2(R15)
+//  653   }
+//  654 }
+        RETA
+          CFI EndBlock cfiBlock96
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r4:
+        REQUIRE ?setjmp_r4
+        REQUIRE ?longjmp_r4
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r5:
+        REQUIRE ?setjmp_r5
+        REQUIRE ?longjmp_r5
+
+        END
+// 
+// 1 508 bytes in segment CODE
+//    96 bytes in segment DATA20_C
+// 
+// 1 508 bytes of CODE  memory
+//    96 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

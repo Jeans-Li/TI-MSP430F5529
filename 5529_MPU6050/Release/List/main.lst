@@ -1,0 +1,162 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           02/Aug/2021  17:22:59
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\IAR\5529_MPU6050\User\main.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW4F6.tmp
+#        (D:\Dev\IAR\5529_MPU6050\User\main.c -D NDEBUG -D RAM_VECTOR -lC
+#        D:\Dev\IAR\5529_MPU6050\Release\List -lA
+#        D:\Dev\IAR\5529_MPU6050\Release\List -o
+#        D:\Dev\IAR\5529_MPU6050\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\IAR\5529_MPU6050\ -I D:\Dev\IAR\5529_MPU6050\Drivers\inc\ -I
+#        D:\Dev\IAR\5529_MPU6050\Drivers\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\led\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\key\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd_api\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\nrf24l01\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\oled\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\delay\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\2.2TFT\ -I
+#        D:\Dev\IAR\5529_MPU6050\System\ -I D:\Dev\IAR\5529_MPU6050\System\inc\
+#        -I D:\Dev\IAR\5529_MPU6050\System\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\User\ -I D:\Dev\IAR\5529_MPU6050\User\USER\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\mpu6050\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\IAR\5529_MPU6050\Release\List\main.lst
+#    Object file   =  D:\Dev\IAR\5529_MPU6050\Release\Obj\main.r43
+#
+###############################################################################
+
+D:\Dev\IAR\5529_MPU6050\User\main.c
+      1          /*!
+      2           *     COPYRIGHT NOTICE
+      3           *     Copyright (c) 2016,CTGU-GB
+      4           *     All rights reserved.
+      5           *
+      6           *
+      7           * @file       main.c
+      8          * @brief      MSP430F5529 平台主程序
+      9          
+     10           * @author     CTGU-GB
+     11           * @version    v2.7
+     12           * @date       2016-11-26
+     13           */
+     14          #include "include.h"
+     15          extern float Angle_X_Final_Kalman,Angle_Y_Final_Kalman;
+
+   \                                 In  segment CODE, align 2
+     16          void main()
+   \                     main:
+     17          {
+     18            DisableInterrupts();            //禁止总中断
+   \   000000   32C2         DINT
+   \   000002   0343         NOP
+     19            
+     20            CLOCK_DCO_PLLConfig(FLLREF_REFO,FLLREF_DIV_1,25MHZ);   //DCO_FLL倍频环设置 陀螺仪频率设置
+   \   000004   3E404078     MOV.W   #0x7840, R14
+   \   000008   3F407D01     MOV.W   #0x17d, R15
+   \   00000C   4D43         MOV.B   #0x0, R13
+   \   00000E   6C43         MOV.B   #0x2, R12
+   \   000010   ........     CALLA   #CLOCK_DCO_PLLConfig
+     21          
+     22            MPU6050_INIT();
+   \   000014   ........     CALLA   #MPU6050_INIT
+     23            LED_Init(LED_ALL);              //LED灯初始化
+   \   000018   6C43         MOV.B   #0x2, R12
+   \   00001A   ........     CALLA   #LED_Init
+     24            OLED_Init();                       //OLED初始化
+   \   00001E   ........     CALLA   #OLED_Init
+     25             
+     26            
+     27            //OLED显示字符，字符串，整数，小数，一个函数就够了
+     28            OLED_PrintfAt(FONT_ASCII_6X8,0,0,"A");//显示一个字符
+   \   000022   ........     MOVA    #`?<Constant "A">`, R15
+   \   000026   4E43         MOV.B   #0x0, R14
+   \   000028   4D43         MOV.B   #0x0, R13
+   \   00002A   4C43         MOV.B   #0x0, R12
+   \   00002C   ........     CALLA   #OLED_PrintfAt
+   \   000030   0343         NOP
+     29          
+     30            
+     31            EnableInterrupts();
+   \   000032   32D2         EINT
+   \   000034   0343         NOP
+     32            while(1)
+     33            {  
+     34             MPU6050_Tim();
+   \                     ??main_0:
+   \   000036   ........     CALLA   #MPU6050_Tim
+     35          
+     36             OLED_DispFolatAt(FONT_ASCII_6X8,3,50,Angle_X_Final_Kalman,2);
+   \   00003A   ....1212.... PUSHX.W &Angle_X_Final_Kalman + 2
+   \   000040   ....1212.... PUSHX.W &Angle_X_Final_Kalman
+   \   000046   6F43         MOV.B   #0x2, R15
+   \   000048   7E403200     MOV.B   #0x32, R14
+   \   00004C   7D400300     MOV.B   #0x3, R13
+   \   000050   4C43         MOV.B   #0x0, R12
+   \   000052   ........     CALLA   #OLED_DispFolatAt
+     37             OLED_DispFolatAt(FONT_ASCII_6X8,5,50,Angle_Y_Final_Kalman,2);
+   \   000056   ....1212.... PUSHX.W &Angle_Y_Final_Kalman + 2
+   \   00005C   ....1212.... PUSHX.W &Angle_Y_Final_Kalman
+   \   000062   6F43         MOV.B   #0x2, R15
+   \   000064   7E403200     MOV.B   #0x32, R14
+   \   000068   7D400500     MOV.B   #0x5, R13
+   \   00006C   4C43         MOV.B   #0x0, R12
+   \   00006E   ........     CALLA   #OLED_DispFolatAt
+   \   000072   A1000800     ADDA    #0x8, SP
+   \   000076   DF3F         JMP     ??main_0
+   \   000078   0343         NOP
+     38            }
+     39          }
+
+   \                                 In  segment DATA20_C, align 1, align-sorted
+   \                     `?<Constant "A">`:
+   \   000000   4100         DC8 "A"
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     12   main
+        4   -> CLOCK_DCO_PLLConfig
+        4   -> LED_Init
+        4   -> MPU6050_INIT
+        4   -> MPU6050_Tim
+       12   -> OLED_DispFolatAt
+        8   -> OLED_DispFolatAt
+        4   -> OLED_Init
+        4   -> OLED_PrintfAt
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  ?<Constant "A">
+     122  main
+
+ 
+ 122 bytes in segment CODE
+   2 bytes in segment DATA20_C
+ 
+ 122 bytes of CODE  memory
+   2 bytes of CONST memory
+
+Errors: none
+Warnings: none

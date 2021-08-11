@@ -1,0 +1,508 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           01/Aug/2021  15:40:02
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\IAR\5529_remote\User\main.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW6422.tmp
+#        (D:\Dev\IAR\5529_remote\User\main.c -D NDEBUG -D RAM_VECTOR -lC
+#        D:\Dev\IAR\5529_remote\Release\List -lA
+#        D:\Dev\IAR\5529_remote\Release\List -o
+#        D:\Dev\IAR\5529_remote\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\IAR\5529_remote\ -I D:\Dev\IAR\5529_remote\Drivers\inc\ -I
+#        D:\Dev\IAR\5529_remote\Drivers\src\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\led\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\key\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\lcd\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\lcd_api\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\nrf24l01\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\oled\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\delay\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\2.2TFT\ -I
+#        D:\Dev\IAR\5529_remote\System\ -I D:\Dev\IAR\5529_remote\System\inc\
+#        -I D:\Dev\IAR\5529_remote\System\src\ -I D:\Dev\IAR\5529_remote\User\
+#        -I D:\Dev\IAR\5529_remote\User\USER\ --core=430X --data_model=large
+#        -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\IAR\5529_remote\Release\List\main.lst
+#    Object file   =  D:\Dev\IAR\5529_remote\Release\Obj\main.r43
+#
+###############################################################################
+
+D:\Dev\IAR\5529_remote\User\main.c
+      1          /*!
+      2           *     COPYRIGHT NOTICE
+      3           *     Copyright (c) 2016,CTGU-GB
+      4           *     All rights reserved.
+      5           *
+      6           *
+      7           * @file       main.c
+      8          * @brief      MSP430F5529 平台主程序
+      9          
+     10           * @author     CTGU-GB
+     11           * @version    v2.7
+     12           * @date       2016-11-26
+     13           */
+     14          #include "include.h"
+     15          
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     16          uint32_t upCount = 0;   //向上计数
+   \                     upCount:
+   \   000000                DS8 4
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     17          uint16_t valueUp = 0;   //高电平计数
+   \                     valueUp:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     18          uint16_t valueDown = 0;   //低电平计数
+   \                     valueDown:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_I, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy20
+     19          uint8_t isUpCompare = 1;      //是否为上升沿捕获标记
+   \                     isUpCompare:
+   \   000000                DS8 1
+   \   000001                REQUIRE `?<Initializer for isUpCompare>`
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     20          uint32_t width;           //脉宽
+   \                     width:
+   \   000000                DS8 4
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     21          uint16_t buffer[128] = {0};    //接收缓冲区
+   \                     buffer:
+   \   000000                DS8 256
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     22          uint16_t bufferId = 0;        //接收缓冲区数组下标
+   \                     bufferId:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     23          uint8_t recFlag = 0;    //接收完成标志位
+   \                     recFlag:
+   \   000000                DS8 1
+
+   \                                 In  segment DATA20_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     24          char IRCodes[4] = {0,0,0,0};
+   \                     IRCodes:
+   \   000000                DS8 4
+     25          
+     26          
+     27          
+
+   \                                 In  segment CODE, align 2
+     28          uint8_t Remote_Scan()
+   \                     Remote_Scan:
+     29          {
+   \   000000   3B14         PUSHM.A #0x4, R11
+     30          	if(recFlag)
+   \   000002   ........     MOVA    #IRCodes, R10
+   \   000006   ....C293.... CMPX.B  #0x0, &recFlag
+   \   00000C   1B24         JEQ     ??Remote_Scan_0
+     31          	{
+     32          		recFlag = 0;    //防止if语句重复成立
+   \   00000E   ....C243.... MOVX.B  #0x0, &recFlag
+     33          		for(int i =0;i<4 ;i++)
+   \   000014   ........     MOVA    #UART_Printf, R11
+   \   000018   ........     MOVA    #`?<Constant "%d  ">`, R8
+     34          		{
+     35                            UART_Printf(UART1,"%d  ",IRCodes[i]);
+   \   00001C   7F4A         MOV.B   @R10+, R15
+   \   00001E   0F12         PUSH.W  R15
+   \   000020   ........     CALLA   #?Subroutine0
+   \                     ??CrossCallReturnLabel_3:
+   \   000024   7F4A         MOV.B   @R10+, R15
+   \   000026   0F12         PUSH.W  R15
+   \   000028   ........     CALLA   #?Subroutine0
+   \                     ??CrossCallReturnLabel_2:
+   \   00002C   7F4A         MOV.B   @R10+, R15
+   \   00002E   0F12         PUSH.W  R15
+   \   000030   ........     CALLA   #?Subroutine0
+   \                     ??CrossCallReturnLabel_1:
+   \   000034   7F4A         MOV.B   @R10+, R15
+   \   000036   BA000400     SUBA    #0x4, R10
+   \   00003A   0F12         PUSH.W  R15
+   \   00003C   ........     CALLA   #?Subroutine0
+     36          		}
+   \                     ??CrossCallReturnLabel_0:
+   \   000040   A1000800     ADDA    #0x8, SP
+     37                  }
+     38          
+     39          	return IRCodes[2];
+   \                     ??Remote_Scan_0:
+   \   000044   5C4A0200     MOV.B   0x2(R10), R12
+   \   000048   3816         POPM.A  #0x4, R11
+   \   00004A   1001         RETA
+     40          }
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine0:
+   \   000000   CD08         MOVA    R8, R13
+   \   000002   5C43         MOV.B   #0x1, R12
+   \   000004   C00B         BRA     R11
+     41          
+     42          
+     43          
+
+   \                                 In  segment ISR_CODE, align 2
+     44          __interrupt void TIMER_A1_IRQ_Handler()
+   \                     TIMER_A1_IRQ_Handler:
+     45          {
+   \   000000   5F14         PUSHM.A #0x6, R15
+     46            
+     47            
+     48             if(TIMER_GetITStatus(TIMER_A1,TIMER_CCR1_IRQn) == TRUE)  //获取某一通道中断标志
+   \   000002   5D43         MOV.B   #0x1, R13
+   \   000004   5C43         MOV.B   #0x1, R12
+   \   000006   ........     CALLA   #TIMER_GetITStatus
+   \   00000A   5C93         CMP.B   #0x1, R12
+   \   00000C   5E20         JNE     ??TIMER_A1_IRQ_Handler_4
+   \   00000E   ........     MOVA    #isUpCompare, R10
+   \   000012   6B4A         MOV.B   @R10, R11
+   \   000014   5B93         CMP.B   #0x1, R11
+   \   000016   5D43         MOV.B   #0x1, R13
+   \   000018   5C43         MOV.B   #0x1, R12
+   \   00001A   1020         JNE     ??TIMER_A1_IRQ_Handler_5
+     49             {
+     50                //如果是上升沿捕获
+     51                 if( isUpCompare == 1)
+     52                 {
+     53                    valueUp = TIMER_Capture_GetValue  (TIMER_A1,TIMER_CH1);
+   \   00001C   ........     CALLA   #TIMER_Capture_GetValue
+   \   000020   ....824C.... MOVX.W  R12, &valueUp
+     54                    isUpCompare = 0;
+   \   000026   CA430000     MOV.B   #0x0, 0(R10)
+     55              //        UART_Printf(UART1,"up:%d\n",valueUp);
+     56                    TIMER_Capture_SetMode   (TIMER_A1, TIMER_CH1, CAP_Falling);    //设置为下降沿捕获
+   \   00002A   6E43         MOV.B   #0x2, R14
+   \   00002C   5D43         MOV.B   #0x1, R13
+   \   00002E   5C43         MOV.B   #0x1, R12
+   \   000030   ........     CALLA   #TIMER_Capture_SetMode
+     57                    upCount = 0;
+   \   000034   ....C243.... MOVX.A  #0x0, &upCount
+   \   00003A   433C         JMP     ??TIMER_A1_IRQ_Handler_3
+     58                  }
+     59                 
+     60              else
+     61              {      
+     62                  valueDown = TIMER_Capture_GetValue(TIMER_A1,TIMER_CH1);
+   \                     ??TIMER_A1_IRQ_Handler_5:
+   \   00003C   ........     CALLA   #TIMER_Capture_GetValue
+   \   000040   ....824C.... MOVX.W  R12, &valueDown
+     63                  isUpCompare = 1;
+   \   000046   DA430000     MOV.B   #0x1, 0(R10)
+     64          //      UART_Printf(UART1,"down:%d\n",valueDown);
+     65                  TIMER_Capture_SetMode(TIMER_A1, TIMER_CH1, CAP_Rising);    //设置为上升沿捕获
+   \   00004A   5E43         MOV.B   #0x1, R14
+   \   00004C   5D43         MOV.B   #0x1, R13
+   \   00004E   5C43         MOV.B   #0x1, R12
+   \   000050   ........     CALLA   #TIMER_Capture_SetMode
+     66                  width = TIMER_Capture_CalTime_Us(valueUp,valueDown,upCount);
+   \   000054   ....1E42.... MOVX.W  &upCount, R14
+   \   00005A   ....1D42.... MOVX.W  &valueDown, R13
+   \   000060   ....1C42.... MOVX.W  &valueUp, R12
+   \   000066   ........     CALLA   #TIMER_Capture_CalTime_Us
+   \   00006A   ....824C.... MOVX.W  R12, &width
+   \   000070   ....824D.... MOVX.W  R13, &width + 2
+     67          //        UART_Printf(UART1,"%d\n",width);
+     68                  if(width>4400 && width<4600)
+   \   000076   ........     MOVA    #bufferId, R15
+   \   00007A   0A4C         MOV.W   R12, R10
+   \   00007C   0B4D         MOV.W   R13, R11
+   \   00007E   3A50CFEE     ADD.W   #0xeecf, R10
+   \   000082   3B63         ADDC.W  #0xffff, R11
+   \   000084   0920         JNE     ??TIMER_A1_IRQ_Handler_6
+   \   000086   3A90C700     CMP.W   #0xc7, R10
+   \   00008A   062C         JC      ??TIMER_A1_IRQ_Handler_6
+     69                  {
+     70                      bufferId = 0;
+     71                      buffer[bufferId++] = width;
+   \   00008C   ....824C.... MOVX.W  R12, &buffer
+   \   000092   9F430000     MOV.W   #0x1, 0(R15)
+   \   000096   153C         JMP     ??TIMER_A1_IRQ_Handler_3
+     72                  }
+     73                  else if(bufferId > 0)
+   \                     ??TIMER_A1_IRQ_Handler_6:
+   \   000098   2A4F         MOV.W   @R15, R10
+   \   00009A   0A93         CMP.W   #0x0, R10
+   \   00009C   1224         JEQ     ??TIMER_A1_IRQ_Handler_3
+     74                  {
+     75                      buffer[bufferId++] = width;
+   \   00009E   ........     MOVA    #buffer, R11
+   \   0000A2   0E4A         MOV.W   R10, R14
+   \   0000A4   EB0E         ADDA    R14, R11
+   \   0000A6   EB0E         ADDA    R14, R11
+   \   0000A8   8B4C0000     MOV.W   R12, 0(R11)
+   \   0000AC   9F530000     ADD.W   #0x1, 0(R15)
+     76                      if(bufferId > 32)   //所有码一共32位已经全部收到
+   \   0000B0   2A4F         MOV.W   @R15, R10
+   \   0000B2   3A902100     CMP.W   #0x21, R10
+   \   0000B6   0528         JNC     ??TIMER_A1_IRQ_Handler_3
+     77                      {
+     78                        recFlag = 1;
+   \   0000B8   ....D243.... MOVX.B  #0x1, &recFlag
+     79                        bufferId = 0;
+   \   0000BE   8F430000     MOV.W   #0x0, 0(R15)
+     80                      }      
+     81                  }
+     82              }
+     83              
+     84                 TIMER_ClearITPendingBit(TIMER_A1,TIMER_CCR1_IRQn);     //清除TIMER的某一个中断标志
+   \                     ??TIMER_A1_IRQ_Handler_3:
+   \   0000C2   5D43         MOV.B   #0x1, R13
+   \   0000C4   5C43         MOV.B   #0x1, R12
+   \   0000C6   ........     CALLA   #TIMER_ClearITPendingBit
+     85             }
+     86              
+     87             if(TIMER_GetITStatus(TIMER_A1,TIMER_OverFlow_IRQn) == TRUE)//如果溢出
+   \                     ??TIMER_A1_IRQ_Handler_4:
+   \   0000CA   7D400700     MOV.B   #0x7, R13
+   \   0000CE   5C43         MOV.B   #0x1, R12
+   \   0000D0   ........     CALLA   #TIMER_GetITStatus
+   \   0000D4   5C93         CMP.B   #0x1, R12
+   \   0000D6   0B20         JNE     ??TIMER_A1_IRQ_Handler_7
+     88             {
+     89               upCount++;          //溢出值加1
+   \   0000D8   ....9253.... ADDX.W  #0x1, &upCount
+   \   0000DE   ....8263.... ADDCX.W #0x0, &upCount + 2
+     90               TIMER_ClearITPendingBit(TIMER_A1,TIMER_OverFlow_IRQn);     //清除TIMER的某一个中断标志
+   \   0000E4   7D400700     MOV.B   #0x7, R13
+   \   0000E8   5C43         MOV.B   #0x1, R12
+   \   0000EA   ........     CALLA   #TIMER_ClearITPendingBit
+     91             }
+     92            
+     93            for(int i = 0;i < 32; i++)
+   \                     ??TIMER_A1_IRQ_Handler_7:
+   \   0000EE   0A43         MOV.W   #0x0, R10
+   \   0000F0   ........     MOVA    #buffer + 2, R11
+     94            {
+     95                if(buffer[i+1]<1000)
+   \                     ??TIMER_A1_IRQ_Handler_0:
+   \   0000F4   0C4A         MOV.W   R10, R12
+   \   0000F6   3E42         MOV.W   #0x8, R14
+   \   0000F8   ........     CALLA   #?DivMod16s
+   \   0000FC   0F4C         MOV.W   R12, R15
+   \   0000FE   4F0E         RLAM.A  #0x4, R15
+   \   000100   4F0D         RRAM.A  #0x4, R15
+   \   000102   ....5E4F.... MOVX.B  IRCodes(R15), R14
+   \   000108   4E5E         RLA.B   R14
+   \   00010A   3C4B         MOV.W   @R11+, R12
+   \   00010C   3C90E803     CMP.W   #0x3e8, R12
+   \   000110   0128         JNC     ??TIMER_A1_IRQ_Handler_2
+     96                {
+     97                        IRCodes[i/8] = IRCodes[i/8]<<1;
+     98                }
+     99                else
+    100                {
+    101                        IRCodes[i/8] = IRCodes[i/8]<<1;
+    102                        IRCodes[i/8] |= 0x01;
+   \   000112   5ED3         BIS.B   #0x1, R14
+   \                     ??TIMER_A1_IRQ_Handler_2:
+   \   000114   ....CF4E.... MOVX.B  R14, IRCodes(R15)
+    103                }
+    104            }
+   \   00011A   1A53         ADD.W   #0x1, R10
+   \   00011C   3A902000     CMP.W   #0x20, R10
+   \   000120   E93B         JL      ??TIMER_A1_IRQ_Handler_0
+    105          }
+   \   000122   5A16         POPM.A  #0x6, R15
+   \   000124   0013         RETI
+    106          
+    107          
+
+   \                                 In  segment CODE, align 2
+    108          void main()
+   \                     main:
+    109          {
+    110            DisableInterrupts();            //禁止总中断
+   \   000000   32C2         DINT
+   \   000002   0343         NOP
+    111            LED_Init(LED_ALL);              //LED灯初始化
+   \   000004   6C43         MOV.B   #0x2, R12
+   \   000006   ........     CALLA   #LED_Init
+    112            UART_Init        (UART1,115200);                      //初始化UART1模块,波特率115200，波特率高时最好把主时钟 设高些
+   \   00000A   3E4000C2     MOV.W   #0xc200, R14
+   \   00000E   1F43         MOV.W   #0x1, R15
+   \   000010   5C43         MOV.B   #0x1, R12
+   \   000012   ........     CALLA   #UART_Init
+    113            Set_Vector_Handler(VECTOR_TIMER_A1,TIMER_A1_IRQ_Handler);    //设置接收中断向量
+   \   000016   ........     MOVA    #TIMER_A1_IRQ_Handler, R13
+   \   00001A   7C403000     MOV.B   #0x30, R12
+   \   00001E   ........     CALLA   #Set_Vector_Handler
+    114            TIMER_Capture_Init  (TIMER_A1, TIMER_CH1, CAP_Rising);        //初始化一个通道为捕获模式， 
+   \   000022   5E43         MOV.B   #0x1, R14
+   \   000024   5D43         MOV.B   #0x1, R13
+   \   000026   5C43         MOV.B   #0x1, R12
+   \   000028   ........     CALLA   #TIMER_Capture_Init
+    115            TIMER_ITConfig   (TIMER_A1, TIMER_CCR1_IRQn,ENABLE);               //设置是否使能TIMER的某一个中断
+   \   00002C   5E43         MOV.B   #0x1, R14
+   \   00002E   5D43         MOV.B   #0x1, R13
+   \   000030   5C43         MOV.B   #0x1, R12
+   \   000032   ........     CALLA   #TIMER_ITConfig
+    116            TIMER_ITConfig   (TIMER_A1, TIMER_OverFlow_IRQn,ENABLE);               //设置是否使能TIMER的某一个中断
+   \   000036   5E43         MOV.B   #0x1, R14
+   \   000038   7D400700     MOV.B   #0x7, R13
+   \   00003C   5C43         MOV.B   #0x1, R12
+   \   00003E   ........     CALLA   #TIMER_ITConfig
+    117            TIMER_Capture_Clear(TIMER_A1, TIMER_CH1);
+   \   000042   5D43         MOV.B   #0x1, R13
+   \   000044   5C43         MOV.B   #0x1, R12
+   \   000046   ........     CALLA   #TIMER_Capture_Clear
+   \   00004A   0343         NOP
+    118            EnableInterrupts();
+   \   00004C   32D2         EINT
+   \   00004E   ........     MOVA    #UART_Printf, R10
+   \   000052   ........     MOVA    #`?<Constant "%d  ">`, R11
+   \   000056   ........     MOVA    #IRCodes, R8
+    119            
+    120            while(1)
+    121            {  
+    122          //    LowPowerMode_Enter(LPM_1);              //进入低功耗模式
+    123          //    UART_Printf(UART1," Hello-CTGU!\n UART-TEST!\n");
+    124              DELAY_MS(100);
+   \                     ??main_0:
+   \   00005A                ////////////// Start of 2500000 cycles delay.
+   \   00005A   3F406689     MOV.W   #0x8966, R15
+   \   00005E   3E400900     MOV.W   #0x9, R14
+   \                     ??main_1:
+   \   000062   3F53         ADD.W   #0xffff, R15
+   \   000064   3E63         ADDC.W  #0xffff, R14
+   \   000066   FD2F         JC      ??main_1
+   \   000068                ////////////// End of delay code.
+    125              Remote_Scan();
+   \   000068   ....C293.... CMPX.B  #0x0, &recFlag
+   \   00006E   F527         JEQ     ??main_0
+   \   000070   ....C243.... MOVX.B  #0x0, &recFlag
+   \   000076   7F48         MOV.B   @R8+, R15
+   \   000078   0F12         PUSH.W  R15
+   \   00007A   ........     CALLA   #?Subroutine1
+    126            }
+   \                     ??CrossCallReturnLabel_4:
+   \   00007E   7F48         MOV.B   @R8+, R15
+   \   000080   0F12         PUSH.W  R15
+   \   000082   ........     CALLA   #?Subroutine1
+   \                     ??CrossCallReturnLabel_5:
+   \   000086   7F48         MOV.B   @R8+, R15
+   \   000088   0F12         PUSH.W  R15
+   \   00008A   ........     CALLA   #?Subroutine1
+   \                     ??CrossCallReturnLabel_6:
+   \   00008E   7F48         MOV.B   @R8+, R15
+   \   000090   B8000400     SUBA    #0x4, R8
+   \   000094   0F12         PUSH.W  R15
+   \   000096   ........     CALLA   #?Subroutine1
+   \                     ??CrossCallReturnLabel_7:
+   \   00009A   A1000800     ADDA    #0x8, SP
+   \   00009E   DD3F         JMP     ??main_0
+   \   0000A0   0343         NOP
+    127          }
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine1:
+   \   000000   CD0B         MOVA    R11, R13
+   \   000002   5C43         MOV.B   #0x1, R12
+   \   000004   C00A         BRA     R10
+
+   \                                 In  segment DATA20_ID, align 1, align-sorted
+   \                     `?<Initializer for isUpCompare>`:
+   \   000000   01           DC8 1
+
+   \                                 In  segment DATA20_C, align 1, align-sorted
+   \                     `?<Constant "%d  ">`:
+   \   000000   2564202000   DC8 "%d  "
+    128          
+    129          
+    130          
+    131          
+    132          
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     28   Remote_Scan
+       22   -> UART_Printf
+       24   -> UART_Printf
+       26   -> UART_Printf
+       28   -> UART_Printf
+     28   TIMER_A1_IRQ_Handler
+       28   -> TIMER_Capture_CalTime_Us
+       28   -> TIMER_Capture_GetValue
+       28   -> TIMER_Capture_SetMode
+       28   -> TIMER_ClearITPendingBit
+       28   -> TIMER_GetITStatus
+       28 ?DivMod16s
+     12   main
+        4   -> LED_Init
+        4   -> Set_Vector_Handler
+        4   -> TIMER_Capture_Clear
+        4   -> TIMER_Capture_Init
+        4   -> TIMER_ITConfig
+        4   -> UART_Init
+       10   -> UART_Printf
+       12   -> UART_Printf
+        6   -> UART_Printf
+        8   -> UART_Printf
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       5  ?<Constant "%d  ">
+       1  ?<Initializer for isUpCompare>
+       6  ?Subroutine0
+       6  ?Subroutine1
+       4  IRCodes
+      76  Remote_Scan
+     294  TIMER_A1_IRQ_Handler
+     256  buffer
+       2  bufferId
+       1  isUpCompare
+     162  main
+       1  recFlag
+       4  upCount
+       2  valueDown
+       2  valueUp
+       4  width
+
+ 
+ 250 bytes in segment CODE
+   5 bytes in segment DATA20_C
+   1 byte  in segment DATA20_I
+   1 byte  in segment DATA20_ID
+ 275 bytes in segment DATA20_Z
+ 294 bytes in segment ISR_CODE
+ 
+ 544 bytes of CODE  memory
+   6 bytes of CONST memory
+ 276 bytes of DATA  memory
+
+Errors: none
+Warnings: none

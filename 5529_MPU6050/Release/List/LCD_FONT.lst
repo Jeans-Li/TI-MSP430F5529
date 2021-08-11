@@ -1,0 +1,61 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           02/Aug/2021  17:19:11
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\IAR\5529_MPU6050\HardWare\LCD_API\LCD_FONT.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW89E4.tmp
+#        (D:\Dev\IAR\5529_MPU6050\HardWare\LCD_API\LCD_FONT.c -D NDEBUG -D
+#        RAM_VECTOR -lC D:\Dev\IAR\5529_MPU6050\Release\List -lA
+#        D:\Dev\IAR\5529_MPU6050\Release\List -o
+#        D:\Dev\IAR\5529_MPU6050\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\IAR\5529_MPU6050\ -I D:\Dev\IAR\5529_MPU6050\Drivers\inc\ -I
+#        D:\Dev\IAR\5529_MPU6050\Drivers\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\led\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\key\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd_api\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\nrf24l01\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\oled\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\delay\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\2.2TFT\ -I
+#        D:\Dev\IAR\5529_MPU6050\System\ -I D:\Dev\IAR\5529_MPU6050\System\inc\
+#        -I D:\Dev\IAR\5529_MPU6050\System\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\User\ -I D:\Dev\IAR\5529_MPU6050\User\USER\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\mpu6050\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\IAR\5529_MPU6050\Release\List\LCD_FONT.lst
+#    Object file   =  D:\Dev\IAR\5529_MPU6050\Release\Obj\LCD_FONT.r43
+#
+###############################################################################
+
+D:\Dev\IAR\5529_MPU6050\HardWare\LCD_API\LCD_FONT.c
+      1          
+      2          //常用ASCII表
+      3          //偏移量32
+      4          //ASCII字符集
+      5          //偏移量32
+      6          //大小:12*6
+
+
+ 
+
+ 
+
+
+Errors: none
+Warnings: none

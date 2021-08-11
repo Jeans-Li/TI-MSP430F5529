@@ -1,0 +1,894 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// IAR C/C++ Compiler V7.10.1.973/W32 for MSP430          01/Aug/2021  15:40:02
+// Copyright 1996-2017 IAR Systems AB.
+// Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+//
+//    __rt_version  =  3
+//    __double_size =  32
+//    __reg_r4      =  free
+//    __reg_r5      =  free
+//    __pic         =  no
+//    __core        =  430X
+//    __data_model  =  large
+//    __code_model  =  large
+//    Source file   =  D:\Dev\IAR\5529_remote\User\main.c
+//    Command line  =  
+//        -f C:\Users\Jeans\AppData\Local\Temp\EW6422.tmp
+//        (D:\Dev\IAR\5529_remote\User\main.c -D NDEBUG -D RAM_VECTOR -lC
+//        D:\Dev\IAR\5529_remote\Release\List -lA
+//        D:\Dev\IAR\5529_remote\Release\List -o
+//        D:\Dev\IAR\5529_remote\Release\Obj --debug -D__MSP430F5529__ -e
+//        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+//        D:\Dev\IAR\5529_remote\ -I D:\Dev\IAR\5529_remote\Drivers\inc\ -I
+//        D:\Dev\IAR\5529_remote\Drivers\src\ -I
+//        D:\Dev\IAR\5529_remote\HardWare\ -I
+//        D:\Dev\IAR\5529_remote\HardWare\led\ -I
+//        D:\Dev\IAR\5529_remote\HardWare\key\ -I
+//        D:\Dev\IAR\5529_remote\HardWare\lcd\ -I
+//        D:\Dev\IAR\5529_remote\HardWare\lcd_api\ -I
+//        D:\Dev\IAR\5529_remote\HardWare\nrf24l01\ -I
+//        D:\Dev\IAR\5529_remote\HardWare\oled\ -I
+//        D:\Dev\IAR\5529_remote\HardWare\delay\ -I
+//        D:\Dev\IAR\5529_remote\HardWare\2.2TFT\ -I
+//        D:\Dev\IAR\5529_remote\System\ -I D:\Dev\IAR\5529_remote\System\inc\
+//        -I D:\Dev\IAR\5529_remote\System\src\ -I D:\Dev\IAR\5529_remote\User\
+//        -I D:\Dev\IAR\5529_remote\User\USER\ --core=430X --data_model=large
+//        -Oh --multiplier=32 --hw_workaround=CPU40
+//        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+//    Locale        =  Chinese (Simplified)_CHN.936
+//    List file     =  D:\Dev\IAR\5529_remote\Release\List\main.s43
+//
+///////////////////////////////////////////////////////////////////////////////
+
+        NAME main
+
+        RTMODEL "__SystemLibrary", "DLib"
+        RTMODEL "__code_model", "large"
+        RTMODEL "__core", "430X"
+        RTMODEL "__data_model", "large"
+        RTMODEL "__double_size", "32"
+        RTMODEL "__pic", "no"
+        RTMODEL "__reg_r4", "free"
+        RTMODEL "__reg_r5", "free"
+        RTMODEL "__rt_version", "3"
+
+        RSEG CSTACK:DATA:SORT:NOROOT(0)
+
+        EXTERN ?DivMod16s
+        EXTERN ?cstart_init_copy20
+        EXTERN ?cstart_init_zero20
+        EXTERN ?longjmp_r4
+        EXTERN ?longjmp_r5
+        EXTERN ?setjmp_r4
+        EXTERN ?setjmp_r5
+
+        PUBWEAK ?setjmp_save_r4
+        PUBWEAK ?setjmp_save_r5
+        PUBLIC IRCodes
+        PUBLIC Remote_Scan
+        PUBLIC TIMER_A1_IRQ_Handler
+        PUBLIC buffer
+        PUBLIC bufferId
+        PUBLIC isUpCompare
+        PUBLIC main
+        PUBLIC recFlag
+        PUBLIC upCount
+        PUBLIC valueDown
+        PUBLIC valueUp
+        PUBLIC width
+        
+          CFI Names cfiNames0
+          CFI StackFrame CFA SP DATA
+          CFI Resource PC:20, SP:20, SR:16, R4L:16, R4H:4, R4:20, R5L:16, R5H:4
+          CFI Resource R5:20, R6L:16, R6H:4, R6:20, R7L:16, R7H:4, R7:20, R8L:16
+          CFI Resource R8H:4, R8:20, R9L:16, R9H:4, R9:20, R10L:16, R10H:4
+          CFI Resource R10:20, R11L:16, R11H:4, R11:20, R12L:16, R12H:4, R12:20
+          CFI Resource R13L:16, R13H:4, R13:20, R14L:16, R14H:4, R14:20, R15L:16
+          CFI Resource R15H:4, R15:20
+          CFI ResourceParts R4 R4H, R4L
+          CFI ResourceParts R5 R5H, R5L
+          CFI ResourceParts R6 R6H, R6L
+          CFI ResourceParts R7 R7H, R7L
+          CFI ResourceParts R8 R8H, R8L
+          CFI ResourceParts R9 R9H, R9L
+          CFI ResourceParts R10 R10H, R10L
+          CFI ResourceParts R11 R11H, R11L
+          CFI ResourceParts R12 R12H, R12L
+          CFI ResourceParts R13 R13H, R13L
+          CFI ResourceParts R14 R14H, R14L
+          CFI ResourceParts R15 R15H, R15L
+          CFI EndNames cfiNames0
+        
+          CFI Common cfiCommon0 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L Undefined
+          CFI R12H Undefined
+          CFI R12 Undefined
+          CFI R13L Undefined
+          CFI R13H Undefined
+          CFI R13 Undefined
+          CFI R14L Undefined
+          CFI R14H Undefined
+          CFI R14 Undefined
+          CFI R15L Undefined
+          CFI R15H Undefined
+          CFI R15 Undefined
+          CFI EndCommon cfiCommon0
+        
+        
+          CFI Common cfiCommon1 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L SameValue
+          CFI R12H SameValue
+          CFI R12 Concat
+          CFI R13L SameValue
+          CFI R13H SameValue
+          CFI R13 Concat
+          CFI R14L SameValue
+          CFI R14H SameValue
+          CFI R14 Concat
+          CFI R15L SameValue
+          CFI R15H SameValue
+          CFI R15 Concat
+          CFI EndCommon cfiCommon1
+        
+        
+          CFI Common cfiCommon2 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC or(load(2, DATA, add(CFA, literal(-2))), lshift(and(load(2, DATA, add(CFA, literal(-4))), 61440), 4))
+          CFI SR Frame(CFA, -4)
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L SameValue
+          CFI R12H SameValue
+          CFI R12 Concat
+          CFI R13L SameValue
+          CFI R13H SameValue
+          CFI R13 Concat
+          CFI R14L SameValue
+          CFI R14H SameValue
+          CFI R14 Concat
+          CFI R15L SameValue
+          CFI R15H SameValue
+          CFI R15 Concat
+          CFI EndCommon cfiCommon2
+        
+        
+          CFI Common cfiCommon3 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L Undefined
+          CFI R4H Undefined
+          CFI R4 Undefined
+          CFI R5L Undefined
+          CFI R5H Undefined
+          CFI R5 Undefined
+          CFI R6L Undefined
+          CFI R6H Undefined
+          CFI R6 Undefined
+          CFI R7L Undefined
+          CFI R7H Undefined
+          CFI R7 Undefined
+          CFI R8L Undefined
+          CFI R8H Undefined
+          CFI R8 Undefined
+          CFI R9L Undefined
+          CFI R9H Undefined
+          CFI R9 Undefined
+          CFI R10L Undefined
+          CFI R10H Undefined
+          CFI R10 Undefined
+          CFI R11L Undefined
+          CFI R11H Undefined
+          CFI R11 Undefined
+          CFI R12L Undefined
+          CFI R12H Undefined
+          CFI R12 Undefined
+          CFI R13L Undefined
+          CFI R13H Undefined
+          CFI R13 Undefined
+          CFI R14L Undefined
+          CFI R14H Undefined
+          CFI R14 Undefined
+          CFI R15L Undefined
+          CFI R15H Undefined
+          CFI R15 Undefined
+          CFI EndCommon cfiCommon3
+        
+        EXTERN UART_Printf
+        EXTERN TIMER_GetITStatus
+        EXTERN TIMER_Capture_GetValue
+        EXTERN TIMER_Capture_SetMode
+        EXTERN TIMER_Capture_CalTime_Us
+        EXTERN TIMER_ClearITPendingBit
+        EXTERN LED_Init
+        EXTERN UART_Init
+        EXTERN Set_Vector_Handler
+        EXTERN TIMER_Capture_Init
+        EXTERN TIMER_ITConfig
+        EXTERN TIMER_Capture_Clear
+
+// D:\Dev\IAR\5529_remote\User\main.c
+//    1 /*!
+//    2  *     COPYRIGHT NOTICE
+//    3  *     Copyright (c) 2016,CTGU-GB
+//    4  *     All rights reserved.
+//    5  *
+//    6  *
+//    7  * @file       main.c
+//    8 * @brief      MSP430F5529 平台主程序
+//    9 
+//   10  * @author     CTGU-GB
+//   11  * @version    v2.7
+//   12  * @date       2016-11-26
+//   13  */
+//   14 #include "include.h"
+//   15 
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   16 uint32_t upCount = 0;   //向上计数
+upCount:
+        DS8 4
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   17 uint16_t valueUp = 0;   //高电平计数
+valueUp:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   18 uint16_t valueDown = 0;   //低电平计数
+valueDown:
+        DS8 2
+
+        RSEG DATA20_I:DATA:SORT:NOROOT(0)
+        REQUIRE ?cstart_init_copy20
+//   19 uint8_t isUpCompare = 1;      //是否为上升沿捕获标记
+isUpCompare:
+        DS8 1
+        REQUIRE `?<Initializer for isUpCompare>`
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   20 uint32_t width;           //脉宽
+width:
+        DS8 4
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   21 uint16_t buffer[128] = {0};    //接收缓冲区
+buffer:
+        DS8 256
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   22 uint16_t bufferId = 0;        //接收缓冲区数组下标
+bufferId:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(0)
+        REQUIRE ?cstart_init_zero20
+//   23 uint8_t recFlag = 0;    //接收完成标志位
+recFlag:
+        DS8 1
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(0)
+        REQUIRE ?cstart_init_zero20
+//   24 char IRCodes[4] = {0,0,0,0};
+IRCodes:
+        DS8 4
+//   25 
+//   26 
+//   27 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   28 uint8_t Remote_Scan()
+Remote_Scan:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function Remote_Scan
+          CFI NoCalls
+//   29 {
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+//   30 	if(recFlag)
+        MOVA    #IRCodes, R10
+        CMPX.B  #0x0, &recFlag
+        JEQ     ??Remote_Scan_0
+//   31 	{
+//   32 		recFlag = 0;    //防止if语句重复成立
+        MOVX.B  #0x0, &recFlag
+//   33 		for(int i =0;i<4 ;i++)
+        MOVA    #UART_Printf, R11
+        MOVA    #`?<Constant "%d  ">`, R8
+//   34 		{
+//   35                   UART_Printf(UART1,"%d  ",IRCodes[i]);
+        MOV.B   @R10+, R15
+        PUSH.W  R15
+          CFI CFA SP+22
+        CALLA   #?Subroutine0
+??CrossCallReturnLabel_3:
+        MOV.B   @R10+, R15
+        PUSH.W  R15
+          CFI CFA SP+24
+        CALLA   #?Subroutine0
+??CrossCallReturnLabel_2:
+        MOV.B   @R10+, R15
+        PUSH.W  R15
+          CFI CFA SP+26
+        CALLA   #?Subroutine0
+??CrossCallReturnLabel_1:
+        MOV.B   @R10+, R15
+        SUBA    #0x4, R10
+        PUSH.W  R15
+          CFI CFA SP+28
+        CALLA   #?Subroutine0
+//   36 		}
+??CrossCallReturnLabel_0:
+        ADDA    #0x8, SP
+          CFI CFA SP+20
+//   37         }
+//   38 
+//   39 	return IRCodes[2];
+??Remote_Scan_0:
+        MOV.B   0x2(R10), R12
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+//   40 }
+          CFI EndBlock cfiBlock0
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine0:
+          CFI Block cfiCond1 Using cfiCommon0
+          CFI Function Remote_Scan
+          CFI Conditional ??CrossCallReturnLabel_3
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+26
+          CFI Block cfiCond2 Using cfiCommon0
+          CFI (cfiCond2) Function Remote_Scan
+          CFI (cfiCond2) Conditional ??CrossCallReturnLabel_2
+          CFI (cfiCond2) R8L Frame(CFA, -20)
+          CFI (cfiCond2) R8H Frame(CFA, -18)
+          CFI (cfiCond2) R9L Frame(CFA, -16)
+          CFI (cfiCond2) R9H Frame(CFA, -14)
+          CFI (cfiCond2) R10L Frame(CFA, -12)
+          CFI (cfiCond2) R10H Frame(CFA, -10)
+          CFI (cfiCond2) R11L Frame(CFA, -8)
+          CFI (cfiCond2) R11H Frame(CFA, -6)
+          CFI (cfiCond2) CFA SP+28
+          CFI Block cfiCond3 Using cfiCommon0
+          CFI (cfiCond3) Function Remote_Scan
+          CFI (cfiCond3) Conditional ??CrossCallReturnLabel_1
+          CFI (cfiCond3) R8L Frame(CFA, -20)
+          CFI (cfiCond3) R8H Frame(CFA, -18)
+          CFI (cfiCond3) R9L Frame(CFA, -16)
+          CFI (cfiCond3) R9H Frame(CFA, -14)
+          CFI (cfiCond3) R10L Frame(CFA, -12)
+          CFI (cfiCond3) R10H Frame(CFA, -10)
+          CFI (cfiCond3) R11L Frame(CFA, -8)
+          CFI (cfiCond3) R11H Frame(CFA, -6)
+          CFI (cfiCond3) CFA SP+30
+          CFI Block cfiCond4 Using cfiCommon0
+          CFI (cfiCond4) Function Remote_Scan
+          CFI (cfiCond4) Conditional ??CrossCallReturnLabel_0
+          CFI (cfiCond4) R8L Frame(CFA, -20)
+          CFI (cfiCond4) R8H Frame(CFA, -18)
+          CFI (cfiCond4) R9L Frame(CFA, -16)
+          CFI (cfiCond4) R9H Frame(CFA, -14)
+          CFI (cfiCond4) R10L Frame(CFA, -12)
+          CFI (cfiCond4) R10H Frame(CFA, -10)
+          CFI (cfiCond4) R11L Frame(CFA, -8)
+          CFI (cfiCond4) R11H Frame(CFA, -6)
+          CFI (cfiCond4) CFA SP+32
+          CFI Block cfiPicker5 Using cfiCommon1
+          CFI (cfiPicker5) NoFunction
+          CFI (cfiPicker5) Picker
+        MOVA    R8, R13
+        MOV.B   #0x1, R12
+          CFI (cfiCond1) TailCall Remote_Scan UART_Printf
+          CFI (cfiCond1) TailCall Remote_Scan UART_Printf
+          CFI (cfiCond1) TailCall Remote_Scan UART_Printf
+          CFI (cfiCond1) TailCall Remote_Scan UART_Printf
+        BRA     R11
+          CFI EndBlock cfiCond1
+          CFI EndBlock cfiCond2
+          CFI EndBlock cfiCond3
+          CFI EndBlock cfiCond4
+          CFI EndBlock cfiPicker5
+//   41 
+//   42 
+//   43 
+
+        RSEG ISR_CODE:CODE:REORDER:NOROOT(1)
+        CALL_GRAPH_ROOT TIMER_A1_IRQ_Handler, "interrupt"
+//   44 __interrupt void TIMER_A1_IRQ_Handler()
+TIMER_A1_IRQ_Handler:
+          CFI Block cfiBlock6 Using cfiCommon2
+          CFI Function TIMER_A1_IRQ_Handler
+//   45 {
+        PUSHM.A #0x6, R15
+          CFI R10L Frame(CFA, -28)
+          CFI R10H Frame(CFA, -26)
+          CFI R11L Frame(CFA, -24)
+          CFI R11H Frame(CFA, -22)
+          CFI R12L Frame(CFA, -20)
+          CFI R12H Frame(CFA, -18)
+          CFI R13L Frame(CFA, -16)
+          CFI R13H Frame(CFA, -14)
+          CFI R14L Frame(CFA, -12)
+          CFI R14H Frame(CFA, -10)
+          CFI R15L Frame(CFA, -8)
+          CFI R15H Frame(CFA, -6)
+          CFI CFA SP+28
+//   46   
+//   47   
+//   48    if(TIMER_GetITStatus(TIMER_A1,TIMER_CCR1_IRQn) == TRUE)  //获取某一通道中断标志
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_GetITStatus
+        CALLA   #TIMER_GetITStatus
+        CMP.B   #0x1, R12
+        JNE     ??TIMER_A1_IRQ_Handler_4
+        MOVA    #isUpCompare, R10
+        MOV.B   @R10, R11
+        CMP.B   #0x1, R11
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+        JNE     ??TIMER_A1_IRQ_Handler_5
+//   49    {
+//   50       //如果是上升沿捕获
+//   51        if( isUpCompare == 1)
+//   52        {
+//   53           valueUp = TIMER_Capture_GetValue  (TIMER_A1,TIMER_CH1);
+          CFI FunCall TIMER_Capture_GetValue
+        CALLA   #TIMER_Capture_GetValue
+        MOVX.W  R12, &valueUp
+//   54           isUpCompare = 0;
+        MOV.B   #0x0, 0(R10)
+//   55     //        UART_Printf(UART1,"up:%d\n",valueUp);
+//   56           TIMER_Capture_SetMode   (TIMER_A1, TIMER_CH1, CAP_Falling);    //设置为下降沿捕获
+        MOV.B   #0x2, R14
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_Capture_SetMode
+        CALLA   #TIMER_Capture_SetMode
+//   57           upCount = 0;
+        MOVX.A  #0x0, &upCount
+        JMP     ??TIMER_A1_IRQ_Handler_3
+//   58         }
+//   59        
+//   60     else
+//   61     {      
+//   62         valueDown = TIMER_Capture_GetValue(TIMER_A1,TIMER_CH1);
+??TIMER_A1_IRQ_Handler_5:
+          CFI FunCall TIMER_Capture_GetValue
+        CALLA   #TIMER_Capture_GetValue
+        MOVX.W  R12, &valueDown
+//   63         isUpCompare = 1;
+        MOV.B   #0x1, 0(R10)
+//   64 //      UART_Printf(UART1,"down:%d\n",valueDown);
+//   65         TIMER_Capture_SetMode(TIMER_A1, TIMER_CH1, CAP_Rising);    //设置为上升沿捕获
+        MOV.B   #0x1, R14
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_Capture_SetMode
+        CALLA   #TIMER_Capture_SetMode
+//   66         width = TIMER_Capture_CalTime_Us(valueUp,valueDown,upCount);
+        MOVX.W  &upCount, R14
+        MOVX.W  &valueDown, R13
+        MOVX.W  &valueUp, R12
+          CFI FunCall TIMER_Capture_CalTime_Us
+        CALLA   #TIMER_Capture_CalTime_Us
+        MOVX.W  R12, &width
+        MOVX.W  R13, &width + 2
+//   67 //        UART_Printf(UART1,"%d\n",width);
+//   68         if(width>4400 && width<4600)
+        MOVA    #bufferId, R15
+        MOV.W   R12, R10
+        MOV.W   R13, R11
+        ADD.W   #0xeecf, R10
+        ADDC.W  #0xffff, R11
+        JNE     ??TIMER_A1_IRQ_Handler_6
+        CMP.W   #0xc7, R10
+        JC      ??TIMER_A1_IRQ_Handler_6
+//   69         {
+//   70             bufferId = 0;
+//   71             buffer[bufferId++] = width;
+        MOVX.W  R12, &buffer
+        MOV.W   #0x1, 0(R15)
+        JMP     ??TIMER_A1_IRQ_Handler_3
+//   72         }
+//   73         else if(bufferId > 0)
+??TIMER_A1_IRQ_Handler_6:
+        MOV.W   @R15, R10
+        CMP.W   #0x0, R10
+        JEQ     ??TIMER_A1_IRQ_Handler_3
+//   74         {
+//   75             buffer[bufferId++] = width;
+        MOVA    #buffer, R11
+        MOV.W   R10, R14
+        ADDA    R14, R11
+        ADDA    R14, R11
+        MOV.W   R12, 0(R11)
+        ADD.W   #0x1, 0(R15)
+//   76             if(bufferId > 32)   //所有码一共32位已经全部收到
+        MOV.W   @R15, R10
+        CMP.W   #0x21, R10
+        JNC     ??TIMER_A1_IRQ_Handler_3
+//   77             {
+//   78               recFlag = 1;
+        MOVX.B  #0x1, &recFlag
+//   79               bufferId = 0;
+        MOV.W   #0x0, 0(R15)
+//   80             }      
+//   81         }
+//   82     }
+//   83     
+//   84        TIMER_ClearITPendingBit(TIMER_A1,TIMER_CCR1_IRQn);     //清除TIMER的某一个中断标志
+??TIMER_A1_IRQ_Handler_3:
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_ClearITPendingBit
+        CALLA   #TIMER_ClearITPendingBit
+//   85    }
+//   86     
+//   87    if(TIMER_GetITStatus(TIMER_A1,TIMER_OverFlow_IRQn) == TRUE)//如果溢出
+??TIMER_A1_IRQ_Handler_4:
+        MOV.B   #0x7, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_GetITStatus
+        CALLA   #TIMER_GetITStatus
+        CMP.B   #0x1, R12
+        JNE     ??TIMER_A1_IRQ_Handler_7
+//   88    {
+//   89      upCount++;          //溢出值加1
+        ADDX.W  #0x1, &upCount
+        ADDCX.W #0x0, &upCount + 2
+//   90      TIMER_ClearITPendingBit(TIMER_A1,TIMER_OverFlow_IRQn);     //清除TIMER的某一个中断标志
+        MOV.B   #0x7, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_ClearITPendingBit
+        CALLA   #TIMER_ClearITPendingBit
+//   91    }
+//   92   
+//   93   for(int i = 0;i < 32; i++)
+??TIMER_A1_IRQ_Handler_7:
+        MOV.W   #0x0, R10
+        MOVA    #buffer + 2, R11
+//   94   {
+//   95       if(buffer[i+1]<1000)
+??TIMER_A1_IRQ_Handler_0:
+        MOV.W   R10, R12
+        MOV.W   #0x8, R14
+          CFI FunCall ?DivMod16s
+        CALLA   #?DivMod16s
+        MOV.W   R12, R15
+        RLAM.A  #0x4, R15
+        RRAM.A  #0x4, R15
+        MOVX.B  IRCodes(R15), R14
+        RLA.B   R14
+        MOV.W   @R11+, R12
+        CMP.W   #0x3e8, R12
+        JNC     ??TIMER_A1_IRQ_Handler_2
+//   96       {
+//   97               IRCodes[i/8] = IRCodes[i/8]<<1;
+//   98       }
+//   99       else
+//  100       {
+//  101               IRCodes[i/8] = IRCodes[i/8]<<1;
+//  102               IRCodes[i/8] |= 0x01;
+        BIS.B   #0x1, R14
+??TIMER_A1_IRQ_Handler_2:
+        MOVX.B  R14, IRCodes(R15)
+//  103       }
+//  104   }
+        ADD.W   #0x1, R10
+        CMP.W   #0x20, R10
+        JL      ??TIMER_A1_IRQ_Handler_0
+//  105 }
+        POPM.A  #0x6, R15
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R12H SameValue
+          CFI R13H SameValue
+          CFI R14H SameValue
+          CFI R15H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R12L SameValue
+          CFI R13L SameValue
+          CFI R14L SameValue
+          CFI R15L SameValue
+          CFI CFA SP+4
+        RETI
+          CFI EndBlock cfiBlock6
+//  106 
+//  107 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//  108 void main()
+main:
+          CFI Block cfiBlock7 Using cfiCommon3
+          CFI Function main
+//  109 {
+//  110   DisableInterrupts();            //禁止总中断
+        DINT
+        NOP
+//  111   LED_Init(LED_ALL);              //LED灯初始化
+        MOV.B   #0x2, R12
+          CFI FunCall LED_Init
+        CALLA   #LED_Init
+//  112   UART_Init        (UART1,115200);                      //初始化UART1模块,波特率115200，波特率高时最好把主时钟 设高些
+        MOV.W   #0xc200, R14
+        MOV.W   #0x1, R15
+        MOV.B   #0x1, R12
+          CFI FunCall UART_Init
+        CALLA   #UART_Init
+//  113   Set_Vector_Handler(VECTOR_TIMER_A1,TIMER_A1_IRQ_Handler);    //设置接收中断向量
+        MOVA    #TIMER_A1_IRQ_Handler, R13
+        MOV.B   #0x30, R12
+          CFI FunCall Set_Vector_Handler
+        CALLA   #Set_Vector_Handler
+//  114   TIMER_Capture_Init  (TIMER_A1, TIMER_CH1, CAP_Rising);        //初始化一个通道为捕获模式， 
+        MOV.B   #0x1, R14
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_Capture_Init
+        CALLA   #TIMER_Capture_Init
+//  115   TIMER_ITConfig   (TIMER_A1, TIMER_CCR1_IRQn,ENABLE);               //设置是否使能TIMER的某一个中断
+        MOV.B   #0x1, R14
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_ITConfig
+        CALLA   #TIMER_ITConfig
+//  116   TIMER_ITConfig   (TIMER_A1, TIMER_OverFlow_IRQn,ENABLE);               //设置是否使能TIMER的某一个中断
+        MOV.B   #0x1, R14
+        MOV.B   #0x7, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_ITConfig
+        CALLA   #TIMER_ITConfig
+//  117   TIMER_Capture_Clear(TIMER_A1, TIMER_CH1);
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_Capture_Clear
+        CALLA   #TIMER_Capture_Clear
+        NOP
+//  118   EnableInterrupts();
+        EINT
+        MOVA    #UART_Printf, R10
+        MOVA    #`?<Constant "%d  ">`, R11
+        MOVA    #IRCodes, R8
+//  119   
+//  120   while(1)
+//  121   {  
+//  122 //    LowPowerMode_Enter(LPM_1);              //进入低功耗模式
+//  123 //    UART_Printf(UART1," Hello-CTGU!\n UART-TEST!\n");
+//  124     DELAY_MS(100);
+??main_0:
+        ////////////// Start of 2500000 cycles delay.
+        MOV.W   #0x8966, R15
+        MOV.W   #0x9, R14
+??main_1:
+        ADD.W   #0xffff, R15
+        ADDC.W  #0xffff, R14
+        JC      ??main_1
+        ////////////// End of delay code.
+//  125     Remote_Scan();
+        CMPX.B  #0x0, &recFlag
+        JEQ     ??main_0
+        MOVX.B  #0x0, &recFlag
+        MOV.B   @R8+, R15
+        PUSH.W  R15
+          CFI CFA SP+6
+        CALLA   #?Subroutine1
+//  126   }
+??CrossCallReturnLabel_4:
+        MOV.B   @R8+, R15
+        PUSH.W  R15
+          CFI CFA SP+8
+        CALLA   #?Subroutine1
+??CrossCallReturnLabel_5:
+        MOV.B   @R8+, R15
+        PUSH.W  R15
+          CFI CFA SP+10
+        CALLA   #?Subroutine1
+??CrossCallReturnLabel_6:
+        MOV.B   @R8+, R15
+        SUBA    #0x4, R8
+        PUSH.W  R15
+          CFI CFA SP+12
+        CALLA   #?Subroutine1
+??CrossCallReturnLabel_7:
+        ADDA    #0x8, SP
+          CFI CFA SP+4
+        JMP     ??main_0
+        NOP
+//  127 }
+          CFI EndBlock cfiBlock7
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine1:
+          CFI Block cfiCond8 Using cfiCommon3
+          CFI Function main
+          CFI Conditional ??CrossCallReturnLabel_4
+          CFI CFA SP+10
+          CFI Block cfiCond9 Using cfiCommon3
+          CFI (cfiCond9) Function main
+          CFI (cfiCond9) Conditional ??CrossCallReturnLabel_5
+          CFI (cfiCond9) CFA SP+12
+          CFI Block cfiCond10 Using cfiCommon3
+          CFI (cfiCond10) Function main
+          CFI (cfiCond10) Conditional ??CrossCallReturnLabel_6
+          CFI (cfiCond10) CFA SP+14
+          CFI Block cfiCond11 Using cfiCommon3
+          CFI (cfiCond11) Function main
+          CFI (cfiCond11) Conditional ??CrossCallReturnLabel_7
+          CFI (cfiCond11) CFA SP+16
+          CFI Block cfiPicker12 Using cfiCommon1
+          CFI (cfiPicker12) NoFunction
+          CFI (cfiPicker12) Picker
+        MOVA    R11, R13
+        MOV.B   #0x1, R12
+          CFI (cfiCond8) TailCall main UART_Printf
+          CFI (cfiCond8) TailCall main UART_Printf
+          CFI (cfiCond8) TailCall main UART_Printf
+          CFI (cfiCond8) TailCall main UART_Printf
+        BRA     R10
+          CFI EndBlock cfiCond8
+          CFI EndBlock cfiCond9
+          CFI EndBlock cfiCond10
+          CFI EndBlock cfiCond11
+          CFI EndBlock cfiPicker12
+
+        RSEG DATA20_ID:CONST:SORT:NOROOT(0)
+`?<Initializer for isUpCompare>`:
+        DATA8
+        DC8 1
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r4:
+        REQUIRE ?setjmp_r4
+        REQUIRE ?longjmp_r4
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r5:
+        REQUIRE ?setjmp_r5
+        REQUIRE ?longjmp_r5
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(0)
+`?<Constant "%d  ">`:
+        DC8 "%d  "
+
+        END
+//  128 
+//  129 
+//  130 
+//  131 
+//  132 
+// 
+// 250 bytes in segment CODE
+//   5 bytes in segment DATA20_C
+//   1 byte  in segment DATA20_I
+//   1 byte  in segment DATA20_ID
+// 275 bytes in segment DATA20_Z
+// 294 bytes in segment ISR_CODE
+// 
+// 544 bytes of CODE  memory
+//   6 bytes of CONST memory
+// 276 bytes of DATA  memory
+//
+//Errors: none
+//Warnings: none

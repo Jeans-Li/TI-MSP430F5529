@@ -1,0 +1,388 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           02/Aug/2021  17:19:14
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_flash.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW9720.tmp
+#        (D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_flash.c -D NDEBUG -D
+#        RAM_VECTOR -lC D:\Dev\IAR\5529_MPU6050\Release\List -lA
+#        D:\Dev\IAR\5529_MPU6050\Release\List -o
+#        D:\Dev\IAR\5529_MPU6050\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\IAR\5529_MPU6050\ -I D:\Dev\IAR\5529_MPU6050\Drivers\inc\ -I
+#        D:\Dev\IAR\5529_MPU6050\Drivers\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\led\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\key\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd_api\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\nrf24l01\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\oled\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\delay\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\2.2TFT\ -I
+#        D:\Dev\IAR\5529_MPU6050\System\ -I D:\Dev\IAR\5529_MPU6050\System\inc\
+#        -I D:\Dev\IAR\5529_MPU6050\System\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\User\ -I D:\Dev\IAR\5529_MPU6050\User\USER\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\mpu6050\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  
+#        D:\Dev\IAR\5529_MPU6050\Release\List\msp430f5529_flash.lst
+#    Object file   =  D:\Dev\IAR\5529_MPU6050\Release\Obj\msp430f5529_flash.r43
+#
+###############################################################################
+
+D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_flash.c
+      1          #include "msp430f5529_flash.h"
+
+   \                                 In  segment DATA16_AN, at 0x140
+   \   union <unnamed> __data16 _A_FCTL1_L
+   \                     _A_FCTL1_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x144
+   \   union <unnamed> __data16 _A_FCTL3_L
+   \                     _A_FCTL3_L:
+   \   000000                DS8 2
+      2          #include "msp430f5529_system.h"
+      3          
+      4          //注意：使用flash时应使用靠后的地址，否则可能会破坏程序
+      5          /*******************************************************************************
+      6          *  函数名称：擦除flash中的某一段
+      7          *  功能说明：段应该是在（MIN_SEGMENT - MAX_SEGMENT），为保护程序，最好取最后几个段，注意不要擦除中断向量表
+      8          *  参数说明：必须一次擦除512字节，Flash容量（128KB）对应segmentNo数量（128*1024/512=256），使用时建议取靠后面的段位
+      9          *  函数返回：无
+     10          *  使用示例：Flash_Erase_Segment(MAX_SEGMENT);                  //擦除第MAX_SEGMENT段
+     11          ********************************************************************************/
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+     12          __ramfunc void Flash_Erase_Segment(uint16_t segmentNo)
+   \                     Flash_Erase_Segment:
+   \   000000   ........     CALLA   #?Subroutine3
+     13          {
+     14            ASSERT(segmentNo >= MIN_SEGMENT && segmentNo <= MAX_SEGMENT,"Flash_Erase_Segment","segmentNo参数超出范围！");  //断言检测段范围是否在FLASH区间
+     15            
+     16            uint16_t * Addr = (uint16_t *)((uint32_t)segmentNo*512);   //计算地址
+     17            
+     18            FCTL3 = FWKEY;                              // 清除锁定
+     19            FCTL1 = FWKEY+ERASE;                        // 擦除一段
+     20            *Addr = 0;                                  //对擦除的地址范围内任意做一次空写入，用以启动擦除操作
+                   ^
+Warning[Ta037]: Library call from within a __ramfunc function
+   \                     ??CrossCallReturnLabel_2:
+   \   000004   0D43         MOV.W   #0x0, R13
+   \   000006   ........     CALLA   #?ShiftLeft32_9
+   \   00000A                REQUIRE ?Subroutine0
+   \   00000A                REQUIRE _A_FCTL3_L
+   \   00000A                REQUIRE _A_FCTL1_L
+   \   00000A                // Fall through to label ?Subroutine0
+     21            while (FCTL3 & BUSY);                       // 等待允许操作
+     22            FCTL1 = FWKEY;                              //清除擦除位  
+     23            FCTL3 = FWKEY+LOCK;                         //对FLASH加锁，可读，不可写，不可擦除
+     24          }
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   1D15         PUSHM.W #0x2, R13
+   \   000002   0F16         POPM.A  #0x1, R15
+   \   000004   8F430000     MOV.W   #0x0, 0(R15)
+   \                     ??Flash_Erase_Segment_0:
+   \   000008   92B34401     BIT.W   #0x1, &0x144
+   \   00000C   FD23         JNE     ??Flash_Erase_Segment_0
+   \   00000E                REQUIRE ?Subroutine5
+   \   00000E                // Fall through to label ?Subroutine5
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+   \                     ?Subroutine5:
+   \   000000   B24000A54001 MOV.W   #0xa500, &0x140
+   \   000006   B24010A54401 MOV.W   #0xa510, &0x144
+   \   00000C   1001         RETA
+
+   \                                 In  segment CODE_I, align 2
+   \                     ?Subroutine3:
+   \   000000                REQUIRE ?cstart_init_copy_ramfunc
+   \   000000   B24000A54401 MOV.W   #0xa500, &0x144
+   \   000006   B24002A54001 MOV.W   #0xa502, &0x140
+   \   00000C   1001         RETA
+     25          /*******************************************************************************
+     26          *  函数名称：擦除flash中的某一固定位置
+     27          *  功能说明：
+     28          *  参数说明：必须一次擦除512字节
+     29          *  函数返回：无
+     30          *  使用示例：Flash_Erase_Addr(0x1800);
+     31          ********************************************************************************/
+
+   \                                 In  segment CODE_I, align 2
+     32          __ramfunc void Flash_Erase_Addr   (uint32_t addr)
+   \                     Flash_Erase_Addr:
+   \   000000   ........     CALLA   #?Subroutine3
+     33          {
+     34            uint16_t * Addr = (uint16_t *)addr;
+     35            FCTL3 = FWKEY;                              // 清除锁定
+     36            FCTL1 = FWKEY+ERASE;                        // 擦除一段
+     37            *Addr = 0;                                  //对擦除的地址范围内任意做一次空写入，用以启动擦除操作
+   \                     ??CrossCallReturnLabel_3:
+   \   000004   ....         JMP     ?Subroutine0
+   \   000006   0343         NOP
+   \   000008                REQUIRE _A_FCTL3_L
+   \   000008                REQUIRE _A_FCTL1_L
+     38            while (FCTL3 & BUSY);                       // 等待允许操作
+     39            FCTL1 = FWKEY;                              //清除擦除位  
+     40            FCTL3 = FWKEY+LOCK;                         //对FLASH加锁，可读，不可写，不可擦除
+     41          }
+     42          /*******************************************************************************
+     43          *  函数名称：
+     44          *  功能说明：写入一个字节数据到Flash
+     45          *  参数说明：uint16 segmentNo ：段位 uint16_t offset ：偏移量，uint16 data ：要写入的数据
+     46          *  函数返回：无
+     47          *  使用示例：Flash_Write(200,0,0x10);    //在第200个段位，偏移0个字节，写入数据0x10
+     48          ********************************************************************************/
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+     49          __ramfunc void Flash_Write_Byte(uint16_t segmentNo,uint16_t offset,uint8_t data)
+   \                     Flash_Write_Byte:
+   \   000000                REQUIRE ?cstart_init_copy_ramfunc
+     50          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+   \   000002   0A4D         MOV.W   R13, R10
+     51            ASSERT(segmentNo >= MIN_SEGMENT && segmentNo <= MAX_SEGMENT,"Flash_Write_Byte","segmentNo参数超出范围！");  //断言检测段范围是否在FLASH区间
+     52            
+     53            uint8_t * Addr = (uint8_t *)((uint32_t)segmentNo*512 + offset);        //计算地址
+     54            
+     55            FCTL3 = FWKEY;                            //清除锁定 
+   \   000004   ........     CALLA   #?Subroutine4
+     56            FCTL1 = FWKEY+WRT;                        //置位编程位
+     57            *Addr = data;                             //写入一个字
+                   ^
+Warning[Ta037]: Library call from within a __ramfunc function
+   \                     ??CrossCallReturnLabel_4:
+   \   000008   ........     CALLA   #?Subroutine6
+   \                     ??CrossCallReturnLabel_6:
+   \   00000C   1D15         PUSHM.W #0x2, R13
+   \   00000E   0F16         POPM.A  #0x1, R15
+   \   000010   CF4E0000     MOV.B   R14, 0(R15)
+   \   000014   ....         JMP     ?Subroutine1
+   \   000016                REQUIRE _A_FCTL3_L
+   \   000016                REQUIRE _A_FCTL1_L
+     58            while (FCTL3 & BUSY);                     //等待操作完成
+     59            FCTL1 = FWKEY;                            //清除写入位
+     60            FCTL3 = FWKEY+LOCK;                       //对FLASH加锁，可读，不可写，不可擦除，保护数据
+     61          }
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+   \                     ?Subroutine1:
+   \   000000   92B34401     BIT.W   #0x1, &0x144
+   \   000004   FD23         JNE     ?Subroutine1
+   \   000006                REQUIRE ??Subroutine7_0
+   \   000006                // Fall through to label ??Subroutine7_0
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+   \                     ??Subroutine7_0:
+   \   000000   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_8:
+   \   000004   1A16         POPM.A  #0x2, R11
+   \   000006   1001         RETA
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+   \                     ?Subroutine6:
+   \   000000   0D43         MOV.W   #0x0, R13
+   \   000002   ........     CALLA   #?ShiftLeft32_9
+   \   000006   0C5A         ADD.W   R10, R12
+   \   000008   0D63         ADDC.W  #0x0, R13
+   \   00000A   1001         RETA
+
+   \                                 In  segment CODE_I, align 2
+   \                     ?Subroutine4:
+   \   000000   B24000A54401 MOV.W   #0xa500, &0x144
+   \   000006   B24040A54001 MOV.W   #0xa540, &0x140
+   \   00000C   1001         RETA
+     62          /*******************************************************************************
+     63          *  函数名称：
+     64          *  功能说明：写入一个字数据到Flash
+     65          *  参数说明：uint16 segmentNo ：段位 uint16_t offset ：偏移量，uint16 data ：要写入的数据
+     66          *  函数返回：无
+     67          *  使用示例：Flash_Write(200,0,0xf010);    //在第200个段位，偏移0个字节，写入数据0xf010
+     68          ********************************************************************************/
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+     69          __ramfunc void Flash_Write_Word(uint16_t segmentNo,uint16_t offset,uint16_t data)
+   \                     Flash_Write_Word:
+   \   000000                REQUIRE ?cstart_init_copy_ramfunc
+     70          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+   \   000002   ........     CALLA   #?Subroutine2
+     71            ASSERT(segmentNo >= MIN_SEGMENT && segmentNo <= MAX_SEGMENT,"Flash_Write_Word","segmentNo参数超出范围！");  //断言检测段范围是否在FLASH区间
+     72            
+     73            uint16_t * Addr=(uint16_t *)((uint32_t)segmentNo*512 + offset);        //计算地址
+     74            
+     75            FCTL3 = FWKEY;                            //清除锁定 
+     76            FCTL1 = FWKEY+BLKWRT;                     //置位编程位
+     77            *Addr = data;                             //写入一个字
+                   ^
+Warning[Ta037]: Library call from within a __ramfunc function
+   \                     ??CrossCallReturnLabel_1:
+   \   000006   1D15         PUSHM.W #0x2, R13
+   \   000008   0F16         POPM.A  #0x1, R15
+   \   00000A   8F4E0000     MOV.W   R14, 0(R15)
+   \   00000E   ....         JMP     ?Subroutine1
+   \   000010                REQUIRE _A_FCTL3_L
+   \   000010                REQUIRE _A_FCTL1_L
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+   \                     ?Subroutine2:
+   \   000000   0A4D         MOV.W   R13, R10
+   \   000002   B24000A54401 MOV.W   #0xa500, &0x144
+   \   000008   B24080A54001 MOV.W   #0xa580, &0x140
+   \   00000E                REQUIRE ?Subroutine6
+   \   00000E                // Fall through to label ?Subroutine6
+     78            while (FCTL3 & BUSY);                     //等待操作完成
+     79            FCTL1 = FWKEY;                            //清除写入位
+     80            FCTL3 = FWKEY+LOCK;                       //对FLASH加锁，可读，不可写，不可擦除，保护数据
+     81          }
+     82          /*******************************************************************************
+     83          *  函数名称：
+     84          *  功能说明：写入四个字节数据到Flash
+     85          *  参数说明：uint16 segmentNo ：段位 uint16_t offset ：偏移量，int32 data ：要写入的数据
+     86          *  函数返回：无
+     87          *  使用示例：Flash_Write(200,0,0xf0e0d010);    //在第200个段位，偏移0个字节，写入数据0xf0e0d010
+     88          ********************************************************************************/
+
+   \                                 In  segment CODE_I, align 2, keep-with-next
+     89          __ramfunc void Flash_Write_DWold(uint16_t segmentNo,uint16_t offset,uint32_t data)
+   \                     Flash_Write_DWold:
+   \   000000                REQUIRE ?cstart_init_copy_ramfunc
+     90          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+   \   000002   ........     CALLA   #?Subroutine2
+     91            ASSERT(segmentNo >= MIN_SEGMENT && segmentNo <= MAX_SEGMENT,"Flash_Write_DWold","segmentNo参数超出范围！");  //断言检测段范围是否在FLASH区间
+     92            
+     93            uint32_t * Addr = (uint32_t *)((uint32_t)segmentNo*512 + offset);        //计算地址
+     94            
+     95            FCTL3 = FWKEY;                            //清除锁定 
+     96            FCTL1 = FWKEY+BLKWRT;                     //置位编程位
+     97            *Addr = data;                             //写入一个字
+                   ^
+Warning[Ta037]: Library call from within a __ramfunc function
+   \                     ??CrossCallReturnLabel_0:
+   \   000006   1D15         PUSHM.W #0x2, R13
+   \   000008   0B16         POPM.A  #0x1, R11
+   \   00000A   8B4E0000     MOV.W   R14, 0(R11)
+   \   00000E   8B4F0200     MOV.W   R15, 0x2(R11)
+   \   000012                REQUIRE ?Subroutine1
+   \   000012                REQUIRE _A_FCTL3_L
+   \   000012                REQUIRE _A_FCTL1_L
+   \   000012                // Fall through to label ?Subroutine1
+     98            while (FCTL3 & BUSY);                     //等待操作完成
+     99            FCTL1 = FWKEY;                            //清除写入位
+    100            FCTL3 = FWKEY+LOCK;                       //对FLASH加锁，可读，不可写，不可擦除，保护数据
+    101          }
+    102          /*******************************************************************************
+    103          *  函数名称：Flash_Write_buf(uint16_t segmentNo,uint16_t offset,uint16_t cnt,uint8_t buf[])
+    104          *  功能说明：写入多个字节数据到Flash
+    105          *  参数说明：uint16 segmentNo ：段位 uint16_t offset ：起始数据偏移量，uint16 cnt ：写入数据数量，uint8 buf[]要写入的数据
+    106          *  函数返回：无
+    107          *  使用示例：uint8 data[10];Flash_Write_buf(200,0,10,data);            //从第200个段位，偏移地址为0开始，连续写入10个字节
+    108          ********************************************************************************/
+
+   \                                 In  segment CODE_I, align 2
+    109          __ramfunc void Flash_Write_buf(uint16_t segmentNo,uint16_t offset,uint16_t cnt,uint8_t buf[])
+   \                     Flash_Write_buf:
+   \   000000                REQUIRE ?cstart_init_copy_ramfunc
+    110          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+   \   000002   0A4D         MOV.W   R13, R10
+    111            ASSERT(segmentNo >= MIN_SEGMENT && segmentNo <= MAX_SEGMENT,"Flash_Write_buf","segmentNo参数超出范围！");  //断言检测段范围是否在FLASH区间
+    112             
+    113            uint8_t * Addr = (uint8_t *)((uint32_t)segmentNo*512 + offset);        //计算地址
+                             ^
+Warning[Ta037]: Library call from within a __ramfunc function
+   \   000004   ........     CALLA   #?Subroutine6
+   \                     ??CrossCallReturnLabel_7:
+   \   000008   1D15         PUSHM.W #0x2, R13
+   \   00000A   0B16         POPM.A  #0x1, R11
+    114             
+    115            FCTL3 = FWKEY;                            //清除锁定 
+   \   00000C   ........     CALLA   #?Subroutine4
+    116            FCTL1 = FWKEY + WRT ;                     //置位编程位
+   \                     ??CrossCallReturnLabel_5:
+   \   000010   0E93         CMP.W   #0x0, R14
+   \   000012   0924         JEQ     ??Flash_Write_buf_2
+    117            while(cnt--)                              
+    118            {
+    119              while (FCTL3 & BUSY);                   //等待允许操作
+   \                     ??Flash_Write_buf_1:
+   \   000014   92B34401     BIT.W   #0x1, &0x144
+   \   000018   FD23         JNE     ??Flash_Write_buf_1
+    120              *Addr++ = *buf++;                       //写入数据时启动时序发生器
+   \   00001A   FB4F0000     MOV.B   @R15+, 0(R11)
+   \   00001E   AB000100     ADDA    #0x1, R11
+    121            }
+   \   000022   3E53         ADD.W   #0xffff, R14
+   \   000024   F723         JNE     ??Flash_Write_buf_1
+    122            FCTL1 = FWKEY;                            //清除写入位
+   \                     ??Flash_Write_buf_2:
+   \   000026   ....         JMP     ??Subroutine7_0
+   \   000028   0343         NOP
+   \   00002A                REQUIRE _A_FCTL3_L
+   \   00002A                REQUIRE _A_FCTL1_L
+    123            FCTL3 = FWKEY+LOCK;                       //对FLASH加锁，可读，不可写，不可擦除，保护数据
+    124          }
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Flash_Erase_Addr
+      4   Flash_Erase_Segment
+        4 ?ShiftLeft32_9
+     16   Flash_Write_Byte
+       16 ?ShiftLeft32_9
+     16   Flash_Write_DWold
+       16 ?ShiftLeft32_9
+     16   Flash_Write_Word
+       16 ?ShiftLeft32_9
+     16   Flash_Write_buf
+       16 ?ShiftLeft32_9
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  ??Subroutine7_0
+      14  ?Subroutine0
+       6  ?Subroutine1
+      14  ?Subroutine2
+      14  ?Subroutine3
+      14  ?Subroutine4
+      14  ?Subroutine5
+      12  ?Subroutine6
+       8  Flash_Erase_Addr
+      10  Flash_Erase_Segment
+      22  Flash_Write_Byte
+      18  Flash_Write_DWold
+      16  Flash_Write_Word
+      42  Flash_Write_buf
+       2  _A_FCTL1_L
+       2  _A_FCTL3_L
+
+ 
+ 212 bytes in segment CODE_I
+   4 bytes in segment DATA16_AN
+ 
+ 212 bytes of DATA memory (+ 4 bytes shared)
+
+Errors: none
+Warnings: 5

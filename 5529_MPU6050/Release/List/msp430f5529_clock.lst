@@ -1,0 +1,1171 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           02/Aug/2021  17:19:14
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_clock.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW9289.tmp
+#        (D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_clock.c -D NDEBUG -D
+#        RAM_VECTOR -lC D:\Dev\IAR\5529_MPU6050\Release\List -lA
+#        D:\Dev\IAR\5529_MPU6050\Release\List -o
+#        D:\Dev\IAR\5529_MPU6050\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\IAR\5529_MPU6050\ -I D:\Dev\IAR\5529_MPU6050\Drivers\inc\ -I
+#        D:\Dev\IAR\5529_MPU6050\Drivers\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\led\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\key\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\lcd_api\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\nrf24l01\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\oled\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\delay\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\2.2TFT\ -I
+#        D:\Dev\IAR\5529_MPU6050\System\ -I D:\Dev\IAR\5529_MPU6050\System\inc\
+#        -I D:\Dev\IAR\5529_MPU6050\System\src\ -I
+#        D:\Dev\IAR\5529_MPU6050\User\ -I D:\Dev\IAR\5529_MPU6050\User\USER\ -I
+#        D:\Dev\IAR\5529_MPU6050\HardWare\mpu6050\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  
+#        D:\Dev\IAR\5529_MPU6050\Release\List\msp430f5529_clock.lst
+#    Object file   =  D:\Dev\IAR\5529_MPU6050\Release\Obj\msp430f5529_clock.r43
+#
+###############################################################################
+
+D:\Dev\IAR\5529_MPU6050\Drivers\src\msp430f5529_clock.c
+      1          #include "msp430f5529_clock.h"
+
+   \                                 In  segment DATA16_AN, at 0x120
+   \   union <unnamed> __data16 _A_PMMCTL0_L
+   \                     _A_PMMCTL0_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x124
+   \   union <unnamed> __data16 _A_SVSMHCTL_L
+   \                     _A_SVSMHCTL_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x126
+   \   union <unnamed> __data16 _A_SVSMLCTL_L
+   \                     _A_SVSMLCTL_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x12c
+   \   union <unnamed> __data16 _A_PMMIFG_L
+   \                     _A_PMMIFG_L:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA16_AN, at 0x102
+   \   union <unnamed> __data16 _A_SFRIFG1_L
+   \                     _A_SFRIFG1_L:
+   \   000000                DS8 2
+      2          
+      3          #ifndef EXTAL_IN_XT1_HZ
+      4          #error 没有宏定义"XT1_nHZ",请在clock.h里宏定义，如#define EXTAL_IN_XT1_HZ  32768HZ
+      5          #endif  
+      6          #ifndef EXTAL_IN_XT2_HZ
+      7          #error 没有宏定义"XT2_nHZ",请在clock.h里宏定义，如#define EXTAL_IN_XT2_HZ  4000000HZ
+      8          #endif
+      9          
+
+   \                                 In  segment DATA20_C, align 2, align-sorted
+     10          const UCS_MemMapPtr UCS = UCS_BASE_PTR;
+   \                     UCS:
+   \   000000   60010000     DC32 160H
+
+   \                                 In  segment DATA20_N, align 2, align-sorted
+     11          __no_init CLOCK g_sClock;                                        //全局变量，时钟频率
+   \                     g_sClock:
+   \   000000                DS8 40
+     12          static void SetVcoreUp (uint8_t level);                          //设置内核电压
+     13          /*******************************************************************************
+     14          *  函数名称：XT1_Config(STATUS status)
+     15          *  功能说明：设置是否使能XT1
+     16          *  参数说明：STATUS status：是否使能XT1
+     17          *  函数返回：无
+     18          *  使用示例：XT1_Config(ENABLE);   //使能XT1
+     19          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     20          static inline void XT1_Config(STATUS status)
+   \                     XT1_Config:
+     21          {
+     22            if(status != DISABLE)
+   \   000000   4C93         CMP.B   #0x0, R12
+   \   000002   0924         JEQ     ??XT1_Config_2
+     23            {
+     24              if(UCS->XT1_OFF == BIT_SET)
+   \   000004   D2B36C01     BIT.B   #0x1, &0x16c
+   \   000008   0824         JEQ     ??XT1_Config_1
+     25              {
+     26                GPIO_MultiBits_Init(P5,(GPIO_Pin_4|GPIO_Pin_5),GPI|SEL);   //选用 XT1 第二功能
+   \   00000A   ........     CALLA   #?Subroutine1
+     27                UCS->XT1_OFF = RESET ;                          // 开启 XT1                       
+     28                do
+     29                {
+     30                  UCS->XT1_LFOFFG = RESET;                     // 清除XT1,CLOCK_DCO 失效标志                     
+   \                     ??XT1_Config_0:
+   \   00000E   ........     CALLA   #?Subroutine3
+     31                  SFRIFG1 &= ~OFIFG;                           // 
+     32                }while (UCS->XT1_LFOFFG == BIT_SET);               //
+     33              }
+     34            }
+   \                     ??CrossCallReturnLabel_4:
+   \   000012   0324         JEQ     ??XT1_Config_1
+   \   000014   FC3F         JMP     ??XT1_Config_0
+     35            else
+     36            {
+     37              UCS->XT1_OFF = BIT_SET ;                          // 关闭 XT1                       
+   \                     ??XT1_Config_2:
+   \   000016   D2D36C01     BIS.B   #0x1, &0x16c
+     38            }
+     39          }
+   \                     ??XT1_Config_1:
+   \   00001A   1001         RETA
+   \   00001C                REQUIRE _A_SFRIFG1_L
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine3:
+   \   000000   E2C36E01     BIC.B   #0x2, &0x16e
+   \   000004   A2C30201     BIC.W   #0x2, &0x102
+   \   000008   E2B36E01     BIT.B   #0x2, &0x16e
+   \   00000C   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine1:
+   \   000000   3E400101     MOV.W   #0x101, R14
+   \   000004   3D403000     MOV.W   #0x30, R13
+   \   000008   6C42         MOV.B   #0x4, R12
+   \   00000A   ........     CALLA   #GPIO_MultiBits_Init
+   \   00000E   D2C36C01     BIC.B   #0x1, &0x16c
+   \   000012   1001         RETA
+     40          /*******************************************************************************
+     41          *  函数名称：XT2_Config(STATUS status)
+     42          *  功能说明：设置是否使能XT2
+     43          *  参数说明：STATUS status：是否使能XT2
+     44          *  函数返回：无
+     45          *  使用示例：XT2_Config(TRUE);   //使能XT2
+     46          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     47          static inline void XT2_Config(STATUS status)
+   \                     XT2_Config:
+     48          {
+     49            if(status != DISABLE)
+   \   000000   4C93         CMP.B   #0x0, R12
+   \   000002   1424         JEQ     ??XT2_Config_2
+     50            {
+     51              if(UCS->XT2_OFF == BIT_SET)
+   \   000004   D2B36D01     BIT.B   #0x1, &0x16d
+   \   000008   1324         JEQ     ??XT2_Config_1
+     52              {
+     53                GPIO_MultiBits_Init(P5,(GPIO_Pin_2|GPIO_Pin_3),GPI|SEL);      //选用 CLOCK_XT2 第二功能
+   \   00000A   3E400101     MOV.W   #0x101, R14
+   \   00000E   3D400C00     MOV.W   #0xc, R13
+   \   000012   6C42         MOV.B   #0x4, R12
+   \   000014   ........     CALLA   #GPIO_MultiBits_Init
+     54                UCS->XT2_OFF = RESET;                         //开启 CLOCK_XT2                      
+   \   000018   D2C36D01     BIC.B   #0x1, &0x16d
+     55                do
+     56                {
+     57                  UCS->XT2_OFFG = RESET;
+   \                     ??XT2_Config_0:
+   \   00001C   F2C26E01     BIC.B   #0x8, &0x16e
+     58                  SFRIFG1 &= ~OFIFG;                       
+   \   000020   A2C30201     BIC.W   #0x2, &0x102
+     59                }while (UCS->XT2_OFFG == BIT_SET);
+   \   000024   F2B26E01     BIT.B   #0x8, &0x16e
+   \   000028   0324         JEQ     ??XT2_Config_1
+   \   00002A   F83F         JMP     ??XT2_Config_0
+     60              }
+     61            }
+     62            else
+     63            {
+     64              UCS->XT2_OFF = BIT_SET ;                          // 关闭XT2                       
+   \                     ??XT2_Config_2:
+   \   00002C   D2D36D01     BIS.B   #0x1, &0x16d
+     65            }
+     66          }
+   \                     ??XT2_Config_1:
+   \   000030   1001         RETA
+   \   000032                REQUIRE _A_SFRIFG1_L
+     67          /*******************************************************************************
+     68          *  函数名称：CLOCK_DCO_PLLConfig     (FLLREF_Source refsource, FLLREF_DIVx refdiv, uint32_t DCO_FLL_Fre)
+     69          *  功能说明：设置DCO频率，单位（HZ）
+     70          *  参数说明：FLLREF_Source refsource :参考时钟源
+     71                       FLLREF_DIVx refdiv      :参考时钟源分频系数
+     72                       uint32_t DCO_FLL_Fre      :DCO设置频率
+     73          *  函数返回：无
+     74          *  使用示例：CLOCK_DCO_PLLConfig     (FLLREF_REFO, FLLREF_DIV_1, 16MHZ);  //设置DCO倍频环以REFO的一分频作为参考时钟源，倍频到16MHZ
+     75          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine11:
+   \   000000   3C400009     MOV.W   #0x900, R12
+   \   000004   3D403D00     MOV.W   #0x3d, R13
+   \   000008   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine5:
+   \   000000   7FF0F800     AND.B   #0xf8, R15
+   \   000004   4FDE         BIS.B   R14, R15
+   \   000006   1001         RETA
+
+   \                                 In  segment CODE, align 2
+     76          void CLOCK_DCO_PLLConfig     (FLLREF_Source refsource, FLLREF_DIVx refdiv, uint32_t DCO_FLL_Fre)
+   \                     CLOCK_DCO_PLLConfig:
+     77          {
+   \   000000   5B14         PUSHM.A #0x6, R11
+   \   000002   464C         MOV.B   R12, R6
+   \   000004   494D         MOV.B   R13, R9
+   \   000006   0A4E         MOV.W   R14, R10
+   \   000008   0B4F         MOV.W   R15, R11
+     78            static const uint16_t ref_div_value[6]={1,2,4,8,12,16};
+     79            /*根据频率提高内核电压*/
+     80            //SetVcoreUp ( (DCO_FLL_Fre < 12MHz) ? 0 : ((DCO_FLL_Fre < 16MHz) ? 1 : ((DCO_FLL_Fre < 20MHz) ? 2 :3))); //设置内核电压
+     81            if(DCO_FLL_Fre < 12MHz)
+   \   00000A   3F90B700     CMP.W   #0xb7, R15
+   \   00000E   0428         JNC     ??CLOCK_DCO_PLLConfig_16
+   \   000010   0520         JNE     ??CLOCK_DCO_PLLConfig_17
+   \   000012   3E90001B     CMP.W   #0x1b00, R14
+   \   000016   022C         JC      ??CLOCK_DCO_PLLConfig_17
+     82              SetVcoreUp (0x00);                      //设置内核电压
+   \                     ??CLOCK_DCO_PLLConfig_16:
+   \   000018   4C43         MOV.B   #0x0, R12
+   \   00001A   083C         JMP     ??CLOCK_DCO_PLLConfig_10
+     83            else if(DCO_FLL_Fre < 16MHz)
+   \                     ??CLOCK_DCO_PLLConfig_17:
+   \   00001C   3F90F400     CMP.W   #0xf4, R15
+   \   000020   0428         JNC     ??CLOCK_DCO_PLLConfig_18
+   \   000022   0720         JNE     ??CLOCK_DCO_PLLConfig_19
+   \   000024   3E900024     CMP.W   #0x2400, R14
+   \   000028   042C         JC      ??CLOCK_DCO_PLLConfig_19
+     84              SetVcoreUp (0x01);       
+   \                     ??CLOCK_DCO_PLLConfig_18:
+   \   00002A   5C43         MOV.B   #0x1, R12
+   \                     ??CLOCK_DCO_PLLConfig_10:
+   \   00002C   ........     CALLA   #SetVcoreUp
+   \   000030   2C3C         JMP     ??CLOCK_DCO_PLLConfig_11
+     85            else if(DCO_FLL_Fre < 20MHz)
+   \                     ??CLOCK_DCO_PLLConfig_19:
+   \   000032   384050C3     MOV.W   #0xc350, R8
+   \   000036   0C4E         MOV.W   R14, R12
+   \   000038   0D4F         MOV.W   R15, R13
+   \   00003A   ........     CALLA   #?Subroutine9
+   \                     ??CrossCallReturnLabel_23:
+   \   00003E   F240A5002101 MOV.B   #0xa5, &0x121
+   \   000044   1028         JNC     ??CLOCK_DCO_PLLConfig_20
+     86              SetVcoreUp (0x02);       
+   \   000046   B24002462401 MOV.W   #0x4602, &0x124
+   \   00004C   B24002442601 MOV.W   #0x4402, &0x126
+   \   000052   ........     CALLA   #?Subroutine10
+   \                     ??CrossCallReturnLabel_25:
+   \   000056   E2432001     MOV.B   #0x2, &0x120
+   \   00005A   ........     CALLA   #?Subroutine2
+   \                     ??CrossCallReturnLabel_2:
+   \   00005E   B24002462601 MOV.W   #0x4602, &0x126
+   \   000064   103C         JMP     ??CLOCK_DCO_PLLConfig_12
+     87            else
+     88              SetVcoreUp (0x03);       
+   \                     ??CLOCK_DCO_PLLConfig_20:
+   \   000066   B24003472401 MOV.W   #0x4703, &0x124
+   \   00006C   B24003442601 MOV.W   #0x4403, &0x126
+   \   000072   ........     CALLA   #?Subroutine10
+   \                     ??CrossCallReturnLabel_26:
+   \   000076   F24003002001 MOV.B   #0x3, &0x120
+   \   00007C   ........     CALLA   #?Subroutine2
+   \                     ??CrossCallReturnLabel_3:
+   \   000080   B24003472601 MOV.W   #0x4703, &0x126
+   \                     ??CLOCK_DCO_PLLConfig_12:
+   \   000086   C2432101     MOV.B   #0x0, &0x121
+     89            
+     90            __bis_SR_register(SCG0);                                              // 禁止倍频环FLL,
+   \                     ??CLOCK_DCO_PLLConfig_11:
+   \   00008A   32D04000     BIS.W   #0x40, SR
+   \   00008E   0343         NOP
+     91            UCS->CTL0 = 0x0000;                                                   // 清零 DCOx, MODx
+   \   000090   82436001     MOV.W   #0x0, &0x160
+     92            
+     93            if (DCO_FLL_Fre < 0.63MHz)         //           fsystem < 0.63MHz
+   \   000094   3B900900     CMP.W   #0x9, R11
+   \   000098   0428         JNC     ??CLOCK_DCO_PLLConfig_21
+   \   00009A   0720         JNE     ??CLOCK_DCO_PLLConfig_22
+   \   00009C   3A90F09C     CMP.W   #0x9cf0, R10
+   \   0000A0   042C         JC      ??CLOCK_DCO_PLLConfig_22
+     94          	UCS->DCORSEL = 0;
+   \                     ??CLOCK_DCO_PLLConfig_21:
+   \   0000A2   F2F08F006201 AND.B   #0x8f, &0x162
+   \   0000A8   493C         JMP     ??CLOCK_DCO_PLLConfig_13
+     95            else if (DCO_FLL_Fre < 1.25MHz)    // 0.63MHz < fsystem < 1.25MHz
+   \                     ??CLOCK_DCO_PLLConfig_22:
+   \   0000AA   3B901300     CMP.W   #0x13, R11
+   \   0000AE   0428         JNC     ??CLOCK_DCO_PLLConfig_23
+   \   0000B0   0820         JNE     ??CLOCK_DCO_PLLConfig_24
+   \   0000B2   3A90D012     CMP.W   #0x12d0, R10
+   \   0000B6   052C         JC      ??CLOCK_DCO_PLLConfig_24
+     96          	UCS->DCORSEL = 1;
+   \                     ??CLOCK_DCO_PLLConfig_23:
+   \   0000B8   ........     CALLA   #?Subroutine12
+   \                     ??CrossCallReturnLabel_31:
+   \   0000BC   7ED01000     BIS.B   #0x10, R14
+   \   0000C0   373C         JMP     ??CLOCK_DCO_PLLConfig_9
+     97            else if (DCO_FLL_Fre < 2.5MHz)     // 1.25MHz < fsystem <  2.5MHz
+   \                     ??CLOCK_DCO_PLLConfig_24:
+   \   0000C2   3B902600     CMP.W   #0x26, R11
+   \   0000C6   0428         JNC     ??CLOCK_DCO_PLLConfig_25
+   \   0000C8   0820         JNE     ??CLOCK_DCO_PLLConfig_26
+   \   0000CA   3A90A025     CMP.W   #0x25a0, R10
+   \   0000CE   052C         JC      ??CLOCK_DCO_PLLConfig_26
+     98          	UCS->DCORSEL = 2;
+   \                     ??CLOCK_DCO_PLLConfig_25:
+   \   0000D0   ........     CALLA   #?Subroutine12
+   \                     ??CrossCallReturnLabel_32:
+   \   0000D4   7ED02000     BIS.B   #0x20, R14
+   \   0000D8   2B3C         JMP     ??CLOCK_DCO_PLLConfig_9
+     99            else if (DCO_FLL_Fre <   5MHz)     // 2.5MHz  < fsystem <    5MHz
+   \                     ??CLOCK_DCO_PLLConfig_26:
+   \   0000DA   3B904C00     CMP.W   #0x4c, R11
+   \   0000DE   0428         JNC     ??CLOCK_DCO_PLLConfig_27
+   \   0000E0   0820         JNE     ??CLOCK_DCO_PLLConfig_28
+   \   0000E2   3A90404B     CMP.W   #0x4b40, R10
+   \   0000E6   052C         JC      ??CLOCK_DCO_PLLConfig_28
+    100          	UCS->DCORSEL = 3;
+   \                     ??CLOCK_DCO_PLLConfig_27:
+   \   0000E8   ........     CALLA   #?Subroutine12
+   \                     ??CrossCallReturnLabel_33:
+   \   0000EC   7ED03000     BIS.B   #0x30, R14
+   \   0000F0   1F3C         JMP     ??CLOCK_DCO_PLLConfig_9
+    101            else if (DCO_FLL_Fre <  10MHz)     // 5MHz    < fsystem <   10MHz
+   \                     ??CLOCK_DCO_PLLConfig_28:
+   \   0000F2   3B909800     CMP.W   #0x98, R11
+   \   0000F6   0428         JNC     ??CLOCK_DCO_PLLConfig_29
+   \   0000F8   0820         JNE     ??CLOCK_DCO_PLLConfig_30
+   \   0000FA   3A908096     CMP.W   #0x9680, R10
+   \   0000FE   052C         JC      ??CLOCK_DCO_PLLConfig_30
+    102          	UCS->DCORSEL = 4;
+   \                     ??CLOCK_DCO_PLLConfig_29:
+   \   000100   ........     CALLA   #?Subroutine12
+   \                     ??CrossCallReturnLabel_34:
+   \   000104   7ED04000     BIS.B   #0x40, R14
+   \   000108   133C         JMP     ??CLOCK_DCO_PLLConfig_9
+    103            else if (DCO_FLL_Fre <  20MHz)     // 10MHz   < fsystem <   20MHz
+   \                     ??CLOCK_DCO_PLLConfig_30:
+   \   00010A   0C4A         MOV.W   R10, R12
+   \   00010C   0D4B         MOV.W   R11, R13
+   \   00010E   ........     CALLA   #?Subroutine9
+   \                     ??CrossCallReturnLabel_24:
+   \   000112   0528         JNC     ??CLOCK_DCO_PLLConfig_31
+    104          	UCS->DCORSEL = 5;
+   \   000114   ........     CALLA   #?Subroutine12
+   \                     ??CrossCallReturnLabel_35:
+   \   000118   7ED05000     BIS.B   #0x50, R14
+   \   00011C   093C         JMP     ??CLOCK_DCO_PLLConfig_9
+    105            else if (DCO_FLL_Fre <  40MHz)     // 20MHz   < fsystem <   40MHz
+   \                     ??CLOCK_DCO_PLLConfig_31:
+   \   00011E   3F40184C     MOV.W   #0x4c18, R15
+   \   000122   ........     CALLA   #?FLT_LT
+   \   000126   0728         JNC     ??CLOCK_DCO_PLLConfig_32
+    106          	UCS->DCORSEL = 6;
+   \   000128   ........     CALLA   #?Subroutine12
+   \                     ??CrossCallReturnLabel_36:
+   \   00012C   7ED06000     BIS.B   #0x60, R14
+   \                     ??CLOCK_DCO_PLLConfig_9:
+   \   000130   C24E6201     MOV.B   R14, &0x162
+   \   000134   033C         JMP     ??CLOCK_DCO_PLLConfig_13
+    107            else
+    108          	UCS->DCORSEL = 7;
+   \                     ??CLOCK_DCO_PLLConfig_32:
+   \   000136   F2D070006201 BIS.B   #0x70, &0x162
+    109            
+    110            UCS->FLLREFDIV = refdiv;
+   \                     ??CLOCK_DCO_PLLConfig_13:
+   \   00013C   78400700     MOV.B   #0x7, R8
+   \   000140   4E49         MOV.B   R9, R14
+   \   000142   4EF8         AND.B   R8, R14
+   \   000144   5F426601     MOV.B   &0x166, R15
+   \   000148   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_13:
+   \   00014C   C24F6601     MOV.B   R15, &0x166
+    111            UCS->SELREF = refsource;
+   \   000150   4E46         MOV.B   R6, R14
+   \   000152   5E0E         RLAM.W  #0x4, R14
+   \   000154   7EF07000     AND.B   #0x70, R14
+   \   000158   5F426601     MOV.B   &0x166, R15
+   \   00015C   7FF08F00     AND.B   #0x8f, R15
+   \   000160   4FDE         BIS.B   R14, R15
+   \   000162   C24F6601     MOV.B   R15, &0x166
+    112            
+    113            float Fref_value;
+    114            if(refsource == FLLREF_XT2)
+   \   000166   76900500     CMP.B   #0x5, R6
+   \   00016A   0D20         JNE     ??CLOCK_DCO_PLLConfig_33
+    115            {
+    116              XT2_Config(TRUE);
+   \   00016C   5C43         MOV.B   #0x1, R12
+   \   00016E   ........     CALLA   #XT2_Config
+    117              Fref_value = (float)((uint32_t)EXTAL_IN_XT2_HZ/ref_div_value[refdiv]);  
+   \   000172   ........     CALLA   #?Subroutine11
+    118            }
+   \                     ??CrossCallReturnLabel_30:
+   \   000176   E909         ADDA    R9, R9
+   \   000178   ....1E49.... MOVX.W  ??ref_div_value(R9), R14
+   \   00017E   0F43         MOV.W   #0x0, R15
+   \   000180   ........     CALLA   #?DivMod32u
+   \   000184   113C         JMP     ??CLOCK_DCO_PLLConfig_14
+    119            else if(refsource == FLLREF_XT1)
+   \                     ??CLOCK_DCO_PLLConfig_33:
+   \   000186   4693         CMP.B   #0x0, R6
+   \   000188   0420         JNE     ??CLOCK_DCO_PLLConfig_34
+    120            {
+    121              XT1_Config(TRUE);
+   \   00018A   5C43         MOV.B   #0x1, R12
+   \   00018C   ........     CALLA   #XT1_Config
+    122              Fref_value = (float)(EXTAL_IN_XT1_HZ/ref_div_value[refdiv]);
+   \   000190   023C         JMP     ??CLOCK_DCO_PLLConfig_15
+    123            }
+    124            else if(refsource == FLLREF_REFO)
+   \                     ??CLOCK_DCO_PLLConfig_34:
+   \   000192   6693         CMP.B   #0x2, R6
+   \   000194   0D20         JNE     ??CLOCK_DCO_PLLConfig_35
+    125            {
+    126              Fref_value = (float)(REFOCLK_FREQUENCY/ref_div_value[refdiv]);
+   \                     ??CLOCK_DCO_PLLConfig_15:
+   \   000196   3C400080     MOV.W   #0x8000, R12
+   \   00019A   E909         ADDA    R9, R9
+   \   00019C   ....1E49.... MOVX.W  ??ref_div_value(R9), R14
+   \   0001A2   ........     CALLA   #?DivMod16u
+   \   0001A6   0D43         MOV.W   #0x0, R13
+   \                     ??CLOCK_DCO_PLLConfig_14:
+   \   0001A8   ........     CALLA   #_Cast32uto32f
+   \   0001AC   0E4C         MOV.W   R12, R14
+   \   0001AE   0F4D         MOV.W   R13, R15
+    127            }
+    128            uint16_t FLLN_VALUE = (uint16_t)((DCO_FLL_Fre/Fref_value+0.5f)-1u);
+    129            ASSERT(FLLN_VALUE < 1024,"CLOCK_DCO_PLLConfig","FLLN_VALUE不允许超过1023，请将DCO频率设低或者更换为更高频率的参考时钟源！");         //不允许超过1023，请将DCO频率设低或者更换为更高频率的参考时钟源
+    130            
+    131            g_sClock.DCO_FLL_Frequency = DCO_FLL_Fre;
+   \                     ??CLOCK_DCO_PLLConfig_35:
+   \   0001B0   ....824A.... MOVX.W  R10, &g_sClock + 36
+   \   0001B6   ....824B.... MOVX.W  R11, &g_sClock + 38
+    132            
+    133            UCS->FLLN = FLLN_VALUE;        //
+   \   0001BC   0C4A         MOV.W   R10, R12
+   \   0001BE   0D4B         MOV.W   R11, R13
+   \   0001C0   ........     CALLA   #_Cast32uto32f
+   \   0001C4   ........     CALLA   #_Div32f
+   \   0001C8   0E4C         MOV.W   R12, R14
+   \   0001CA   0F4D         MOV.W   R13, R15
+   \   0001CC   0C43         MOV.W   #0x0, R12
+   \   0001CE   3D40003F     MOV.W   #0x3f00, R13
+   \   0001D2   ........     CALLA   #_Add32f
+   \   0001D6   0E4C         MOV.W   R12, R14
+   \   0001D8   0F4D         MOV.W   R13, R15
+   \   0001DA   0C43         MOV.W   #0x0, R12
+   \   0001DC   3D4080BF     MOV.W   #0xbf80, R13
+   \   0001E0   ........     CALLA   #_Add32f
+   \   0001E4   ........     CALLA   #_Cast32fto32s
+   \   0001E8   3CF0FF03     AND.W   #0x3ff, R12
+   \   0001EC   1F426401     MOV.W   &0x164, R15
+   \   0001F0   3FF000FC     AND.W   #0xfc00, R15
+   \   0001F4   0FDC         BIS.W   R12, R15
+   \   0001F6   824F6401     MOV.W   R15, &0x164
+    134            UCS->FLLD = 0;     //设置DCO分频  
+   \   0001FA   B2F0FF8F6401 AND.W   #0x8fff, &0x164
+    135            
+    136            __bic_SR_register(SCG0);                  // 使能FLL
+   \   000200   32C04000     BIC.W   #0x40, SR
+   \   000204   0343         NOP
+    137            do
+    138            {
+    139              UCS->DCO_FFG = RESET; // 清除,CLOCK_DCO 失效标志                                        
+   \                     ??CLOCK_DCO_PLLConfig_4:
+   \   000206   D2C36E01     BIC.B   #0x1, &0x16e
+    140              SFRIFG1 &= ~OFIFG;                                             // 清除时钟失效标志
+   \   00020A   A2C30201     BIC.W   #0x2, &0x102
+    141            }while (UCS->DCO_FFG == BIT_SET);                                           // 检查DCO失效标志
+   \   00020E   D2B36E01     BIT.B   #0x1, &0x16e
+   \   000212   F923         JNE     ??CLOCK_DCO_PLLConfig_4
+    142           
+    143            //将使用DCO作为时钟源的时钟频率值修改
+    144            if(UCS->SELM == CLOCK_DCO || UCS->SELM == CLOCK_DCO_DIV) 
+   \   000214   8B006801     MOVA    #0x168, R11
+   \   000218   4E48         MOV.B   R8, R14
+   \   00021A   6EFB         AND.B   @R11, R14
+   \   00021C   7E900300     CMP.B   #0x3, R14
+   \   000220   0424         JEQ     ??CLOCK_DCO_PLLConfig_36
+   \   000222   4E48         MOV.B   R8, R14
+   \   000224   6EFB         AND.B   @R11, R14
+   \   000226   6E92         CMP.B   #0x4, R14
+   \   000228   0720         JNE     ??CLOCK_DCO_PLLConfig_37
+    145            {
+    146              CLOCK_DIVx div = (CLOCK_DIVx)UCS->DIVM;
+   \                     ??CLOCK_DCO_PLLConfig_36:
+   \   00022A   5D426A01     MOV.B   &0x16a, R13
+    147              CLOCK_MCLK_Config ((CLOCK_Source)UCS->SELM, div);
+   \   00022E   4DF8         AND.B   R8, R13
+   \   000230   4C48         MOV.B   R8, R12
+   \   000232   6CFB         AND.B   @R11, R12
+   \   000234   ........     CALLA   #CLOCK_MCLK_Config
+    148            }
+    149            
+    150            if(UCS->SELS == CLOCK_DCO || UCS->SELS == CLOCK_DCO_DIV)
+   \                     ??CLOCK_DCO_PLLConfig_37:
+   \   000238   6E4B         MOV.B   @R11, R14
+   \   00023A   5E0F         RRUM.W  #0x4, R14
+   \   00023C   4EF8         AND.B   R8, R14
+   \   00023E   7E900300     CMP.B   #0x3, R14
+   \   000242   0524         JEQ     ??CLOCK_DCO_PLLConfig_38
+   \   000244   6E4B         MOV.B   @R11, R14
+   \   000246   5E0F         RRUM.W  #0x4, R14
+   \   000248   4EF8         AND.B   R8, R14
+   \   00024A   6E92         CMP.B   #0x4, R14
+   \   00024C   0920         JNE     ??CLOCK_DCO_PLLConfig_39
+    151            {
+    152              CLOCK_DIVx div = (CLOCK_DIVx)UCS->DIVS;
+   \                     ??CLOCK_DCO_PLLConfig_38:
+   \   00024E   5D426A01     MOV.B   &0x16a, R13
+    153              CLOCK_SMCLK_Config((CLOCK_Source)UCS->SELS, div);
+   \   000252   5D0F         RRUM.W  #0x4, R13
+   \   000254   4DF8         AND.B   R8, R13
+   \   000256   6C4B         MOV.B   @R11, R12
+   \   000258   5C0F         RRUM.W  #0x4, R12
+   \   00025A   4CF8         AND.B   R8, R12
+   \   00025C   ........     CALLA   #CLOCK_SMCLK_Config
+    154            }
+    155            
+    156            if(UCS->SELA == CLOCK_DCO || UCS->SELA == CLOCK_DCO_DIV)
+   \                     ??CLOCK_DCO_PLLConfig_39:
+   \   000260   4E48         MOV.B   R8, R14
+   \   000262   5EF26901     AND.B   &0x169, R14
+   \   000266   7E900300     CMP.B   #0x3, R14
+   \   00026A   0524         JEQ     ??CLOCK_DCO_PLLConfig_40
+   \   00026C   4E48         MOV.B   R8, R14
+   \   00026E   5EF26901     AND.B   &0x169, R14
+   \   000272   6E92         CMP.B   #0x4, R14
+   \   000274   0820         JNE     ??CLOCK_DCO_PLLConfig_41
+    157            {
+    158              CLOCK_DIVx div = (CLOCK_DIVx)UCS->DIVA;
+   \                     ??CLOCK_DCO_PLLConfig_40:
+   \   000276   5D426B01     MOV.B   &0x16b, R13
+    159              CLOCK_ACLK_Config ((CLOCK_Source)UCS->SELS, div);
+   \   00027A   4DF8         AND.B   R8, R13
+   \   00027C   6C4B         MOV.B   @R11, R12
+   \   00027E   5C0F         RRUM.W  #0x4, R12
+   \   000280   4CF8         AND.B   R8, R12
+   \   000282   ........     CALLA   #CLOCK_ACLK_Config
+    160            }
+    161          }
+   \                     ??CLOCK_DCO_PLLConfig_41:
+   \   000286   5616         POPM.A  #0x6, R11
+   \   000288   1001         RETA
+   \   00028A                REQUIRE _A_SFRIFG1_L
+   \   00028A                REQUIRE _A_PMMCTL0_L
+   \   00028A                REQUIRE _A_SVSMHCTL_L
+   \   00028A                REQUIRE _A_SVSMLCTL_L
+   \   00028A                REQUIRE _A_PMMIFG_L
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine12:
+   \   000000   5E426201     MOV.B   &0x162, R14
+   \   000004   7EF08F00     AND.B   #0x8f, R14
+   \   000008   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine9:
+   \   000000   ........     CALLA   #_Cast32uto32f
+   \   000004   3E408096     MOV.W   #0x9680, R14
+   \   000008   3F40984B     MOV.W   #0x4b98, R15
+   \   00000C   ........     BRA     #?FLT_LT
+
+   \                                 In  segment DATA20_C, align 2, align-sorted
+   \                     ??ref_div_value:
+   \   000000   010002000400 DC16 1, 2, 4, 8, 12, 16
+   \            08000C001000
+    162          /*************************************************************************
+    163          *  函数名称：CLOCK_MCLK_Config  (CLOCK_Source mclk , CLOCK_DIVx mclk_div)
+    164          *  功能说明：设置主时钟源及分频
+    165          *  参数说明：CLOCK_Source mclk   :主时钟时钟源
+    166                       CLOCK_DIVx mclk_div :主时钟分频系数
+    167          *  函数返回：无
+    168          *  使用示例：CLOCK_MCLK_Config  (CLOCK_DCO , DIV_1);   //主时钟使用DCO作为时钟源，分频系数为1（不分频）
+    169          *************************************************************************/  
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine8:
+   \   000000   ....1C42.... MOVX.W  &g_sClock + 36, R12
+   \   000006   ....1D42.... MOVX.W  &g_sClock + 38, R13
+   \   00000C   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine7:
+   \   000000   ........     CALLA   #_Cast32uto32f
+   \   000004   3E400024     MOV.W   #0x2400, R14
+   \   000008   3F407449     MOV.W   #0x4974, R15
+   \   00000C   ........     BRA     #_Div32f
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine6:
+   \   000000   0212         PUSH.W  SR
+   \   000002   32C2         DINT
+   \   000004   0343         NOP
+   \   000006   824C....     MOV.W   R12, &__iar_HWMUL + 16         // MPY32L
+   \   00000A   824D....     MOV.W   R13, &__iar_HWMUL + 18         // MPY32H
+   \   00000E   B240986E.... MOV.W   #0x6e98, &__iar_HWMUL + 32     // OP2L
+   \   000014   B2401283.... MOV.W   #0x8312, &__iar_HWMUL + 34     // OP2H
+   \   00001A   1C42....     MOV.W   &__iar_HWMUL + 36, R12         // RES0
+   \   00001E   1D42....     MOV.W   &__iar_HWMUL + 38, R13         // RES1
+   \   000022   1C42....     MOV.W   &__iar_HWMUL + 40, R12         // RES2
+   \   000026   1F42....     MOV.W   &__iar_HWMUL + 42, R15         // RES3
+   \   00002A   0343         NOP
+   \   00002C   3241         POP.W   SR
+   \   00002E   8F10         SWPB    R15
+   \   000030   8C10         SWPB    R12
+   \   000032   4CEF         XOR.B   R15, R12
+   \   000034   0CEF         XOR.W   R15, R12
+   \   000036   4D4F         MOV.B   R15, R13
+   \   000038   5D03         RRUM.W  #0x1, R13
+   \   00003A   0C10         RRC.W   R12
+   \   00003C   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine4:
+   \   000000   4E4A         MOV.B   R10, R14
+   \   000002   ........     CALLA   #?ShiftRight32u
+   \   000006   ........     MOVA    #g_sClock, R10
+   \   00000A   1001         RETA
+
+   \                                 In  segment CODE, align 2
+    170          void CLOCK_MCLK_Config  (CLOCK_Source mclk , CLOCK_DIVx mclk_div)
+   \                     CLOCK_MCLK_Config:
+    171          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+   \   000002   ........     CALLA   #?Subroutine0
+    172            if(mclk == CLOCK_XT2)
+    173            {
+    174              XT2_Config(TRUE);
+    175            }
+    176            else if(mclk == CLOCK_XT1)
+    177            {
+    178              XT1_Config(TRUE);
+    179            }
+    180            
+    181            UCS->SELM = mclk;                         //选择DCO作为时钟源
+   \                     ??CrossCallReturnLabel_1:
+   \   000006   7EF00700     AND.B   #0x7, R14
+   \   00000A   5F426801     MOV.B   &0x168, R15
+   \   00000E   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_11:
+   \   000012   C24F6801     MOV.B   R15, &0x168
+    182            UCS->DIVM = mclk_div;
+   \   000016   4E4A         MOV.B   R10, R14
+   \   000018   7EF00700     AND.B   #0x7, R14
+   \   00001C   5F426A01     MOV.B   &0x16a, R15
+   \   000020   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_12:
+   \   000024   C24F6A01     MOV.B   R15, &0x16a
+    183            
+    184            switch(mclk)
+   \   000028   4B83         SUB.B   #0x0, R11
+   \   00002A   2524         JEQ     ??CLOCK_MCLK_Config_6
+   \   00002C   5B83         SUB.B   #0x1, R11
+   \   00002E   0924         JEQ     ??CLOCK_MCLK_Config_7
+   \   000030   5B83         SUB.B   #0x1, R11
+   \   000032   2124         JEQ     ??CLOCK_MCLK_Config_6
+   \   000034   5B83         SUB.B   #0x1, R11
+   \   000036   2224         JEQ     ??CLOCK_MCLK_Config_8
+   \   000038   5B83         SUB.B   #0x1, R11
+   \   00003A   2024         JEQ     ??CLOCK_MCLK_Config_8
+   \   00003C   5B83         SUB.B   #0x1, R11
+   \   00003E   2124         JEQ     ??CLOCK_MCLK_Config_9
+   \   000040   183C         JMP     ??CLOCK_MCLK_Config_1
+    185            {
+    186            case CLOCK_XT1    :g_sClock.MCLK.nHZ = EXTAL_IN_XT1_HZ;break;
+    187            case CLOCK_VLO    :g_sClock.MCLK.nHZ = VLOCLK_FREQUENCY;break;
+   \                     ??CLOCK_MCLK_Config_7:
+   \   000042   3C401027     MOV.W   #0x2710, R12
+   \                     ??CLOCK_MCLK_Config_5:
+   \   000046   0D43         MOV.W   #0x0, R13
+    188            case CLOCK_REFO   :g_sClock.MCLK.nHZ = REFOCLK_FREQUENCY;break;       
+    189            case CLOCK_DCO    :g_sClock.MCLK.nHZ = g_sClock.DCO_FLL_Frequency;break;    
+    190            case CLOCK_DCO_DIV:g_sClock.MCLK.nHZ = g_sClock.DCO_FLL_Frequency;break;
+    191            case CLOCK_XT2    :g_sClock.MCLK.nHZ = EXTAL_IN_XT2_HZ;break;
+    192            default :return;
+    193            }
+    194            g_sClock.MCLK.nHZ  >>= mclk_div;
+   \                     ??CLOCK_MCLK_Config_0:
+   \   000048   ........     CALLA   #?Subroutine4
+   \                     ??CrossCallReturnLabel_8:
+   \   00004C   8A4C0000     MOV.W   R12, 0(R10)
+   \   000050   8A4D0200     MOV.W   R13, 0x2(R10)
+    195            g_sClock.MCLK.nKHZ = g_sClock.MCLK.nHZ/1000u;
+   \   000054   ........     CALLA   #?Subroutine6
+   \                     ??CrossCallReturnLabel_16:
+   \   000058   8A4C0400     MOV.W   R12, 0x4(R10)
+   \   00005C   8A4D0600     MOV.W   R13, 0x6(R10)
+    196            g_sClock.MCLK.fMHZ = g_sClock.MCLK.nHZ/1000000.0;
+   \   000060   2C4A         MOV.W   @R10, R12
+   \   000062   1D4A0200     MOV.W   0x2(R10), R13
+   \   000066   ........     CALLA   #?Subroutine7
+   \                     ??CrossCallReturnLabel_19:
+   \   00006A   8A4C0800     MOV.W   R12, 0x8(R10)
+   \   00006E   8A4D0A00     MOV.W   R13, 0xa(R10)
+    197          }
+   \                     ??CLOCK_MCLK_Config_1:
+   \   000072   1A16         POPM.A  #0x2, R11
+   \   000074   1001         RETA
+   \                     ??CLOCK_MCLK_Config_6:
+   \   000076   3C400080     MOV.W   #0x8000, R12
+   \   00007A   E53F         JMP     ??CLOCK_MCLK_Config_5
+   \                     ??CLOCK_MCLK_Config_8:
+   \   00007C   ........     CALLA   #?Subroutine8
+   \                     ??CrossCallReturnLabel_22:
+   \   000080   E33F         JMP     ??CLOCK_MCLK_Config_0
+   \                     ??CLOCK_MCLK_Config_9:
+   \   000082   ........     CALLA   #?Subroutine11
+   \                     ??CrossCallReturnLabel_29:
+   \   000086   E03F         JMP     ??CLOCK_MCLK_Config_0
+   \   000088   0343         NOP
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine0:
+   \   000000   4B4C         MOV.B   R12, R11
+   \   000002   4A4D         MOV.B   R13, R10
+   \   000004   7C900500     CMP.B   #0x5, R12
+   \   000008   0420         JNE     ??CLOCK_SMCLK_Config_3
+   \   00000A   5C43         MOV.B   #0x1, R12
+   \   00000C   ........     CALLA   #XT2_Config
+   \   000010   053C         JMP     ??CLOCK_SMCLK_Config_4
+   \                     ??CLOCK_SMCLK_Config_3:
+   \   000012   4C93         CMP.B   #0x0, R12
+   \   000014   0320         JNE     ??CLOCK_SMCLK_Config_4
+   \   000016   5C43         MOV.B   #0x1, R12
+   \   000018   ........     CALLA   #XT1_Config
+   \                     ??CLOCK_SMCLK_Config_4:
+   \   00001C   4E4B         MOV.B   R11, R14
+   \   00001E   1001         RETA
+    198          /*************************************************************************
+    199          *  函数名称：CLOCK_SMCLK_Config (CLOCK_Source smclk, CLOCK_DIVx smclk_div)
+    200          *  功能说明：设置系统时钟源及分频
+    201          *  参数说明：CLOCK_Source smclk   :系统时钟时钟源
+    202                       CLOCK_DIVx smclk_div :系统时钟分频系数
+    203          *  函数返回：无
+    204          *  使用示例：CLOCK_SMCLK_Config  (CLOCK_DCO , DIV_2);   //系统时钟使用DCO作为时钟源，分频系数为2（二分频）
+    205          *************************************************************************/  
+
+   \                                 In  segment CODE, align 2
+    206          void CLOCK_SMCLK_Config (CLOCK_Source smclk, CLOCK_DIVx smclk_div)
+   \                     CLOCK_SMCLK_Config:
+    207          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+   \   000002   ........     CALLA   #?Subroutine0
+    208            if(smclk == CLOCK_XT2)
+    209            {
+    210              XT2_Config(TRUE);
+    211            }
+    212            else if(smclk == CLOCK_XT1)
+    213            {
+    214              XT1_Config(TRUE);
+    215            }
+    216            
+    217            UCS->SELS = smclk;//选择smclk时钟源
+   \                     ??CrossCallReturnLabel_0:
+   \   000006   5E0E         RLAM.W  #0x4, R14
+   \   000008   7EF07000     AND.B   #0x70, R14
+   \   00000C   5F426801     MOV.B   &0x168, R15
+   \   000010   7FF08F00     AND.B   #0x8f, R15
+   \   000014   4FDE         BIS.B   R14, R15
+   \   000016   C24F6801     MOV.B   R15, &0x168
+    218            UCS->DIVS = smclk_div;
+   \   00001A   4E4A         MOV.B   R10, R14
+   \   00001C   5E0E         RLAM.W  #0x4, R14
+   \   00001E   7EF07000     AND.B   #0x70, R14
+   \   000022   5F426A01     MOV.B   &0x16a, R15
+   \   000026   7FF08F00     AND.B   #0x8f, R15
+   \   00002A   4FDE         BIS.B   R14, R15
+   \   00002C   C24F6A01     MOV.B   R15, &0x16a
+    219            
+    220            switch(smclk)
+   \   000030   4B83         SUB.B   #0x0, R11
+   \   000032   2624         JEQ     ??CLOCK_SMCLK_Config_6
+   \   000034   5B83         SUB.B   #0x1, R11
+   \   000036   0924         JEQ     ??CLOCK_SMCLK_Config_7
+   \   000038   5B83         SUB.B   #0x1, R11
+   \   00003A   2224         JEQ     ??CLOCK_SMCLK_Config_6
+   \   00003C   5B83         SUB.B   #0x1, R11
+   \   00003E   2324         JEQ     ??CLOCK_SMCLK_Config_8
+   \   000040   5B83         SUB.B   #0x1, R11
+   \   000042   2124         JEQ     ??CLOCK_SMCLK_Config_8
+   \   000044   5B83         SUB.B   #0x1, R11
+   \   000046   2224         JEQ     ??CLOCK_SMCLK_Config_9
+   \   000048   193C         JMP     ??CLOCK_SMCLK_Config_1
+    221            {
+    222            case CLOCK_XT1    :g_sClock.SMCLK.nHZ = EXTAL_IN_XT1_HZ;break;
+    223            case CLOCK_VLO    :g_sClock.SMCLK.nHZ = VLOCLK_FREQUENCY;break;
+   \                     ??CLOCK_SMCLK_Config_7:
+   \   00004A   3C401027     MOV.W   #0x2710, R12
+   \                     ??CLOCK_SMCLK_Config_5:
+   \   00004E   0D43         MOV.W   #0x0, R13
+    224            case CLOCK_REFO   :g_sClock.SMCLK.nHZ = REFOCLK_FREQUENCY;break;       
+    225            case CLOCK_DCO    :g_sClock.SMCLK.nHZ = g_sClock.DCO_FLL_Frequency;break; 
+    226            case CLOCK_DCO_DIV:g_sClock.SMCLK.nHZ = g_sClock.DCO_FLL_Frequency;break;
+    227            case CLOCK_XT2    :g_sClock.SMCLK.nHZ = EXTAL_IN_XT2_HZ;break;
+    228            default :return;
+    229            }
+    230            g_sClock.SMCLK.nHZ >>= smclk_div;
+   \                     ??CLOCK_SMCLK_Config_0:
+   \   000050   ........     CALLA   #?Subroutine4
+   \                     ??CrossCallReturnLabel_7:
+   \   000054   8A4C0C00     MOV.W   R12, 0xc(R10)
+   \   000058   8A4D0E00     MOV.W   R13, 0xe(R10)
+    231            g_sClock.SMCLK.nKHZ = g_sClock.SMCLK.nHZ/1000u;;
+   \   00005C   ........     CALLA   #?Subroutine6
+   \                     ??CrossCallReturnLabel_15:
+   \   000060   8A4C1000     MOV.W   R12, 0x10(R10)
+   \   000064   8A4D1200     MOV.W   R13, 0x12(R10)
+    232            g_sClock.SMCLK.fMHZ = g_sClock.SMCLK.nHZ/1000000.0;
+   \   000068   1C4A0C00     MOV.W   0xc(R10), R12
+   \   00006C   1D4A0E00     MOV.W   0xe(R10), R13
+   \   000070   ........     CALLA   #?Subroutine7
+   \                     ??CrossCallReturnLabel_18:
+   \   000074   8A4C1400     MOV.W   R12, 0x14(R10)
+   \   000078   8A4D1600     MOV.W   R13, 0x16(R10)
+    233          }
+   \                     ??CLOCK_SMCLK_Config_1:
+   \   00007C   1A16         POPM.A  #0x2, R11
+   \   00007E   1001         RETA
+   \                     ??CLOCK_SMCLK_Config_6:
+   \   000080   3C400080     MOV.W   #0x8000, R12
+   \   000084   E43F         JMP     ??CLOCK_SMCLK_Config_5
+   \                     ??CLOCK_SMCLK_Config_8:
+   \   000086   ........     CALLA   #?Subroutine8
+   \                     ??CrossCallReturnLabel_21:
+   \   00008A   E23F         JMP     ??CLOCK_SMCLK_Config_0
+   \                     ??CLOCK_SMCLK_Config_9:
+   \   00008C   ........     CALLA   #?Subroutine11
+   \                     ??CrossCallReturnLabel_28:
+   \   000090   DF3F         JMP     ??CLOCK_SMCLK_Config_0
+   \   000092   0343         NOP
+    234          /*************************************************************************
+    235          *  函数名称：CLOCK_ACLK_Config  (CLOCK_Source aclk , CLOCK_DIVx aclk_div)
+    236          *  功能说明：设置辅助时钟源及分频
+    237          *  参数说明：CLOCK_Source aclk   :辅助时钟时钟源
+    238                       CLOCK_DIVx aclk_div :辅助时钟分频系数
+    239          *  函数返回：无
+    240          *  使用示例：CLOCK_ACLK_Config  (XT! , DIV_4);   //辅助时钟使用XT1作为时钟源，分频系数为4（四分频）
+    241          *************************************************************************/  
+
+   \                                 In  segment CODE, align 2
+    242          void CLOCK_ACLK_Config  (CLOCK_Source aclk , CLOCK_DIVx aclk_div)
+   \                     CLOCK_ACLK_Config:
+    243          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+   \   000002   4B4C         MOV.B   R12, R11
+   \   000004   4A4D         MOV.B   R13, R10
+    244             if(aclk == CLOCK_XT2)
+   \   000006   7C900500     CMP.B   #0x5, R12
+   \   00000A   0420         JNE     ??CLOCK_ACLK_Config_6
+    245            {
+    246              XT2_Config(TRUE);
+   \   00000C   5C43         MOV.B   #0x1, R12
+   \   00000E   ........     CALLA   #XT2_Config
+   \   000012   0A3C         JMP     ??CLOCK_ACLK_Config_4
+    247            }
+    248            else if(aclk == CLOCK_XT1)
+   \                     ??CLOCK_ACLK_Config_6:
+   \   000014   4C93         CMP.B   #0x0, R12
+   \   000016   0820         JNE     ??CLOCK_ACLK_Config_4
+    249            {
+    250              XT1_Config(TRUE);
+   \   000018   D2B36C01     BIT.B   #0x1, &0x16c
+   \   00001C   0524         JEQ     ??CLOCK_ACLK_Config_4
+   \   00001E   ........     CALLA   #?Subroutine1
+    251            }
+   \                     ??CLOCK_ACLK_Config_0:
+   \   000022   ........     CALLA   #?Subroutine3
+   \                     ??CrossCallReturnLabel_5:
+   \   000026   FD23         JNE     ??CLOCK_ACLK_Config_0
+    252            
+    253            UCS->SELA = aclk;//选择时钟源                   
+   \                     ??CLOCK_ACLK_Config_4:
+   \   000028   4E4B         MOV.B   R11, R14
+   \   00002A   7EF00700     AND.B   #0x7, R14
+   \   00002E   5F426901     MOV.B   &0x169, R15
+   \   000032   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_9:
+   \   000036   C24F6901     MOV.B   R15, &0x169
+    254            UCS->DIVA = aclk_div; //设置分频系数为0
+   \   00003A   4E4A         MOV.B   R10, R14
+   \   00003C   7EF00700     AND.B   #0x7, R14
+   \   000040   5F426B01     MOV.B   &0x16b, R15
+   \   000044   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_10:
+   \   000048   C24F6B01     MOV.B   R15, &0x16b
+    255            
+    256            switch(aclk)
+   \   00004C   4B83         SUB.B   #0x0, R11
+   \   00004E   2624         JEQ     ??CLOCK_ACLK_Config_7
+   \   000050   5B83         SUB.B   #0x1, R11
+   \   000052   0924         JEQ     ??CLOCK_ACLK_Config_8
+   \   000054   5B83         SUB.B   #0x1, R11
+   \   000056   2224         JEQ     ??CLOCK_ACLK_Config_7
+   \   000058   5B83         SUB.B   #0x1, R11
+   \   00005A   2324         JEQ     ??CLOCK_ACLK_Config_9
+   \   00005C   5B83         SUB.B   #0x1, R11
+   \   00005E   2124         JEQ     ??CLOCK_ACLK_Config_9
+   \   000060   5B83         SUB.B   #0x1, R11
+   \   000062   2224         JEQ     ??CLOCK_ACLK_Config_10
+   \   000064   193C         JMP     ??CLOCK_ACLK_Config_2
+    257            {
+    258            case CLOCK_XT1    :g_sClock.ACLK.nHZ = EXTAL_IN_XT1_HZ;break;
+    259            case CLOCK_VLO    :g_sClock.ACLK.nHZ = VLOCLK_FREQUENCY;break;
+   \                     ??CLOCK_ACLK_Config_8:
+   \   000066   3C401027     MOV.W   #0x2710, R12
+   \                     ??CLOCK_ACLK_Config_5:
+   \   00006A   0D43         MOV.W   #0x0, R13
+    260            case CLOCK_REFO   :g_sClock.ACLK.nHZ = REFOCLK_FREQUENCY;break;       
+    261            case CLOCK_DCO    :g_sClock.ACLK.nHZ = g_sClock.DCO_FLL_Frequency;break;   
+    262            case CLOCK_DCO_DIV:g_sClock.ACLK.nHZ = g_sClock.DCO_FLL_Frequency;break;
+    263            case CLOCK_XT2    :g_sClock.ACLK.nHZ = EXTAL_IN_XT2_HZ;break;
+    264            default :return;
+    265            }
+    266            g_sClock.ACLK.nHZ >>= aclk_div;
+   \                     ??CLOCK_ACLK_Config_1:
+   \   00006C   ........     CALLA   #?Subroutine4
+   \                     ??CrossCallReturnLabel_6:
+   \   000070   8A4C1800     MOV.W   R12, 0x18(R10)
+   \   000074   8A4D1A00     MOV.W   R13, 0x1a(R10)
+    267            g_sClock.ACLK.nKHZ = g_sClock.ACLK.nHZ/1000u;;
+   \   000078   ........     CALLA   #?Subroutine6
+   \                     ??CrossCallReturnLabel_14:
+   \   00007C   8A4C1C00     MOV.W   R12, 0x1c(R10)
+   \   000080   8A4D1E00     MOV.W   R13, 0x1e(R10)
+    268            g_sClock.ACLK.fMHZ = g_sClock.ACLK.nHZ/1000000.0;
+   \   000084   1C4A1800     MOV.W   0x18(R10), R12
+   \   000088   1D4A1A00     MOV.W   0x1a(R10), R13
+   \   00008C   ........     CALLA   #?Subroutine7
+   \                     ??CrossCallReturnLabel_17:
+   \   000090   8A4C2000     MOV.W   R12, 0x20(R10)
+   \   000094   8A4D2200     MOV.W   R13, 0x22(R10)
+    269          }
+   \                     ??CLOCK_ACLK_Config_2:
+   \   000098   1A16         POPM.A  #0x2, R11
+   \   00009A   1001         RETA
+   \                     ??CLOCK_ACLK_Config_7:
+   \   00009C   3C400080     MOV.W   #0x8000, R12
+   \   0000A0   E43F         JMP     ??CLOCK_ACLK_Config_5
+   \                     ??CLOCK_ACLK_Config_9:
+   \   0000A2   ........     CALLA   #?Subroutine8
+   \                     ??CrossCallReturnLabel_20:
+   \   0000A6   E23F         JMP     ??CLOCK_ACLK_Config_1
+   \                     ??CLOCK_ACLK_Config_10:
+   \   0000A8   ........     CALLA   #?Subroutine11
+   \                     ??CrossCallReturnLabel_27:
+   \   0000AC   DF3F         JMP     ??CLOCK_ACLK_Config_1
+   \   0000AE   0343         NOP
+   \   0000B0                REQUIRE _A_SFRIFG1_L
+    270          /*******************************************************************************
+    271          函数功能：设置内核电压值（与频率设置有关）
+    272          函数参数：u8 level ：电压阶梯 小于3
+    273          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+    274          void SetVcoreUp (uint8_t level)
+   \                     SetVcoreUp:
+    275          {
+    276          #if 1  //仿真时修改为0，否则会卡在死循环里
+    277            // Open PMM registers for write
+    278            PMMCTL0_H = PMMPW_H;              
+   \   000000   F240A5002101 MOV.B   #0xa5, &0x121
+    279            // Set SVS/SVM high side new level
+    280            SVSMHCTL = SVSHE + SVSHRVL0 * level + SVMHE + SVSMHRRL0 * level;
+   \   000006   4F4C         MOV.B   R12, R15
+   \   000008   0E4F         MOV.W   R15, R14
+   \   00000A   8E10         SWPB    R14
+   \   00000C   0E5F         ADD.W   R15, R14
+   \   00000E   3E500044     ADD.W   #0x4400, R14
+   \   000012   824E2401     MOV.W   R14, &0x124
+    281            // Set SVM low side to new level
+    282            SVSMLCTL = SVSLE + SVMLE + SVSMLRRL0 * level;
+   \   000016   3F500044     ADD.W   #0x4400, R15
+   \   00001A   824F2601     MOV.W   R15, &0x126
+    283            // Wait till SVM is settled
+    284            uint16_t i=50000; 
+   \   00001E   3D4050C3     MOV.W   #0xc350, R13
+    285            while (((PMMIFG & SVSMLDLYIFG) == 0)&&((i--)>0));
+   \                     ??SetVcoreUp_0:
+   \   000022   92B32C01     BIT.W   #0x1, &0x12c
+   \   000026   0420         JNE     ??SetVcoreUp_3
+   \   000028   0F4D         MOV.W   R13, R15
+   \   00002A   3D53         ADD.W   #0xffff, R13
+   \   00002C   0F93         CMP.W   #0x0, R15
+   \   00002E   F923         JNE     ??SetVcoreUp_0
+    286            // Clear already set flags
+    287            PMMIFG &= ~(SVMLVLRIFG + SVMLIFG);
+   \                     ??SetVcoreUp_3:
+   \   000030   B2F0F9FF2C01 AND.W   #0xfff9, &0x12c
+    288            // Set VCore to new level
+    289            PMMCTL0_L = PMMCOREV0 * level;
+   \   000036   C24C2001     MOV.B   R12, &0x120
+    290            // Wait till new level reached
+    291            i =50000;
+   \   00003A   3D4050C3     MOV.W   #0xc350, R13
+    292            if ((PMMIFG & SVMLIFG))
+   \   00003E   A2B32C01     BIT.W   #0x2, &0x12c
+   \   000042   0724         JEQ     ??SetVcoreUp_2
+    293              while(((PMMIFG & SVMLVLRIFG) == 0)&&((i--)>0));
+   \                     ??SetVcoreUp_1:
+   \   000044   A2B22C01     BIT.W   #0x4, &0x12c
+   \   000048   0420         JNE     ??SetVcoreUp_2
+   \   00004A   0F4D         MOV.W   R13, R15
+   \   00004C   3D53         ADD.W   #0xffff, R13
+   \   00004E   0F93         CMP.W   #0x0, R15
+   \   000050   F923         JNE     ??SetVcoreUp_1
+    294            /*
+    295            if ((PMMIFG & SVMLIFG))
+    296              while ((PMMIFG & SVMLVLRIFG) == 0);
+    297            */
+    298            // Set SVS/SVM low side to new level
+    299            SVSMLCTL = SVSLE + SVSLRVL0 * level + SVMLE + SVSMLRRL0 * level;
+   \                     ??SetVcoreUp_2:
+   \   000052   824E2601     MOV.W   R14, &0x126
+    300            // Lock PMM registers for write access
+    301            PMMCTL0_H = 0x00;
+   \   000056   C2432101     MOV.B   #0x0, &0x121
+    302          #endif
+    303          }
+   \   00005A   1001         RETA
+   \   00005C                REQUIRE _A_PMMCTL0_L
+   \   00005C                REQUIRE _A_SVSMHCTL_L
+   \   00005C                REQUIRE _A_SVSMLCTL_L
+   \   00005C                REQUIRE _A_PMMIFG_L
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine10:
+   \   000000   0E48         MOV.W   R8, R14
+   \                     ??CLOCK_DCO_PLLConfig_0:
+   \   000002   92B32C01     BIT.W   #0x1, &0x12c
+   \   000006   0420         JNE     ??CLOCK_DCO_PLLConfig_6
+   \   000008   0F4E         MOV.W   R14, R15
+   \   00000A   3E53         ADD.W   #0xffff, R14
+   \   00000C   0F93         CMP.W   #0x0, R15
+   \   00000E   F923         JNE     ??CLOCK_DCO_PLLConfig_0
+   \                     ??CLOCK_DCO_PLLConfig_6:
+   \   000010   B2F0F9FF2C01 AND.W   #0xfff9, &0x12c
+   \   000016   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine2:
+   \   000000   0E48         MOV.W   R8, R14
+   \   000002   A2B32C01     BIT.W   #0x2, &0x12c
+   \   000006   0724         JEQ     ??CLOCK_DCO_PLLConfig_5
+   \                     ??CLOCK_DCO_PLLConfig_1:
+   \   000008   A2B22C01     BIT.W   #0x4, &0x12c
+   \   00000C   0420         JNE     ??CLOCK_DCO_PLLConfig_5
+   \   00000E   0F4E         MOV.W   R14, R15
+   \   000010   3E53         ADD.W   #0xffff, R14
+   \   000012   0F93         CMP.W   #0x0, R15
+   \   000014   F923         JNE     ??CLOCK_DCO_PLLConfig_1
+   \                     ??CLOCK_DCO_PLLConfig_5:
+   \   000016   1001         RETA
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     12   CLOCK_ACLK_Config
+       16   -> GPIO_MultiBits_Init
+       12   -> XT2_Config
+       16 ?ShiftRight32u
+       16 _Cast32uto32f
+       12 _Div32f
+     28   CLOCK_DCO_PLLConfig
+       28   -> CLOCK_ACLK_Config
+       28   -> CLOCK_MCLK_Config
+       28   -> CLOCK_SMCLK_Config
+       28   -> SetVcoreUp
+       28   -> XT1_Config
+       28   -> XT2_Config
+       28 ?DivMod16u
+       28 ?DivMod32u
+       28 ?FLT_LT
+       28 _Add32f
+       28 _Cast32fto32s
+       28 _Cast32uto32f
+       32 _Cast32uto32f
+       28 _Div32f
+     12   CLOCK_MCLK_Config
+       16   -> XT1_Config
+       16   -> XT2_Config
+       16 ?ShiftRight32u
+       16 _Cast32uto32f
+       12 _Div32f
+     12   CLOCK_SMCLK_Config
+       16   -> XT1_Config
+       16   -> XT2_Config
+       16 ?ShiftRight32u
+       16 _Cast32uto32f
+       12 _Div32f
+      4   SetVcoreUp
+      4   XT1_Config
+        8   -> GPIO_MultiBits_Init
+      4   XT2_Config
+        4   -> GPIO_MultiBits_Init
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      32  ?Subroutine0
+      20  ?Subroutine1
+      24  ?Subroutine10
+      10  ?Subroutine11
+      10  ?Subroutine12
+      24  ?Subroutine2
+      14  ?Subroutine3
+      12  ?Subroutine4
+       8  ?Subroutine5
+      62  ?Subroutine6
+      16  ?Subroutine7
+      14  ?Subroutine8
+      16  ?Subroutine9
+     176  CLOCK_ACLK_Config
+     650  CLOCK_DCO_PLLConfig
+     138  CLOCK_MCLK_Config
+     148  CLOCK_SMCLK_Config
+      92  SetVcoreUp
+       4  UCS
+      28  XT1_Config
+      50  XT2_Config
+       2  _A_PMMCTL0_L
+       2  _A_PMMIFG_L
+       2  _A_SFRIFG1_L
+       2  _A_SVSMHCTL_L
+       2  _A_SVSMLCTL_L
+      40  g_sClock
+      12  ref_div_value
+
+ 
+ 1 544 bytes in segment CODE
+    10 bytes in segment DATA16_AN
+    16 bytes in segment DATA20_C
+    40 bytes in segment DATA20_N
+ 
+ 1 544 bytes of CODE  memory
+    16 bytes of CONST memory
+    40 bytes of DATA  memory (+ 10 bytes shared)
+
+Errors: none
+Warnings: none

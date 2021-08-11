@@ -1,0 +1,84 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           31/Jul/2021  19:48:24
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\IAR\5529_remote\HardWare\delay\delay.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW65A5.tmp
+#        (D:\Dev\IAR\5529_remote\HardWare\delay\delay.c -D NDEBUG -D RAM_VECTOR
+#        -lC D:\Dev\IAR\5529_remote\Release\List -lA
+#        D:\Dev\IAR\5529_remote\Release\List -o
+#        D:\Dev\IAR\5529_remote\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\IAR\5529_remote\ -I D:\Dev\IAR\5529_remote\Drivers\inc\ -I
+#        D:\Dev\IAR\5529_remote\Drivers\src\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\led\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\key\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\lcd\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\lcd_api\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\nrf24l01\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\oled\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\delay\ -I
+#        D:\Dev\IAR\5529_remote\HardWare\2.2TFT\ -I
+#        D:\Dev\IAR\5529_remote\System\ -I D:\Dev\IAR\5529_remote\System\inc\
+#        -I D:\Dev\IAR\5529_remote\System\src\ -I D:\Dev\IAR\5529_remote\User\
+#        -I D:\Dev\IAR\5529_remote\User\USER\ --core=430X --data_model=large
+#        -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\IAR\5529_remote\Release\List\delay.lst
+#    Object file   =  D:\Dev\IAR\5529_remote\Release\Obj\delay.r43
+#
+###############################################################################
+
+D:\Dev\IAR\5529_remote\HardWare\delay\delay.c
+      1          #include "delay.h"
+      2          #include "msp430f5529_clock.h"
+      3          /*******************************************************************************
+      4          *  函数名称：
+      5          *  功能说明：US单位延时，若使用定时器的话会比较可靠，在delay.h中宏定义定时器模块，若没有宏定义，则使用软件模拟，注意有无中断会差别很大
+      6          *  参数说明：
+      7          *  函数返回：
+      8          *  使用示例：
+      9          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     10          void delay_us(uint32_t us)
+   \                     delay_us:
+     11          {
+     12            us = (uint32_t)(us*(CPU_FRE_MHZ/11.6));
+     13            while(us--);//asm("nop");
+     14          }
+   \   000000   1001         RETA
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   delay_us
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  delay_us
+
+ 
+ 2 bytes in segment CODE
+ 
+ 2 bytes of CODE memory
+
+Errors: none
+Warnings: none
