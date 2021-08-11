@@ -1,0 +1,447 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           03/Aug/2021  16:28:03
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\Project\TI_Car\HardWare\KEY\KEY.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EWB56.tmp
+#        (D:\Dev\Project\TI_Car\HardWare\KEY\KEY.c -D NDEBUG -D RAM_VECTOR -lC
+#        D:\Dev\Project\TI_Car\Release\List -lA
+#        D:\Dev\Project\TI_Car\Release\List -o
+#        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+#        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+#        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+#        D:\Dev\Project\TI_Car\HardWare\key\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+#        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+#        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+#        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+#        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+#        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+#        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+#        D:\Dev\Project\TI_Car\User\USER\ -I
+#        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+#        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\Project\TI_Car\Release\List\KEY.lst
+#    Object file   =  D:\Dev\Project\TI_Car\Release\Obj\KEY.r43
+#
+###############################################################################
+
+D:\Dev\Project\TI_Car\HardWare\KEY\KEY.c
+      1          #include "key.h"
+      2          #include "msp430f5529_gpio.h"
+      3          //按键处理阶段
+      4          typedef enum
+      5          {
+      6            KEY_PRESSED           ,//按键按下
+      7            KEY_REALSE            ,//按键松开
+      8            KEY_REALSE_WOBBLE     ,//确认松开的消抖状态
+      9            KEY_PRESS_WOBBLE      ,//确认按下的消抖状态
+     10          }KEY_STAGEn;
+     11          //端口配置参数
+     12          const struct
+     13          {
+     14            PORTn         Port;             //GPIO端口
+     15            uint16_t      Pin;              //引脚
+     16            uint16_t      config;           //
+     17            BOOL          PressedLevel;     //按下端口电平状态
+
+   \                                 In  segment DATA20_C, align 2, align-sorted
+     18          } KEY_InitStruct[KEY_NUM] =
+   \                     KEY_InitStruct:
+   \   000000   0100         DC8 1, 0
+   \   000002   01002100     DC16 1, 33
+   \   000006   00000000     DC8 0, 0, 0, 0
+   \   00000A   01002100     DC16 1, 33
+   \   00000E   0000         DC8 0, 0
+     19          {
+     20            {KEY1_GPIO_PORT,KEY1_GPIO_PIN,KEY1_GPIO_CONFIG,KEY1_PRESSED_LEVEL}, //按键1引脚配置参数
+     21            {KEY2_GPIO_PORT,KEY2_GPIO_PIN,KEY2_GPIO_CONFIG,KEY2_PRESSED_LEVEL}, //按键2引脚配置参数
+     22            //如需添加更多按键，请先对按键进行宏定义后，在参考上面修改
+     23            //{KEY3_GPIO_PORT,KEY3_GPIO_PIN,KEY2_GPIO_CONFIG,KEY3_PRESSED_LEVEL}, //按键3引脚配置参数
+     24          };
+     25          //按键处理信息变量
+     26          volatile struct
+     27          {
+     28            void (*ClickedCallBack)(KEY_EVENT);  //按键事件回调函数
+     29            KEY_STAGEn    Stage;         //按键处理阶段
+     30            BOOL          isClicked;     //按键状态是否发生改变                     
+     31            BOOL          isLongClick;   //是否是长按
+     32            uint16_t      ClickTimes;    //点击次数变量
+     33            uint16_t      DealTime;      //按键处理时间
+     34            uint16_t      PressedTime;   //按键按下时间
+     35            uint8_t     	WobbleTime;    //消抖时间变量	
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     36          }KeyStruct[KEY_NUM];
+   \                     KeyStruct:
+   \   000000                DS8 32
+     37          /*******************************************************************************
+     38          *  函数名称：KEY_GPIO_Config(KEYn key)
+     39          *  功能说明：KEY端口初始化程序
+     40          *  参数说明：KEYn key: 按键
+     41          *  函数返回：无
+     42          *  使用示例：
+     43          ********************************************************************************/
+     44          static void KEY_GPIO_Config(KEYn key)
+     45          {
+     46            GPIO_Init(KEY_InitStruct[key].Port, KEY_InitStruct[key].Pin, KEY_InitStruct[key].config);
+     47          }
+     48          /*******************************************************************************
+     49          *  函数名称：KEY_Init(KEYn key,void (*ClickedCallBack)(KEY_EVENT))
+     50          *  功能说明：KEY初始化程序
+     51          *  参数说明：
+     52                       KEYn key: 要初始化的按键
+     53                       void (*ClickedCallBack)(KEY_EVENT): 按键事件调用的回掉函数
+     54          *  函数返回：无
+     55          *  使用示例：
+     56          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     57          void KEY_Init(KEYn key,void (*ClickedCallBack)(KEY_EVENT))
+   \                     KEY_Init:
+     58          {
+   \   000000   3B14         PUSHM.A #0x4, R11
+   \   000002   C80D         MOVA    R13, R8
+     59            KEY_GPIO_Config(key);
+   \   000004   4A4C         MOV.B   R12, R10
+   \   000006   0F4A         MOV.W   R10, R15
+   \   000008   0F5F         RLA.W   R15
+   \   00000A   0F5F         RLA.W   R15
+   \   00000C   0F5F         RLA.W   R15
+   \   00000E   ....1E4F.... MOVX.W  KEY_InitStruct + 4(R15), R14
+   \   000014   1D43         MOV.W   #0x1, R13
+   \   000016   ....5C4F.... MOVX.B  KEY_InitStruct + 2(R15), R12
+   \   00001C   5C83         SUB.B   #0x1, R12
+   \   00001E   0230         JN      ??KEY_Init_0
+   \   000020                RPT     R12
+   \   000020   CC180D5D     RLAX.W  R13
+   \                     ??KEY_Init_0:
+   \   000024   ....5C4F.... MOVX.B  KEY_InitStruct(R15), R12
+   \   00002A   ........     CALLA   #GPIO_MultiBits_Init
+     60          
+     61            KeyStruct[key].ClickedCallBack = ClickedCallBack; //组册按键处理事件回调函数
+   \   00002E   0A5A         RLA.W   R10
+   \   000030   0A5A         RLA.W   R10
+   \   000032   0A5A         RLA.W   R10
+   \   000034   0A5A         RLA.W   R10
+   \   000036   0F4A         MOV.W   R10, R15
+   \   000038   ....CF48.... MOVX.A  R8, KeyStruct(R15)
+     62            KeyStruct[key].ClickTimes = 0;        //点击次数清零
+   \   00003E   ....8F43.... MOVX.W  #0x0, KeyStruct + 8(R15)
+     63            KeyStruct[key].Stage = KEY_REALSE;    //按键处于松开状态
+   \   000044   ....DF43.... MOVX.B  #0x1, KeyStruct + 4(R15)
+     64            KeyStruct[key].isClicked = FALSE;     //按键状态未改变
+   \   00004A   ....CF43.... MOVX.B  #0x0, KeyStruct + 5(R15)
+     65            KeyStruct[key].isLongClick = FALSE;   //不是长按
+   \   000050   ....CF43.... MOVX.B  #0x0, KeyStruct + 6(R15)
+     66            KeyStruct[key].WobbleTime = 0;        //消抖时间初始化为0
+   \   000056   ....CF43.... MOVX.B  #0x0, KeyStruct + 14(R15)
+     67          }
+   \   00005C   3816         POPM.A  #0x4, R11
+   \   00005E   1001         RETA
+     68          /*******************************************************************************
+     69          *  函数名称：KEY_isPressed(KEYn key)
+     70          *  功能说明：判断按键是否按下
+     71          *  参数说明：
+     72                       KEYn key: 按键
+     73          *  函数返回：BOOL ：按键当前的状态
+     74          *  使用示例：
+     75          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     76          BOOL KEY_isPressed(KEYn key)
+   \                     KEY_isPressed:
+     77          {
+   \   000000   0A14         PUSHM.A #0x1, R10
+     78            if(KEY_InitStruct[key].PressedLevel == GPIO_ReadBit(KEY_InitStruct[key].Port, KEY_InitStruct[key].Pin))
+   \   000002   4C4C         MOV.B   R12, R12
+   \   000004   4C0A         RLAM.A  #0x3, R12
+   \   000006   CA0C         MOVA    R12, R10
+   \   000008   ....5D4C.... MOVX.B  KEY_InitStruct + 2(R12), R13
+   \   00000E   ....5C4A.... MOVX.B  KEY_InitStruct(R10), R12
+   \   000014   ........     CALLA   #GPIO_ReadBit
+   \   000018   ....5C9A.... CMPX.B  KEY_InitStruct + 6(R10), R12
+   \   00001E   4C43         MOV.B   #0x0, R12
+   \   000020   22B3         BIT.W   #0x2, SR
+   \   000022   4C63         ADDC.B  #0x0, R12
+     79              return TRUE;
+   \   000024   0A16         POPM.A  #0x1, R10
+   \   000026   1001         RETA
+     80            else 
+     81              return FALSE;
+     82          }
+     83          /*******************************************************************************
+     84          *  函数名称：KEY_20msTimingProcess(KEYn key)
+     85          *  功能说明：按键20ms周期处理函数
+     86          *  参数说明：
+     87                       KEYn key: 按键
+     88          *  函数返回：无
+     89          *  使用示例：
+     90          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     91          void KEY_20msTimingProcess(KEYn key)
+   \                     KEY_20msTimingProcess:
+     92          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+     93            switch(KeyStruct[key].Stage)
+   \   000002   4C4C         MOV.B   R12, R12
+   \   000004   0A4C         MOV.W   R12, R10
+   \   000006   0A5A         RLA.W   R10
+   \   000008   0A5A         RLA.W   R10
+   \   00000A   0A5A         RLA.W   R10
+   \   00000C   0A5A         RLA.W   R10
+   \   00000E   ....5E4A.... MOVX.B  KeyStruct + 4(R10), R14
+   \   000014   4E83         SUB.B   #0x0, R14
+   \   000016   2C24         JEQ     ??KEY_20msTimingProcess_2
+   \   000018   5E83         SUB.B   #0x1, R14
+   \   00001A   0524         JEQ     ??KEY_20msTimingProcess_3
+   \   00001C   5E83         SUB.B   #0x1, R14
+   \   00001E   4924         JEQ     ??KEY_20msTimingProcess_4
+   \   000020   5E83         SUB.B   #0x1, R14
+   \   000022   0F24         JEQ     ??KEY_20msTimingProcess_5
+   \   000024   543C         JMP     ??KEY_20msTimingProcess_0
+     94            {
+     95            case KEY_REALSE:
+     96              if(KEY_isPressed(key)) //如果按键按下
+   \                     ??KEY_20msTimingProcess_3:
+   \   000026   ........     CALLA   #??Subroutine0_0
+   \                     ??CrossCallReturnLabel_2:
+   \   00002A   5120         JNE     ??KEY_20msTimingProcess_0
+     97              {
+     98                KeyStruct[key].Stage = KEY_PRESS_WOBBLE;    //进入按下消抖阶段
+   \   00002C   ....FA400300 MOVX.B  #0x3, KeyStruct + 4(R10)
+   \            ....        
+     99                KeyStruct[key].WobbleTime = 0;              //消抖时间清零
+   \   000034   ....CA43.... MOVX.B  #0x0, KeyStruct + 14(R10)
+    100                KeyStruct[key].PressedTime = 0;             //按键按下时间清零
+   \   00003A   ....8A43.... MOVX.W  #0x0, KeyStruct + 12(R10)
+   \   000040   463C         JMP     ??KEY_20msTimingProcess_0
+    101              }
+    102              break;
+    103            case KEY_PRESS_WOBBLE:
+    104              KeyStruct[key].PressedTime += KEY_TIMING_PROCESS_TIME;								//按键按下时间开始计时
+   \                     ??KEY_20msTimingProcess_5:
+   \   000042   ....BA501400 ADDX.W  #0x14, KeyStruct + 12(R10)
+   \            ....        
+    105              KeyStruct[key].WobbleTime += KEY_TIMING_PROCESS_TIME; 								//消抖时间开始计时
+   \   00004A   ........     CALLA   #?Subroutine0
+    106              if(KEY_isPressed(key)) //如果按键按下
+   \                     ??CrossCallReturnLabel_0:
+   \   00004E   0424         JEQ     ??KEY_20msTimingProcess_6
+    107              {
+    108                if(KeyStruct[key].WobbleTime >= KEY_PRESS_WOBBLE_TIME)  //消抖时间达到
+    109                {
+    110                  KeyStruct[key].Stage = KEY_PRESSED;         //可以确认按下，进入已按下阶段
+    111                  KeyStruct[key].ClickTimes ++;             //按下次数加1
+    112                }
+    113              }
+    114              else
+    115              {
+    116                KeyStruct[key].Stage = KEY_REALSE;          //如果消抖时间内松开则认为该次按键按下无效
+   \   000050   ....DA43.... MOVX.B  #0x1, KeyStruct + 4(R10)
+   \   000056   3B3C         JMP     ??KEY_20msTimingProcess_0
+    117              }
+   \                     ??KEY_20msTimingProcess_6:
+   \   000058   ....FA900A00 CMPX.B  #0xa, KeyStruct + 14(R10)
+   \            ....        
+   \   000060   3628         JNC     ??KEY_20msTimingProcess_0
+   \   000062   ....CA43.... MOVX.B  #0x0, KeyStruct + 4(R10)
+   \   000068   ....9A53.... ADDX.W  #0x1, KeyStruct + 8(R10)
+   \   00006E   2F3C         JMP     ??KEY_20msTimingProcess_0
+    118              break;
+    119            case KEY_PRESSED:
+    120              KeyStruct[key].PressedTime += KEY_TIMING_PROCESS_TIME;                //继续记录按键按下时间
+   \                     ??KEY_20msTimingProcess_2:
+   \   000070   ....BA501400 ADDX.W  #0x14, KeyStruct + 12(R10)
+   \            ....        
+    121              if( (KeyStruct[key].isLongClick == FALSE)
+    122                  &&(KeyStruct[key].PressedTime >= KEY_LONG_CLICK_PERIOD)) //如果长时间按下，则认为是长按状态
+   \   000078   ....CA93.... CMPX.B  #0x0, KeyStruct + 6(R10)
+   \   00007E   0F20         JNE     ??KEY_20msTimingProcess_7
+   \   000080   ....BA90F401 CMPX.W  #0x1f4, KeyStruct + 12(R10)
+   \            ....        
+   \   000088   0A28         JNC     ??KEY_20msTimingProcess_7
+    123              {
+    124                KeyStruct[key].ClickedCallBack(KEY_LONG_CLICK); //按键按下时间过长，则认为是长击
+   \   00008A   7C400300     MOV.B   #0x3, R12
+   \   00008E   ....5F4A.... MOVX.A  KeyStruct(R10), R15
+   \   000094   4F13         CALLA   R15
+    125                KeyStruct[key].isLongClick = TRUE;          //标记为长按
+   \   000096   ....DA43.... MOVX.B  #0x1, KeyStruct + 6(R10)
+   \   00009C   183C         JMP     ??KEY_20msTimingProcess_0
+    126              }
+    127              else
+    128              {
+    129                if(KEY_isPressed(key) == FALSE) //如果按键松开
+   \                     ??KEY_20msTimingProcess_7:
+   \   00009E   ........     CALLA   #??Subroutine0_0
+   \                     ??CrossCallReturnLabel_3:
+   \   0000A2   1524         JEQ     ??KEY_20msTimingProcess_0
+    130                {
+    131                  KeyStruct[key].Stage = KEY_REALSE_WOBBLE; //进入按键松开后消抖阶段
+   \   0000A4   ....EA43.... MOVX.B  #0x2, KeyStruct + 4(R10)
+    132                  KeyStruct[key].WobbleTime = 0;            //消抖时间清零，一边后续阶段消抖
+   \   0000AA   ....CA43.... MOVX.B  #0x0, KeyStruct + 14(R10)
+   \   0000B0   0E3C         JMP     ??KEY_20msTimingProcess_0
+    133                }
+    134              }
+    135              break;
+    136            case KEY_REALSE_WOBBLE:
+    137              KeyStruct[key].WobbleTime += KEY_TIMING_PROCESS_TIME;                 //按键松开消抖时间开始计时
+   \                     ??KEY_20msTimingProcess_4:
+   \   0000B2   ........     CALLA   #?Subroutine0
+    138              if(KEY_isPressed(key) == FALSE) //如果按键松开
+   \                     ??CrossCallReturnLabel_1:
+   \   0000B6   0B24         JEQ     ??KEY_20msTimingProcess_0
+    139              {
+    140                if(KeyStruct[key].WobbleTime >= KEY_REALSE_WOBBLE_TIME)  //消抖时间达到
+   \   0000B8   ....FA900A00 CMPX.B  #0xa, KeyStruct + 14(R10)
+   \            ....        
+   \   0000C0   0628         JNC     ??KEY_20msTimingProcess_0
+    141                {
+    142                  KeyStruct[key].Stage = KEY_REALSE;              //进入按键完全松开阶段
+   \   0000C2   ....DA43.... MOVX.B  #0x1, KeyStruct + 4(R10)
+    143                  KeyStruct[key].isClicked = TRUE;             //标记按键状态发生改变
+   \   0000C8   ....DA43.... MOVX.B  #0x1, KeyStruct + 5(R10)
+    144                }
+    145              }
+    146              break;	
+    147              default:break;
+    148            }
+    149            if(KeyStruct[key].isClicked == TRUE)  //如果按键状态改变了
+   \                     ??KEY_20msTimingProcess_0:
+   \   0000CE   ....DA93.... CMPX.B  #0x1, KeyStruct + 5(R10)
+   \   0000D4   3420         JNE     ??KEY_20msTimingProcess_8
+    150            {
+    151              //达到双击时间最大值或已经双击
+    152              KeyStruct[key].DealTime += KEY_TIMING_PROCESS_TIME;
+   \   0000D6   ....BA501400 ADDX.W  #0x14, KeyStruct + 10(R10)
+   \            ....        
+    153              if((KeyStruct[key].DealTime >= KEY_DOUBLE_CLICK_PERIOD)
+    154                ||KeyStruct[key].ClickTimes >= 2)
+   \   0000DE   ....BA90C800 CMPX.W  #0xc8, KeyStruct + 10(R10)
+   \            ....        
+   \   0000E6   042C         JC      ??KEY_20msTimingProcess_9
+   \   0000E8   ....AA93.... CMPX.W  #0x2, KeyStruct + 8(R10)
+   \   0000EE   2728         JNC     ??KEY_20msTimingProcess_8
+    155              {
+    156                if(KeyStruct[key].ClickedCallBack != NULL)
+   \                     ??KEY_20msTimingProcess_9:
+   \   0000F0   ....5F4A.... MOVX.A  KeyStruct(R10), R15
+   \   0000F6   DF03         CMPA    #0x0, R15
+   \   0000F8   1324         JEQ     ??KEY_20msTimingProcess_10
+    157                {
+    158                  //如果按下时间很长
+    159                  if((KeyStruct[key].isLongClick == FALSE))
+   \   0000FA   ....CA93.... CMPX.B  #0x0, KeyStruct + 6(R10)
+   \   000100   0F20         JNE     ??KEY_20msTimingProcess_10
+    160                  {
+    161                    if(KeyStruct[key].ClickTimes >= 2)  //按下多次则认为是双击
+   \   000102   ....AA93.... CMPX.W  #0x2, KeyStruct + 8(R10)
+   \   000108   0228         JNC     ??KEY_20msTimingProcess_11
+    162                      KeyStruct[key].ClickedCallBack(KEY_DOUBLE_CLICK);
+   \   00010A   6C43         MOV.B   #0x2, R12
+   \   00010C   053C         JMP     ??KEY_20msTimingProcess_1
+    163                    else if(KeyStruct[key].ClickTimes == 1)                               //否则认为是单击
+   \                     ??KEY_20msTimingProcess_11:
+   \   00010E   ....9A93.... CMPX.W  #0x1, KeyStruct + 8(R10)
+   \   000114   0520         JNE     ??KEY_20msTimingProcess_10
+    164                      KeyStruct[key].ClickedCallBack(KEY_CLICK);
+   \   000116   5C43         MOV.B   #0x1, R12
+   \                     ??KEY_20msTimingProcess_1:
+   \   000118   ....5F4A.... MOVX.A  KeyStruct(R10), R15
+   \   00011E   4F13         CALLA   R15
+    165                  }
+    166                }
+    167                KeyStruct[key].PressedTime = 0;
+   \                     ??KEY_20msTimingProcess_10:
+   \   000120   ....8A43.... MOVX.W  #0x0, KeyStruct + 12(R10)
+    168                KeyStruct[key].ClickTimes = 0;
+   \   000126   ....8A43.... MOVX.W  #0x0, KeyStruct + 8(R10)
+    169                KeyStruct[key].DealTime = 0;
+   \   00012C   ....8A43.... MOVX.W  #0x0, KeyStruct + 10(R10)
+    170                KeyStruct[key].isClicked = FALSE;
+   \   000132   ....CA43.... MOVX.B  #0x0, KeyStruct + 5(R10)
+    171                KeyStruct[key].isLongClick = FALSE;
+   \   000138   ....CA43.... MOVX.B  #0x0, KeyStruct + 6(R10)
+    172              }
+    173            }
+    174          }
+   \                     ??KEY_20msTimingProcess_8:
+   \   00013E   1A16         POPM.A  #0x2, R11
+   \   000140   1001         RETA
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   ....FA501400 ADDX.B  #0x14, KeyStruct + 14(R10)
+   \            ....        
+   \   000008                REQUIRE ??Subroutine0_0
+   \   000008                // Fall through to label ??Subroutine0_0
+
+   \                                 In  segment CODE, align 2
+   \                     ??Subroutine0_0:
+   \   000000   0C5C         RLA.W   R12
+   \   000002   0C5C         RLA.W   R12
+   \   000004   0C5C         RLA.W   R12
+   \   000006   0B4C         MOV.W   R12, R11
+   \   000008   ....5D4B.... MOVX.B  KEY_InitStruct + 2(R11), R13
+   \   00000E   ....5C4B.... MOVX.B  KEY_InitStruct(R11), R12
+   \   000014   ........     CALLA   #GPIO_ReadBit
+   \   000018   ....5C9B.... CMPX.B  KEY_InitStruct + 6(R11), R12
+   \   00001E   1001         RETA
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     12   KEY_20msTimingProcess
+       12   -- Indirect call
+       16   -> GPIO_ReadBit
+     20   KEY_Init
+       20   -> GPIO_MultiBits_Init
+      8   KEY_isPressed
+        8   -> GPIO_ReadBit
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      32  ??Subroutine0_0
+       8  ?Subroutine0
+     322  KEY_20msTimingProcess
+      96  KEY_Init
+      16  KEY_InitStruct
+      40  KEY_isPressed
+      32  KeyStruct
+
+ 
+ 498 bytes in segment CODE
+  16 bytes in segment DATA20_C
+  32 bytes in segment DATA20_Z
+ 
+ 498 bytes of CODE  memory
+  16 bytes of CONST memory
+  32 bytes of DATA  memory
+
+Errors: none
+Warnings: none

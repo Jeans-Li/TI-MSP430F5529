@@ -1,0 +1,607 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// IAR C/C++ Compiler V7.10.1.973/W32 for MSP430          03/Aug/2021  16:28:06
+// Copyright 1996-2017 IAR Systems AB.
+// Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+//
+//    __rt_version  =  3
+//    __double_size =  32
+//    __reg_r4      =  free
+//    __reg_r5      =  free
+//    __pic         =  no
+//    __core        =  430X
+//    __data_model  =  large
+//    __code_model  =  large
+//    Source file   =  D:\Dev\Project\TI_Car\Drivers\src\msp430f5529_compater.c
+//    Command line  =  
+//        -f C:\Users\Jeans\AppData\Local\Temp\EW1C28.tmp
+//        (D:\Dev\Project\TI_Car\Drivers\src\msp430f5529_compater.c -D NDEBUG
+//        -D RAM_VECTOR -lC D:\Dev\Project\TI_Car\Release\List -lA
+//        D:\Dev\Project\TI_Car\Release\List -o
+//        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+//        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+//        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+//        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+//        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+//        D:\Dev\Project\TI_Car\HardWare\key\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+//        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+//        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+//        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+//        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+//        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+//        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+//        D:\Dev\Project\TI_Car\User\USER\ -I
+//        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+//        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+//        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+//        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+//    Locale        =  Chinese (Simplified)_CHN.936
+//    List file     =  
+//        D:\Dev\Project\TI_Car\Release\List\msp430f5529_compater.s43
+//
+///////////////////////////////////////////////////////////////////////////////
+
+        NAME msp430f5529_compater
+
+        RTMODEL "__SystemLibrary", "DLib"
+        RTMODEL "__code_model", "large"
+        RTMODEL "__core", "430X"
+        RTMODEL "__data_model", "large"
+        RTMODEL "__double_size", "32"
+        RTMODEL "__pic", "no"
+        RTMODEL "__reg_r4", "free"
+        RTMODEL "__reg_r5", "free"
+        RTMODEL "__rt_version", "3"
+
+        RSEG CSTACK:DATA:SORT:NOROOT(0)
+
+        EXTERN ?longjmp_r4
+        EXTERN ?longjmp_r5
+        EXTERN ?setjmp_r4
+        EXTERN ?setjmp_r5
+
+        PUBWEAK ?setjmp_save_r4
+        PUBWEAK ?setjmp_save_r5
+        PUBLIC CB
+        PUBLIC CompaterB_ClearITPendingBit
+        PUBLIC CompaterB_ExchangeChanel
+        PUBLIC CompaterB_GetITStatus
+        PUBLIC CompaterB_ITConfig
+        PUBLIC CompaterB_Init
+        PUBLIC CompatorB_GetValue
+        PUBWEAK _A_CBCTL2_L
+        
+          CFI Names cfiNames0
+          CFI StackFrame CFA SP DATA
+          CFI Resource PC:20, SP:20, SR:16, R4L:16, R4H:4, R4:20, R5L:16, R5H:4
+          CFI Resource R5:20, R6L:16, R6H:4, R6:20, R7L:16, R7H:4, R7:20, R8L:16
+          CFI Resource R8H:4, R8:20, R9L:16, R9H:4, R9:20, R10L:16, R10H:4
+          CFI Resource R10:20, R11L:16, R11H:4, R11:20, R12L:16, R12H:4, R12:20
+          CFI Resource R13L:16, R13H:4, R13:20, R14L:16, R14H:4, R14:20, R15L:16
+          CFI Resource R15H:4, R15:20
+          CFI ResourceParts R4 R4H, R4L
+          CFI ResourceParts R5 R5H, R5L
+          CFI ResourceParts R6 R6H, R6L
+          CFI ResourceParts R7 R7H, R7L
+          CFI ResourceParts R8 R8H, R8L
+          CFI ResourceParts R9 R9H, R9L
+          CFI ResourceParts R10 R10H, R10L
+          CFI ResourceParts R11 R11H, R11L
+          CFI ResourceParts R12 R12H, R12L
+          CFI ResourceParts R13 R13H, R13L
+          CFI ResourceParts R14 R14H, R14L
+          CFI ResourceParts R15 R15H, R15L
+          CFI EndNames cfiNames0
+        
+          CFI Common cfiCommon0 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L Undefined
+          CFI R12H Undefined
+          CFI R12 Undefined
+          CFI R13L Undefined
+          CFI R13H Undefined
+          CFI R13 Undefined
+          CFI R14L Undefined
+          CFI R14H Undefined
+          CFI R14 Undefined
+          CFI R15L Undefined
+          CFI R15H Undefined
+          CFI R15 Undefined
+          CFI EndCommon cfiCommon0
+        
+        
+          CFI Common cfiCommon1 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L SameValue
+          CFI R12H SameValue
+          CFI R12 Concat
+          CFI R13L SameValue
+          CFI R13H SameValue
+          CFI R13 Concat
+          CFI R14L SameValue
+          CFI R14H SameValue
+          CFI R14 Concat
+          CFI R15L SameValue
+          CFI R15H SameValue
+          CFI R15 Concat
+          CFI EndCommon cfiCommon1
+        
+        EXTERN GPIO_MultiBits_Init
+
+// D:\Dev\Project\TI_Car\Drivers\src\msp430f5529_compater.c
+//    1 #include "msp430f5529_compater.h"
+
+        ASEGN DATA16_AN:DATA:NOROOT,08c4H
+// union <unnamed> __data16 _A_CBCTL2_L
+_A_CBCTL2_L:
+        DS8 2
+//    2 #include "msp430f5529_gpio.h"
+//    3 
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(1)
+//    4 const COMPB_MemMapPtr CB = COMPB_BASE_PTR;
+CB:
+        DATA32
+        DC32 8C0H
+//    5 /*******************************************************************************
+//    6 *  函数名称：CompaterB_Init(CompaterB_CHn CB0,CompaterB_CHn CB1)
+//    7 *  功能说明：初始化比较器输入源
+//    8 *  参数说明：CompaterB_CHn CB0 :比较器输入通道+
+//    9              CompaterB_CHn CB1 :比较器输入通道-
+//   10 *  函数返回：无
+//   11 *  参考资料：http://www.docin.com/p-676623167.html
+//   12 *  使用示例： CompaterB_Init(CB_CH0,CB_VREF_2_0V);    //初始化比较器CB_CH0为正输入端，CB_VREF_2_0V为负输入端
+//   13 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   14 void CompaterB_Init(CompaterB_CHn CB0,CompaterB_CHn CB1)
+CompaterB_Init:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function CompaterB_Init
+          CFI NoCalls
+//   15 {
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+        MOV.B   R12, R10
+        MOV.B   R13, R11
+//   16   ASSERT((CB0<CB_CH11) || (CB1<CB_CH11),"CompaterB_Init","CompaterB比较器只能有一个通道使用参考电压！\n");//只能有一个通道使用参考电压
+//   17   //设置引脚  
+//   18   if(CB0 <= CB_CH11)
+        MOV.B   #0xc, R9
+        CMP.B   R9, R12
+        JC      ??CompaterB_Init_5
+        MOV.B   R12, R8
+        CMP.B   #0x8, R12
+        CALLA   #?Subroutine0
+//   19   { //初始化引脚为第二功能
+//   20     GPIO_Init((CB0 < CB_CH8) ? P6 : P7, (CB0 < CB_CH8) ? CB0 : (CB0-8),GPI|SEL );
+//   21     CB->IPEN = BIT_SET;                 //输入通道使能
+??CrossCallReturnLabel_1:
+        BIS.W   #0x80, &0x8c0
+//   22     CB->IPSEL = CB0;                //输入通道选择
+        AND.W   #0xf, R8
+        MOV.W   &0x8c0, R15
+        AND.W   #0xfff0, R15
+        BIS.W   R8, R15
+        MOV.W   R15, &0x8c0
+//   23     CB->CTL3 |= (1<<CB0);           //关闭输入缓存
+        MOV.W   #0x1, R15
+        SUB.B   #0x1, R10
+        JN      ??CompaterB_Init_6
+        RPT     R10
+        RLAX.W  R15
+??CompaterB_Init_6:
+        ADD.B   #0x1, R10
+        BIS.W   R15, &0x8c6
+        JMP     ??CompaterB_Init_1
+//   24   }
+//   25   else
+//   26   {
+//   27     CBCTL2 = 0u;
+??CompaterB_Init_5:
+        MOV.W   #0x0, &0x8c4
+//   28     CB->RSEL = RESET;                   //参考电压应用到比较器+端        
+        BIC.W   #0x20, &0x8c4
+//   29   }
+//   30 
+//   31   if(CB1 <= CB_CH11)
+??CompaterB_Init_1:
+        CMP.B   R9, R11
+        JC      ??CompaterB_Init_7
+        MOV.B   R11, R8
+        CMP.B   #0x8, R11
+        CALLA   #?Subroutine0
+//   32   { //初始化引脚为第二功能
+//   33     GPIO_Init((CB1 < CB_CH8) ? P6 : P7, (CB1 < CB_CH8) ? CB1 : (CB1-8),GPI|SEL );
+//   34     CB->IMEN = BIT_SET;                 //输入通道使能
+??CrossCallReturnLabel_0:
+        BIS.W   #0x8000, &0x8c0
+//   35     CB->IMSEL = CB1;                //输入通道选择
+        SWPB    R8
+        AND.W   #0xf00, R8
+        MOV.W   &0x8c0, R15
+        AND.W   #0xf0ff, R15
+        BIS.W   R8, R15
+        MOV.W   R15, &0x8c0
+//   36     CB->CTL3 |= (1<<CB1);           //关闭输入缓存
+        MOV.W   #0x1, R15
+        SUB.B   #0x1, R11
+        JN      ??CompaterB_Init_8
+        RPT     R11
+        RLAX.W  R15
+??CompaterB_Init_8:
+        ADD.B   #0x1, R11
+        BIS.W   R15, &0x8c6
+//   37   }
+//   38   else
+//   39   {
+//   40     CB->RSEL = BIT_SET;                   //参考电压应用到比较器-端
+//   41   }
+//   42 
+//   43   if((CB0>=CB_VREF_1_5V) || (CB1>=CB_VREF_1_5V))  //如果有一端使用参考电压
+        CMP.B   R9, R10
+        JC      ??CompaterB_Init_9
+        JMP     ??CompaterB_Init_2
+??CompaterB_Init_7:
+        BIS.W   #0x20, &0x8c4
+//   44   {
+//   45     CB->MRVS = 0;
+??CompaterB_Init_9:
+        BIC.W   #0x1000, &0x8c2
+//   46     if((CB0==CB_VREF_VCC) || (CB1==CB_VREF_VCC))
+        CMP.B   #0xf, R10
+        JEQ     ??CompaterB_Init_10
+        CMP.B   #0xf, R11
+        JNE     ??CompaterB_Init_11
+//   47     {
+//   48       CB->REFL = 0;
+??CompaterB_Init_10:
+        AND.W   #0x9fff, &0x8c4
+//   49       CB->RS = 1;                                                    //外部参考电压禁止,使用Vcc作为参考电压源
+        MOV.W   &0x8c4, R15
+        AND.W   #0xff3f, R15
+        BIS.W   #0x40, R15
+        MOV.W   R15, &0x8c4
+        JMP     ??CompaterB_Init_3
+//   50     }
+//   51     else if((CB0==CB_VREF_1_5V) || (CB1==CB_VREF_1_5V)) //
+??CompaterB_Init_11:
+        CMP.B   R9, R10
+        JEQ     ??CompaterB_Init_12
+        CMP.B   R9, R11
+        JNE     ??CompaterB_Init_13
+//   52     {
+//   53       CB->REFL = 1;
+??CompaterB_Init_12:
+        MOV.W   &0x8c4, R15
+        AND.W   #0x9fff, R15
+        BIS.W   #0x2000, R15
+        JMP     ??CompaterB_Init_4
+//   54       CB->RS = 3;
+//   55       CB->REFACC = RESET;                                                //参考电压为1.5v,使用外部参考电压分压
+//   56     }
+//   57     else if((CB0==CB_VREF_2_0V) || (CB1==CB_VREF_2_0V)) //
+??CompaterB_Init_13:
+        CMP.B   #0xd, R10
+        JEQ     ??CompaterB_Init_14
+        CMP.B   #0xd, R11
+        JNE     ??CompaterB_Init_15
+//   58     {
+//   59       CB->REFL = 2;
+??CompaterB_Init_14:
+        MOV.W   &0x8c4, R15
+        AND.W   #0x9fff, R15
+        BIS.W   #0x4000, R15
+??CompaterB_Init_4:
+        MOV.W   R15, &0x8c4
+//   60       CB->RS = 3;
+        JMP     ??CompaterB_Init_0
+//   61       CB->REFACC = RESET;                                                //参考电压为2.0v,使用外部参考电压分压
+//   62     }
+//   63     else if((CB0==CB_VREF_2_5V) || (CB1==CB_VREF_2_5V)) //
+??CompaterB_Init_15:
+        CMP.B   #0xe, R10
+        JEQ     ??CompaterB_Init_16
+        CMP.B   #0xe, R11
+        JNE     ??CompaterB_Init_3
+//   64     {
+//   65       CB->REFL = 3;
+??CompaterB_Init_16:
+        BIS.W   #0x6000, &0x8c4
+//   66       CB->RS = 3;
+??CompaterB_Init_0:
+        BIS.W   #0xc0, &0x8c4
+//   67       CB->REFACC = RESET;                                               //参考电压为2.5v,使用外部参考电压分压
+        BIC.W   #0x8000, &0x8c4
+//   68     }
+//   69     CB->REF0 = 31;
+??CompaterB_Init_3:
+        BIS.W   #0x1f, &0x8c4
+//   70     CB->REF1 = 31;
+        BIS.W   #0x1f00, &0x8c4
+//   71   }
+//   72 
+//   73   CB->PWRMD = 1;                             //正常电源模式 
+??CompaterB_Init_2:
+        MOV.W   &0x8c2, R15
+        AND.W   #0xfcff, R15
+        BIS.W   #0x100, R15
+        MOV.W   R15, &0x8c2
+//   74   CB->ON = BIT_SET;                              // 打开比较器B  
+        BIS.W   #0x400, &0x8c2
+//   75 }
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock0
+        REQUIRE _A_CBCTL2_L
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine0:
+          CFI Block cfiCond1 Using cfiCommon0
+          CFI Function CompaterB_Init
+          CFI Conditional ??CrossCallReturnLabel_1
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond2 Using cfiCommon0
+          CFI (cfiCond2) Function CompaterB_Init
+          CFI (cfiCond2) Conditional ??CrossCallReturnLabel_0
+          CFI (cfiCond2) R8L Frame(CFA, -20)
+          CFI (cfiCond2) R8H Frame(CFA, -18)
+          CFI (cfiCond2) R9L Frame(CFA, -16)
+          CFI (cfiCond2) R9H Frame(CFA, -14)
+          CFI (cfiCond2) R10L Frame(CFA, -12)
+          CFI (cfiCond2) R10H Frame(CFA, -10)
+          CFI (cfiCond2) R11L Frame(CFA, -8)
+          CFI (cfiCond2) R11H Frame(CFA, -6)
+          CFI (cfiCond2) CFA SP+24
+          CFI Block cfiPicker3 Using cfiCommon1
+          CFI (cfiPicker3) NoFunction
+          CFI (cfiPicker3) Picker
+        SUBC.B  R12, R12
+        ADD.B   #0x6, R12
+        MOV.W   #0x101, R14
+        MOV.W   R8, R13
+          CFI (cfiCond1) TailCall CompaterB_Init GPIO_MultiBits_Init
+          CFI (cfiCond1) TailCall CompaterB_Init GPIO_MultiBits_Init
+        BRA     #GPIO_MultiBits_Init
+          CFI EndBlock cfiCond1
+          CFI EndBlock cfiCond2
+          CFI EndBlock cfiPicker3
+//   76 /*******************************************************************************
+//   77 *  函数名称: CompaterB_ExchangeChanel(STATUS status)  
+//   78 *  功能说明：交换输入通道极性
+//   79 *  参数说明：STATUS status：是否交换极性
+//   80 *  函数返回：无
+//   81 *  使用示例：CompaterB_ExchangeChanel(DISABLE);   //禁止交换比较器输入通道   
+//   82 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   83 void  CompaterB_ExchangeChanel(STATUS status)                                      
+CompaterB_ExchangeChanel:
+          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Function CompaterB_ExchangeChanel
+          CFI NoCalls
+//   84 {
+//   85   CB->EX = status;
+        BIT.B   #0x1, R12
+        JNE     ??CompaterB_ExchangeChanel_0
+        BIC.W   #0x20, &0x8c2
+        RETA
+??CompaterB_ExchangeChanel_0:
+        BIS.W   #0x20, &0x8c2
+//   86 }
+        RETA
+          CFI EndBlock cfiBlock4
+//   87 /*******************************************************************************
+//   88 *  函数名称：CompatorB_GetValue(void)
+//   89 *  功能说明：读取比较的结果
+//   90 *  参数说明：无
+//   91 *  函数返回：STATUS :BIT_SET 正输入端电压大于负输入端电压，RESET 正输入端电压小于于负输入端电压
+//   92 *  使用示例：
+//   93 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   94 STATUS CompatorB_GetValue(void)
+CompatorB_GetValue:
+          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Function CompatorB_GetValue
+          CFI NoCalls
+//   95 {
+//   96   return ((CB->CB_OUT) ? BIT_SET : RESET);
+        MOV.W   &0x8c2, R12
+        AND.B   #0x1, R12
+        RETA
+//   97 }
+          CFI EndBlock cfiBlock5
+//   98 /*******************************************************************************
+//   99 *  函数名称: CompaterB_ITConfig (CompaterB_IRQn irqn, STATUS ITState)
+//  100 *  功能说明：设置中断是否使能并配置中断触发沿
+//  101 *  参数说明：CompaterB_IRQn irqn:选择为上升沿还是下降沿中断
+//  102              BOOL ITState       :是否使能中断
+//  103 *  函数返回：无
+//  104 *  使用示例：CompaterB_ITConfig (CB_RaisingIRQn, ENABLE);  //比较器设置为上升沿中断，并使能中断
+//  105 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//  106 void CompaterB_ITConfig (CompaterB_IRQn irqn, STATUS ITState)
+CompaterB_ITConfig:
+          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Function CompaterB_ITConfig
+          CFI NoCalls
+//  107 {
+//  108   CB->IES = RESET;                 //上升沿CBIFG，下降沿CBIIFG
+        BIC.W   #0x8, &0x8c2
+//  109   if(ITState != DISABLE)//设置是否允许中断
+        MOV.B   R12, R14
+        XOR.B   #0xff, R14
+        CMP.B   #0x0, R13
+        JEQ     ??CompaterB_ITConfig_0
+//  110   {
+//  111     CB->CB_IFG &=~irqn;              //清中断标志位
+        AND.B   R14, &0x8cc
+//  112     CB->CB_IE  |= irqn;
+        BIS.B   R12, &0x8cd
+        RETA
+//  113   }
+//  114   else
+//  115   {
+//  116     CB->CB_IE  &=~irqn;
+??CompaterB_ITConfig_0:
+        AND.B   R14, &0x8cd
+//  117   }                      
+//  118 }
+        RETA
+          CFI EndBlock cfiBlock6
+//  119 /*******************************************************************************
+//  120 *  函数名称：CompaterB_GetITStatus(CompaterB_IRQn irqn)
+//  121 *  功能说明：读取比较中断标志状态
+//  122 *  参数说明：CompaterB_IRQn irqn:选择为上升沿还是下降沿中断标志
+//  123 *  函数返回：STATUS ：中断标志是否置位
+//  124 *  使用示例：if(TRUE == CompaterB_GetITStatus(CB_RaisingIRQn)){...} //判断中断标志是否置位
+//  125 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//  126 STATUS  CompaterB_GetITStatus(CompaterB_IRQn irqn)
+CompaterB_GetITStatus:
+          CFI Block cfiBlock7 Using cfiCommon0
+          CFI Function CompaterB_GetITStatus
+          CFI NoCalls
+//  127 {
+//  128   return ((CB->CB_IFG & irqn) ? TRUE : FALSE);
+        MOV.B   &0x8cc, R14
+        BIT.B   R12, R14
+        JNE     ??CompaterB_GetITStatus_0
+        MOV.B   #0x0, R12
+        RETA
+??CompaterB_GetITStatus_0:
+        MOV.B   #0x1, R12
+        RETA
+//  129 }
+          CFI EndBlock cfiBlock7
+//  130 /*******************************************************************************
+//  131 *  函数名称：CompaterB_ClearITPendingBit(CompaterB_IRQn irqn)
+//  132 *  功能说明：清除比较中断标志位
+//  133 *  参数说明：CompaterB_IRQn irqn:选择为上升沿还是下降沿中断标志
+//  134 *  函数返回：无
+//  135 *  使用示例：CompaterB_ClearITPendingBit(CB_RaisingIRQn);   //清除上升沿中断标志
+//  136 ********************************************************************************/
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//  137 void  CompaterB_ClearITPendingBit(CompaterB_IRQn irqn)
+CompaterB_ClearITPendingBit:
+          CFI Block cfiBlock8 Using cfiCommon0
+          CFI Function CompaterB_ClearITPendingBit
+          CFI NoCalls
+//  138 {
+//  139   CB->CB_IFG &=~ irqn;
+        BIC.B   R12, &0x8cc
+//  140 }
+        RETA
+          CFI EndBlock cfiBlock8
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r4:
+        REQUIRE ?setjmp_r4
+        REQUIRE ?longjmp_r4
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r5:
+        REQUIRE ?setjmp_r5
+        REQUIRE ?longjmp_r5
+
+        END
+// 
+// 396 bytes in segment CODE
+//   2 bytes in segment DATA16_AN
+//   4 bytes in segment DATA20_C
+// 
+// 396 bytes of CODE  memory
+//   4 bytes of CONST memory
+//   0 bytes of DATA  memory (+ 2 bytes shared)
+//
+//Errors: none
+//Warnings: none

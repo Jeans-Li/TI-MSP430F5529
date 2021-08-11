@@ -1,0 +1,2633 @@
+################################################################################
+#                                                                              #
+#      IAR Universal Linker V6.4.6.89                                          #
+#                                                                              #
+#           Link time     =  04/Aug/2021  14:40:34                             #
+#           Target CPU    =  MSP430                                            #
+#           List file     =  D:\Dev\Project\TI_Car\Release\List\Template.map   #
+#           Output file 1 =  D:\Dev\Project\TI_Car\Release\Exe\Template.d43    #
+#                            Format: ubrof10                                   #
+#                            UBROF version 10.0.6                              #
+#                            Using library modules for C-SPY (-rt)             #
+#           Command line  =  -f C:\Users\Jeans\AppData\Local\Temp\EW305.tmp    #
+#                            (D:\Dev\Project\TI_Car\Release\Obj\app_main.r43   #
+#                            D:\Dev\Project\TI_Car\Release\Obj\assert.r43      #
+#                            D:\Dev\Project\TI_Car\Release\Obj\delay.r43       #
+#                            D:\Dev\Project\TI_Car\Release\Obj\encoder.r43     #
+#                            D:\Dev\Project\TI_Car\Release\Obj\KEY.r43         #
+#                            D:\Dev\Project\TI_Car\Release\Obj\LCD.r43         #
+#                            D:\Dev\Project\TI_Car\Release\Obj\LCD_API.r43     #
+#                            D:\Dev\Project\TI_Car\Release\Obj\LCD_FONT.r43    #
+#                            D:\Dev\Project\TI_Car\Release\Obj\LED.r43         #
+#                            D:\Dev\Project\TI_Car\Release\Obj\main.r43        #
+#                            D:\Dev\Project\TI_Car\Release\Obj\motor.r43       #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_adc #
+#                            .r43                                              #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_clo #
+#                            ck.r43                                            #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_com #
+#                            pater.r43                                         #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_dma #
+#                            .r43                                              #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_fla #
+#                            sh.r43                                            #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_gpi #
+#                            o.r43                                             #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_i2c #
+#                            .r43                                              #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_it. #
+#                            r43                                               #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_lpm #
+#                            .r43                                              #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_nmi #
+#                            .r43                                              #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_rem #
+#                            ap.r43                                            #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_rtc #
+#                            .r43                                              #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_spi #
+#                            .r43                                              #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_tim #
+#                            er.r43                                            #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_uar #
+#                            t.r43                                             #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_vec #
+#                            tors.r43                                          #
+#                            D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_wat #
+#                            chdog.r43                                         #
+#                            D:\Dev\Project\TI_Car\Release\Obj\nrf2401.r43     #
+#                            D:\Dev\Project\TI_Car\Release\Obj\OLED.r43        #
+#                            D:\Dev\Project\TI_Car\Release\Obj\PID.r43         #
+#                            D:\Dev\Project\TI_Car\Release\Obj\remote.r43      #
+#                            D:\Dev\Project\TI_Car\Release\Obj\startup_msp430f #
+#                            5529.r43                                          #
+#                            -o                                                #
+#                            D:\Dev\Project\TI_Car\Release\Exe\Template.d43    #
+#                            -l                                                #
+#                            D:\Dev\Project\TI_Car\Release\List\Template.map   #
+#                            -xms -ID:\Dev\IAR\430\LIB\ -f                     #
+#                            D:\Dev\IAR\430\config\linker\lnk430f5529.xcl      #
+#                            (-cmsp430 -D?CPU30_OFFSET=2 -QCODE_I=CODE_ID      #
+#                            -QTLS16_I=TLS16_ID -D__iar_HWMUL=4C0              #
+#                            -Z(CONST)INFO=1800-19FF                           #
+#                            -Z(CONST)INFOA=1980-19FF                          #
+#                            -Z(CONST)INFOB=1900-197F                          #
+#                            -Z(CONST)INFOC=1880-18FF                          #
+#                            -Z(CONST)INFOD=1800-187F                          #
+#                            -Z(DATA)USBRAM=1C00-23FF                          #
+#                            -Z(DATA)DATA16_I,DATA16_Z,DATA16_N,TLS16_I=2400-4 #
+#                            3FF                                               #
+#                            -Z(DATA)DATA16_HEAP+_DATA16_HEAP_SIZE             #
+#                            -Z(DATA)CODE_I                                    #
+#                            -Z(DATA)DATA20_I,DATA20_Z,DATA20_N,DATA20_HEAP+_D #
+#                            ATA20_HEAP_SIZE                                   #
+#                            -Z(DATA)CSTACK+_STACK_SIZE#                       #
+#                            -Z(CONST)DATA16_C,DATA16_ID,TLS16_ID,DIFUNCT,CHEC #
+#                            KSUM=4400-FF7F                                    #
+#                            -Z(CODE)CSTART,ISR_CODE,CODE16=4400-FF7F          #
+#                            -P(CODE)CODE=4400-FF7F,10000-243FF                #
+#                            -Z(CONST)DATA20_C,DATA20_ID,CODE_ID=4400-FF7F,100 #
+#                            40-243FF                                          #
+#                            -Z(CODE)INTVEC=FF80-FFFF                          #
+#                            -Z(CODE)RESET=FFFE-FFFF) -f                       #
+#                            D:\Dev\IAR\430\config\linker\multiplier32.xcl     #
+#                            (-e?Mul8Hw=?Mul8 -e?Mul16Hw=?Mul16                #
+#                            -e?Mul16to32uHw=?Mul16to32u                       #
+#                            -e?Mul16to32sHw=?Mul16to32s -e?Mul32Hw32=?Mul32   #
+#                            -e?Mul64Hw32=_Mul64i                              #
+#                            -e?Mul32u32uto64iHw32=_Mul32u32uto64i             #
+#                            -e?Mul32fHw32=_Mul32f                             #
+#                            -e_Mul64fHw32Ptr=_Mul64fPtr) -D_STACK_SIZE=A0     #
+#                            -rt D:\Dev\IAR\430\lib\dlib\dl430xllfn.r43        #
+#                            -D_DATA16_HEAP_SIZE=A0 -s __program_start         #
+#                            -D_DATA20_HEAP_SIZE=50)                           #
+#                                                                              #
+#                           Copyright (C) 1987-2016 IAR Systems AB.            #
+################################################################################
+
+
+
+
+
+                ****************************************
+                *                                      *
+                *           CROSS REFERENCE            *
+                *                                      *
+                ****************************************
+
+       Program entry at :           4400  Relocatable, from module : ?cstart
+
+
+
+
+                ****************************************
+                *                                      *
+                *            RUNTIME MODEL             *
+                *                                      *
+                ****************************************
+
+  __Heap_Handler             = Basic
+  __SystemLibrary            = DLib
+  __code_model               = large
+  __core                     = 430X
+  __data_model               = large
+  __dlib_file_descriptor     = 0
+  __dlib_full_locale_support = 0
+  __double_size              = 32
+  __pic                      = no
+  __reg_r4                   = free
+  __reg_r5                   = free
+  __rt_version               = 3
+
+                ****************************************
+                *                                      *
+                *    AUTOMATIC SYMBOL REDIRECTIONS     *
+                *                                      *
+                ****************************************
+
+       All references to: _Printf
+         were redirected to: _PrintfFullNoMb
+
+
+
+                ****************************************
+                *                                      *
+                *              MODULE MAP              *
+                *                                      *
+                ****************************************
+
+
+  DEFINED ABSOLUTE ENTRIES
+    *************************************************************************
+
+  DEFINED ABSOLUTE ENTRIES
+  PROGRAM MODULE, NAME : ?ABS_ENTRY_MOD
+
+Absolute parts
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _DATA20_HEAP_SIZE       0050 
+           _DATA16_HEAP_SIZE       00A0 
+           _STACK_SIZE             00A0 
+           __iar_HWMUL             04C0            ?Mul32fHw32 (?Mul32fHw32)
+                                                   ?Subroutine15 (OLED)
+                                                   ?Subroutine3 (encoder)
+                                                   ?Subroutine6 (msp430f5529_clock)
+                                                   OLED_DispChar (OLED)
+                                                   OLED_DispDecAt (OLED)
+                                                   Segment part 28 (encoder)
+                                                   TIMER_PWM_SetChannelDuty (msp430f5529_timer)
+                                                   speed_Handle (encoder)
+           ?CPU30_OFFSET           0002 
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\app_main.r43
+  PROGRAM MODULE, NAME : app_main
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA20_Z
+  Relative segment, address: 241E - 251D (0x100 bytes), align: 0
+  Segment part 7.             Intra module refs:   UART_RX_IRQ_Handler
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           databuf                 241E 
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 2408 - 2409 (0x2 bytes), align: 1
+  Segment part 8.             Intra module refs:   UART_RX_IRQ_Handler
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           num                     2408 
+    -------------------------------------------------------------------------
+ISR_CODE
+  Relative segment, address: 4438 - 4469 (0x32 bytes), align: 1
+  Segment part 10.            Intra module refs:   app_main_init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           UART_RX_IRQ_Handler     4438 
+               interrupt function
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5CE0 - 5D29 (0x4a bytes), align: 1
+  Segment part 11.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           app_main_init           5CE0            main (main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 644E - 6455 (0x8 bytes), align: 1
+  Segment part 13.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           app_main                644E            main (main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 50C8 - 518F (0xc8 bytes), align: 1
+  Segment part 12.            Intra module refs:   app_main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           display                 50C8 
+               calls direct
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 6508 - 650E (0x7 bytes), align: 0
+  Segment part 2.             Intra module refs:   display
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 650F - 6514 (0x6 bytes), align: 0
+  Segment part 3.             Intra module refs:   display
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 6515 - 6527 (0x13 bytes), align: 0
+  Segment part 4.             Intra module refs:   display
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 6528 - 653A (0x13 bytes), align: 0
+  Segment part 5.             Intra module refs:   display
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 653B - 6547 (0xd bytes), align: 0
+  Segment part 6.             Intra module refs:   display
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\assert.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\delay.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\encoder.r43
+  PROGRAM MODULE, NAME : encoder
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA20_I
+  Relative segment, address: 2400 - 2401 (0x2 bytes), align: 1
+  Segment part 5.             Intra module refs:   GPIO_IRQ_Handler
+                                                   TIMER_TA1_A0_IRQ_Handler
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           encoderCnt_A            2400 
+    -------------------------------------------------------------------------
+DATA20_I
+  Relative segment, address: 2402 - 2403 (0x2 bytes), align: 1
+  Segment part 7.             Intra module refs:   GPIO_IRQ_Handler
+                                                   TIMER_TA1_A0_IRQ_Handler
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           encoderCnt_B            2402 
+    -------------------------------------------------------------------------
+DATA20_I
+  Relative segment, address: 2404 - 2405 (0x2 bytes), align: 1
+  Segment part 9.             Intra module refs:   GPIO_IRQ_Handler
+                                                   TIMER_TA1_A0_IRQ_Handler
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           encoderCnt_C            2404 
+    -------------------------------------------------------------------------
+DATA20_I
+  Relative segment, address: 2406 - 2407 (0x2 bytes), align: 1
+  Segment part 11.            Intra module refs:   GPIO_IRQ_Handler
+                                                   TIMER_TA1_A0_IRQ_Handler
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           encoderCnt_D            2406 
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 240A - 240B (0x2 bytes), align: 1
+  Segment part 13.            Intra module refs:   TIMER_TA1_A0_IRQ_Handler
+                                                   speed_Handle
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cnt_Temp_A              240A 
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 240C - 240D (0x2 bytes), align: 1
+  Segment part 14.            Intra module refs:   TIMER_TA1_A0_IRQ_Handler
+                                                   speed_Handle
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cnt_Temp_B              240C 
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 240E - 240F (0x2 bytes), align: 1
+  Segment part 15.            Intra module refs:   TIMER_TA1_A0_IRQ_Handler
+                                                   speed_Handle
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cnt_Temp_C              240E 
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 2410 - 2411 (0x2 bytes), align: 1
+  Segment part 16.            Intra module refs:   TIMER_TA1_A0_IRQ_Handler
+                                                   speed_Handle
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cnt_Temp_D              2410 
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 2412 - 2413 (0x2 bytes), align: 1
+  Segment part 17.            Intra module refs:   speed_Handle
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RPM_A                   2412            display (app_main)
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 2414 - 2415 (0x2 bytes), align: 1
+  Segment part 18.            Intra module refs:   speed_Handle
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RPM_B                   2414            display (app_main)
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 2416 - 2417 (0x2 bytes), align: 1
+  Segment part 19.            Intra module refs:   speed_Handle
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RPM_C                   2416            display (app_main)
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 2418 - 2419 (0x2 bytes), align: 1
+  Segment part 20.            Intra module refs:   speed_Handle
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RPM_D                   2418            display (app_main)
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 241A - 241D (0x4 bytes), align: 1
+  Segment part 21.            Intra module refs:   speed_Handle
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           speed                   241A            display (app_main)
+    -------------------------------------------------------------------------
+ISR_CODE
+  Relative segment, address: 446A - 44C5 (0x5c bytes), align: 1
+  Segment part 22.            Intra module refs:   Encoder_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIMER_TA1_A0_IRQ_Handler
+                                   446A 
+               interrupt function
+    -------------------------------------------------------------------------
+ISR_CODE
+  Relative segment, address: 44C6 - 452F (0x6a bytes), align: 1
+  Segment part 23.            Intra module refs:   Encoder_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_IRQ_Handler        44C6 
+               interrupt function
+               calls direct
+    -------------------------------------------------------------------------
+ISR_CODE
+  Relative segment, address: 4530 - 4535 (0x6 bytes), align: 1
+  Segment part 24.            Intra module refs:   GPIO_IRQ_Handler
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            4530 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5862 - 58E9 (0x88 bytes), align: 1
+  Segment part 25.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           Encoder_Init            5862            app_main_init (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 524A - 5303 (0xba bytes), align: 1
+  Segment part 26.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           speed_Handle            524A            app_main (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5F96 - 5F99 (0x4 bytes), align: 1
+  Segment part 27.            Intra module refs:   speed_Handle
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine1            5F96 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5F9A - 5FB7 (0x1e bytes), align: 1
+  Segment part 28.            Intra module refs:   ?Subroutine1
+                                                   speed_Handle
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6332 - 633F (0xe bytes), align: 1
+  Segment part 29.            Intra module refs:   Segment part 28
+                                                   speed_Handle
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine3            6332 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 62A0 - 62B1 (0x12 bytes), align: 1
+  Segment part 30.            Intra module refs:   ?Subroutine1
+                                                   speed_Handle
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine2            62A0 
+    -------------------------------------------------------------------------
+DATA20_ID
+  Relative segment, address: 6ED6 - 6ED7 (0x2 bytes), align: 1
+  Segment part 6.             Intra module refs:   encoderCnt_A
+    -------------------------------------------------------------------------
+DATA20_ID
+  Relative segment, address: 6ED8 - 6ED9 (0x2 bytes), align: 1
+  Segment part 8.             Intra module refs:   encoderCnt_B
+    -------------------------------------------------------------------------
+DATA20_ID
+  Relative segment, address: 6EDA - 6EDB (0x2 bytes), align: 1
+  Segment part 10.            Intra module refs:   encoderCnt_C
+    -------------------------------------------------------------------------
+DATA20_ID
+  Relative segment, address: 6EDC - 6EDD (0x2 bytes), align: 1
+  Segment part 12.            Intra module refs:   encoderCnt_D
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\KEY.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\LCD.r43
+  PROGRAM MODULE, NAME : LCD
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 0202 - 0203 (0x2 bytes), align: 0
+  Segment part 1. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PAOUT_L              0202 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PAOUT                   0202 
+           PAOUT_H                 0203 
+           PAOUT_L                 0202 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\LCD_API.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\LCD_FONT.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\LED.r43
+  PROGRAM MODULE, NAME : LED
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA20_C
+  Relative segment, address: 6548 - 654B (0x4 bytes), align: 0
+  Segment part 2.             Intra module refs:   ?Subroutine2
+                                                   LED_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           LED_PIN                 6548 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 56BC - 56D3 (0x18 bytes), align: 1
+  Segment part 3.             Intra module refs:   LED_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           LED_Off                 56BC 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 56D4 - 56DB (0x8 bytes), align: 1
+  Segment part 4.             Intra module refs:   LED_Off
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine1            56D4 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 56DC - 56E5 (0xa bytes), align: 1
+  Segment part 5.             Intra module refs:   ?Subroutine1
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine4            56DC 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 56E6 - 56ED (0x8 bytes), align: 1
+  Segment part 6.             Intra module refs:   LED_Off
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            56E6 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 56EE - 5735 (0x48 bytes), align: 1
+  Segment part 7.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           LED_Init                56EE            app_main_init (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5736 - 573D (0x8 bytes), align: 1
+  Segment part 9.             Intra module refs:   LED_Off
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine5            5736 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 573E - 574B (0xe bytes), align: 1
+  Segment part 12.            Intra module refs:   ?Subroutine0
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine2            573E 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\main.r43
+  PROGRAM MODULE, NAME : main
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 60F8 - 6111 (0x1a bytes), align: 1
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           main                    60F8            Segment part 26 (?cstart)
+               calls direct
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\motor.r43
+  PROGRAM MODULE, NAME : motor
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 562A - 56BB (0x92 bytes), align: 1
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           MOTOR_Init              562A            app_main_init (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 645E - 6465 (0x8 bytes), align: 1
+  Segment part 3.             Intra module refs:   MOTOR_Init
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine9            645E 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 63FE - 6407 (0xa bytes), align: 1
+  Segment part 4.             Intra module refs:   MOTOR_Init
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine7            63FE 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 574C - 5771 (0x26 bytes), align: 1
+  Segment part 6.             Intra module refs:   ?Subroutine8
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           MOTOR_A                 574C 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5772 - 5779 (0x8 bytes), align: 1
+  Segment part 7.             Intra module refs:   MOTOR_A
+                                                   MOTOR_B
+                                                   MOTOR_C
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            5772 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 577A - 579F (0x26 bytes), align: 1
+  Segment part 8.             Intra module refs:   Car_Go
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           MOTOR_B                 577A 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 57A0 - 57A9 (0xa bytes), align: 1
+  Segment part 9.             Intra module refs:   MOTOR_B
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine10           57A0 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 57AA - 57D7 (0x2e bytes), align: 1
+  Segment part 10.            Intra module refs:   Segment part 16
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           MOTOR_C                 57AA 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5FFA - 6001 (0x8 bytes), align: 1
+  Segment part 32.            Intra module refs:   MOTOR_A
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine4            5FFA 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6002 - 6009 (0x8 bytes), align: 1
+  Segment part 33.            Intra module refs:   ?Subroutine10
+                                                   ?Subroutine4
+                                                   ?Subroutine5
+                                                   MOTOR_A
+                                                   MOTOR_B
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine14           6002 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 600A - 6019 (0x10 bytes), align: 1
+  Segment part 11.            Intra module refs:   MOTOR_C
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine5            600A 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5EAE - 5EDF (0x32 bytes), align: 1
+  Segment part 12.            Intra module refs:   Segment part 16
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           MOTOR_D                 5EAE 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 627C - 628D (0x12 bytes), align: 1
+  Segment part 13.            Intra module refs:   MOTOR_D
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine6            627C 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6038 - 6045 (0xe bytes), align: 1
+  Segment part 14.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           Car_Go                  6038            app_main_init (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6046 - 604F (0xa bytes), align: 1
+  Segment part 16.            Intra module refs:   Car_Go
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6050 - 6055 (0x6 bytes), align: 1
+  Segment part 23.            Intra module refs:   Car_Go
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine8            6050 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_adc.r43
+  PROGRAM MODULE, NAME : msp430f5529_adc
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 024A - 024B (0x2 bytes), align: 0
+  Segment part 1. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PCSEL_L              024A 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PCSEL                   024A 
+           PCSEL_H                 024B 
+           PCSEL_L                 024A 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 01B0 - 01B1 (0x2 bytes), align: 0
+  Segment part 2. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_REFCTL0_L            01B0 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           REFCTL0                 01B0 
+           REFCTL0_H               01B1 
+           REFCTL0_L               01B0 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_clock.r43
+  PROGRAM MODULE, NAME : msp430f5529_clock
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 0120 - 0121 (0x2 bytes), align: 0
+  Segment part 1. ROOT        Intra module refs:   CLOCK_DCO_PLLConfig
+                                                   SetVcoreUp
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PMMCTL0_L            0120 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PMMCTL0                 0120 
+           PMMCTL0_H               0121 
+           PMMCTL0_L               0120 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 0124 - 0125 (0x2 bytes), align: 0
+  Segment part 2. ROOT        Intra module refs:   CLOCK_DCO_PLLConfig
+                                                   SetVcoreUp
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_SVSMHCTL_L           0124 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           SVSMHCTL                0124 
+           SVSMHCTL_H              0125 
+           SVSMHCTL_L              0124 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 0126 - 0127 (0x2 bytes), align: 0
+  Segment part 3. ROOT        Intra module refs:   CLOCK_DCO_PLLConfig
+                                                   SetVcoreUp
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_SVSMLCTL_L           0126 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           SVSMLCTL                0126 
+           SVSMLCTL_H              0127 
+           SVSMLCTL_L              0126 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 012C - 012D (0x2 bytes), align: 0
+  Segment part 4. ROOT        Intra module refs:   CLOCK_DCO_PLLConfig
+                                                   SetVcoreUp
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PMMIFG_L             012C 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PMMIFG                  012C 
+           PMMIFG_H                012D 
+           PMMIFG_L                012C 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 0102 - 0103 (0x2 bytes), align: 0
+  Segment part 5. ROOT        Intra module refs:   CLOCK_ACLK_Config
+                                                   CLOCK_DCO_PLLConfig
+                                                   XT1_Config
+                                                   XT2_Config
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_SFRIFG1_L            0102 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           SFRIFG1                 0102 
+           SFRIFG1_H               0103 
+           SFRIFG1_L               0102 
+    -------------------------------------------------------------------------
+DATA20_N
+  Relative segment, address: 2920 - 2947 (0x28 bytes), align: 1
+  Segment part 8.             Intra module refs:   ?Subroutine4
+                                                   ?Subroutine8
+                                                   CLOCK_DCO_PLLConfig
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           g_sClock                2920            ?Subroutine20 (msp430f5529_timer)
+                                                   ?Subroutine8 (msp430f5529_timer)
+                                                   SPI_Master_Init (msp430f5529_spi)
+                                                   TIMER_PWM_SetFrequency (msp430f5529_timer)
+                                                   UART_SetBaudRate (msp430f5529_uart)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6056 - 6071 (0x1c bytes), align: 1
+  Segment part 10.            Intra module refs:   ?Subroutine0
+                                                   CLOCK_DCO_PLLConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           XT1_Config              6056 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 634E - 635B (0xe bytes), align: 1
+  Segment part 13.            Intra module refs:   CLOCK_ACLK_Config
+                                                   XT1_Config
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine3            634E 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6218 - 622B (0x14 bytes), align: 1
+  Segment part 14.            Intra module refs:   CLOCK_ACLK_Config
+                                                   XT1_Config
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine1            6218 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5EE0 - 5F11 (0x32 bytes), align: 1
+  Segment part 11.            Intra module refs:   ?Subroutine0
+                                                   CLOCK_ACLK_Config
+                                                   CLOCK_DCO_PLLConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           XT2_Config              5EE0 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 63F4 - 63FD (0xa bytes), align: 1
+  Segment part 21.            Intra module refs:   CLOCK_ACLK_Config
+                                                   CLOCK_DCO_PLLConfig
+                                                   CLOCK_MCLK_Config
+                                                   CLOCK_SMCLK_Config
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine11           63F4 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6456 - 645D (0x8 bytes), align: 1
+  Segment part 22.            Intra module refs:   CLOCK_ACLK_Config
+                                                   CLOCK_DCO_PLLConfig
+                                                   CLOCK_MCLK_Config
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine5            6456 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4538 - 47C1 (0x28a bytes), align: 1
+  Segment part 25.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CLOCK_DCO_PLLConfig     4538            __low_level_init (startup_msp430f5529)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6408 - 6411 (0xa bytes), align: 1
+  Segment part 26.            Intra module refs:   CLOCK_DCO_PLLConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine12           6408 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 62D4 - 62E3 (0x10 bytes), align: 1
+  Segment part 28.            Intra module refs:   CLOCK_DCO_PLLConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine9            62D4 
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 6482 - 648D (0xc bytes), align: 1
+  Segment part 9.             Intra module refs:   CLOCK_DCO_PLLConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           CLOCK_DCO_PLLConfig::ref_div_value
+                                   6482 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6386 - 6393 (0xe bytes), align: 1
+  Segment part 16.            Intra module refs:   CLOCK_ACLK_Config
+                                                   CLOCK_MCLK_Config
+                                                   CLOCK_SMCLK_Config
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine8            6386 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 62F4 - 6303 (0x10 bytes), align: 1
+  Segment part 17.            Intra module refs:   CLOCK_ACLK_Config
+                                                   CLOCK_MCLK_Config
+                                                   CLOCK_SMCLK_Config
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine7            62F4 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5D2A - 5D67 (0x3e bytes), align: 1
+  Segment part 18.            Intra module refs:   CLOCK_ACLK_Config
+                                                   CLOCK_MCLK_Config
+                                                   CLOCK_SMCLK_Config
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine6            5D2A 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 63C6 - 63D1 (0xc bytes), align: 1
+  Segment part 19.            Intra module refs:   CLOCK_ACLK_Config
+                                                   CLOCK_MCLK_Config
+                                                   CLOCK_SMCLK_Config
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine4            63C6 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 57D8 - 5861 (0x8a bytes), align: 1
+  Segment part 20.            Intra module refs:   CLOCK_DCO_PLLConfig
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CLOCK_MCLK_Config       57D8            __low_level_init (startup_msp430f5529)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5FDA - 5FF9 (0x20 bytes), align: 1
+  Segment part 23.            Intra module refs:   CLOCK_MCLK_Config
+                                                   CLOCK_SMCLK_Config
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            5FDA 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5504 - 5597 (0x94 bytes), align: 1
+  Segment part 15.            Intra module refs:   CLOCK_DCO_PLLConfig
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CLOCK_SMCLK_Config      5504            __low_level_init (startup_msp430f5529)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5304 - 53B3 (0xb0 bytes), align: 1
+  Segment part 12.            Intra module refs:   CLOCK_DCO_PLLConfig
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CLOCK_ACLK_Config       5304            __low_level_init (startup_msp430f5529)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5B90 - 5BEB (0x5c bytes), align: 1
+  Segment part 24.            Intra module refs:   CLOCK_DCO_PLLConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           SetVcoreUp              5B90 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 618E - 61A5 (0x18 bytes), align: 1
+  Segment part 27.            Intra module refs:   CLOCK_DCO_PLLConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine10           618E 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 61A6 - 61BD (0x18 bytes), align: 1
+  Segment part 29.            Intra module refs:   CLOCK_DCO_PLLConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine2            61A6 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_compater.r43
+  PROGRAM MODULE, NAME : msp430f5529_compater
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 08C4 - 08C5 (0x2 bytes), align: 0
+  Segment part 1. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_CBCTL2_L             08C4 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           CBCTL2                  08C4 
+           CBCTL2_H                08C5 
+           CBCTL2_L                08C4 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_dma.r43
+  PROGRAM MODULE, NAME : msp430f5529_dma
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 0500 - 0501 (0x2 bytes), align: 0
+  Segment part 1. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_DMACTL0_L            0500 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           DMACTL0                 0500 
+           DMACTL0_H               0501 
+           DMACTL0_L               0500 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_flash.r43
+  PROGRAM MODULE, NAME : msp430f5529_flash
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 0140 - 0141 (0x2 bytes), align: 0
+  Segment part 1. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_FCTL1_L              0140 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           FCTL1                   0140 
+           FCTL1_H                 0141 
+           FCTL1_L                 0140 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 0144 - 0145 (0x2 bytes), align: 0
+  Segment part 2. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_FCTL3_L              0144 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           FCTL3                   0144 
+           FCTL3_H                 0145 
+           FCTL3_L                 0144 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_gpio.r43
+  PROGRAM MODULE, NAME : msp430f5529_gpio
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 0200 - 0201 (0x2 bytes), align: 0
+  Segment part 1. ROOT        Intra module refs:   GPIOX
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PAIN_L               0200 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PAIN                    0200 
+           PAIN_H                  0201 
+           PAIN_L                  0200 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 0220 - 0221 (0x2 bytes), align: 0
+  Segment part 2. ROOT        Intra module refs:   GPIOX
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PBIN_L               0220 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PBIN                    0220 
+           PBIN_H                  0221 
+           PBIN_L                  0220 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 0240 - 0241 (0x2 bytes), align: 0
+  Segment part 3. ROOT        Intra module refs:   GPIOX
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PCIN_L               0240 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PCIN                    0240 
+           PCIN_H                  0241 
+           PCIN_L                  0240 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 0260 - 0261 (0x2 bytes), align: 0
+  Segment part 4. ROOT        Intra module refs:   GPIOX
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PDIN_L               0260 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PDIN                    0260 
+           PDIN_H                  0261 
+           PDIN_L                  0260 
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 648E - 64AD (0x20 bytes), align: 1
+  Segment part 6.             Intra module refs:   ?Subroutine0
+                                                   ?Subroutine1
+                                                   ?Subroutine2
+                                                   GPIO_MultiBits_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIOX                   648E 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5A54 - 5AC7 (0x74 bytes), align: 1
+  Segment part 7.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_MultiBits_Init     5A54            ?Subroutine1 (msp430f5529_clock)
+                                                   ?Subroutine2 (OLED)
+                                                   Encoder_Init (encoder)
+                                                   LED_Init (LED)
+                                                   MOTOR_Init (motor)
+                                                   SPI_Master_Init (msp430f5529_spi)
+                                                   TIMER_PWM_MultiChannel_Init (msp430f5529_timer)
+                                                   UART_Init (msp430f5529_uart)
+                                                   XT2_Config (msp430f5529_clock)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 63AE - 63B9 (0xc bytes), align: 1
+  Segment part 8.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_SetBits            63AE            ?Subroutine14 (motor)
+                                                   ?Subroutine6 (motor)
+                                                   MOTOR_C (motor)
+                                                   MOTOR_D (motor)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 63DE - 63E9 (0xc bytes), align: 1
+  Segment part 14.            Intra module refs:   GPIO_GetITStatus
+                                                   GPIO_ResetBits
+                                                   GPIO_SetBits
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            63DE 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6430 - 6439 (0xa bytes), align: 1
+  Segment part 9.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_ResetBits          6430            ?Subroutine0 (motor)
+                                                   MOTOR_C (motor)
+                                                   MOTOR_D (motor)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 622C - 623F (0x14 bytes), align: 1
+  Segment part 10.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_WriteBit           622C            ?Subroutine0 (LED)
+                                                   ?Subroutine1 (LED)
+                                                   ?Subroutine5 (LED)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6314 - 6323 (0x10 bytes), align: 1
+  Segment part 17.            Intra module refs:   GPIO_ITConfig
+                                                   GPIO_WriteBit
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine2            6314 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6202 - 620B (0xa bytes), align: 1
+  Segment part 21.            Intra module refs:   GPIO_ClearITPendingBit
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine1            6202 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 620C - 6217 (0xc bytes), align: 1
+  Segment part 22.            Intra module refs:   ?Subroutine1
+                                                   ?Subroutine2
+                                                   ?Subroutine3
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine4            620C 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6466 - 646D (0x8 bytes), align: 1
+  Segment part 19.            Intra module refs:   GPIO_GetITStatus
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine3            6466 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 608E - 60A9 (0x1c bytes), align: 1
+  Segment part 16.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_ITConfig           608E            Encoder_Init (encoder)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 61EC - 6201 (0x16 bytes), align: 1
+  Segment part 18.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_GetITStatus        61EC            GPIO_IRQ_Handler (encoder)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 641C - 6425 (0xa bytes), align: 1
+  Segment part 20.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_ClearITPendingBit
+                                   641C            ?Subroutine0 (encoder)
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_i2c.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_it.r43
+  PROGRAM MODULE, NAME : msp430f5529_it
+
+  SEGMENTS IN THE MODULE
+  ======================
+ISR_CODE
+  Relative segment, address: 4536 - 4537 (0x2 bytes), align: 1
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           default_isr             4536            VectorTableCopyToRAM (msp430f5529_vectors)
+               interrupt function
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_lpm.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_nmi.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_remap.r43
+  PROGRAM MODULE, NAME : msp430f5529_remap
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 01C0 - 01C1 (0x2 bytes), align: 0
+  Segment part 1. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PMAPKEYID_L          01C0 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PMAPKEYID               01C0 
+           PMAPKEYID_H             01C1 
+           PMAPKEYID_L             01C0 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 01C2 - 01C3 (0x2 bytes), align: 0
+  Segment part 2. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PMAPCTL_L            01C2 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PMAPCTL                 01C2 
+           PMAPCTL_H               01C3 
+           PMAPCTL_L               01C2 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 01E0 - 01E1 (0x2 bytes), align: 0
+  Segment part 3. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_P4MAP01_L            01E0 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           P4MAP01                 01E0 
+           P4MAP01_H               01E1 
+           P4MAP01_L               01E0 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_rtc.r43
+  PROGRAM MODULE, NAME : msp430f5529_rtc
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 04A0 - 04A1 (0x2 bytes), align: 0
+  Segment part 1. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_RTCCTL01_L           04A0 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RTCCTL01                04A0 
+           RTCCTL01_H              04A1 
+           RTCCTL01_L              04A0 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 04A8 - 04A9 (0x2 bytes), align: 0
+  Segment part 2. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_RTCPS0CTL_L          04A8 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RTCPS0CTL               04A8 
+           RTCPS0CTL_H             04A9 
+           RTCPS0CTL_L             04A8 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 04AA - 04AB (0x2 bytes), align: 0
+  Segment part 3. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_RTCPS1CTL_L          04AA 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RTCPS1CTL               04AA 
+           RTCPS1CTL_H             04AB 
+           RTCPS1CTL_L             04AA 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 04B0 - 04B1 (0x2 bytes), align: 0
+  Segment part 4. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_RTCTIM0_L            04B0 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RTCTIM0                 04B0 
+           RTCTIM0_H               04B1 
+           RTCTIM0_L               04B0 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 04B8 - 04B9 (0x2 bytes), align: 0
+  Segment part 5. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_RTCAMINHR_L          04B8 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RTCAMINHR               04B8 
+           RTCAMINHR_H             04B9 
+           RTCAMINHR_L             04B8 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 04BA - 04BB (0x2 bytes), align: 0
+  Segment part 6. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_RTCADOWDAY_L         04BA 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RTCADOWDAY              04BA 
+           RTCADOWDAY_H            04BB 
+           RTCADOWDAY_L            04BA 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_spi.r43
+  PROGRAM MODULE, NAME : msp430f5529_spi
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA20_C
+  Relative segment, address: 64AE - 64BD (0x10 bytes), align: 1
+  Segment part 2.             Intra module refs:   ?Subroutine0
+                                                   SPI_Master_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           USCIX                   64AE            ?Subroutine0 (msp430f5529_uart)
+                                                   UART_Init (msp430f5529_uart)
+                                                   UART_SetBaudRate (msp430f5529_uart)
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 654C - 656B (0x20 bytes), align: 0
+  Segment part 3.             Intra module refs:   SPI_Master_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SPI_PIN                 654C 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4FC2 - 50C7 (0x106 bytes), align: 1
+  Segment part 4.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SPI_Master_Init         4FC2            ?Subroutine4 (OLED)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6412 - 641B (0xa bytes), align: 1
+  Segment part 5.             Intra module refs:   SPI_Master_Init
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine1            6412 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 60AA - 60C3 (0x1a bytes), align: 1
+  Segment part 7.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SPI_SendReadByte        60AA            OLED_WriteByte (OLED)
+                                                   Segment part 36 (OLED)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 63BA - 63C5 (0xc bytes), align: 1
+  Segment part 11.            Intra module refs:   SPI_SendReadByte
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            63BA 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_timer.r43
+  PROGRAM MODULE, NAME : msp430f5529_timer
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA20_C
+  Relative segment, address: 64BE - 64CD (0x10 bytes), align: 1
+  Segment part 2.             Intra module refs:   ?Subroutine19
+                                                   ?Subroutine7
+                                                   TIMER_PWM_MultiChannel_Init
+                                                   TIMER_PWM_SetChannelDuty
+                                                   TIMER_PWM_SetFrequency
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIMERX                  64BE 
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 64CE - 64DD (0x10 bytes), align: 1
+  Segment part 3.             Intra module refs:   TIMER_PWM_SetChannelDuty
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIMER_PRECISON          64CE 
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 656C - 65A3 (0x38 bytes), align: 0
+  Segment part 4.             Intra module refs:   TIMER_PWM_MultiChannel_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIMER_CHANEL_PIN        656C 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 53B4 - 545B (0xa8 bytes), align: 1
+  Segment part 7.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIMER_PWM_MultiChannel_Init
+                                   53B4            MOTOR_Init (motor)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 47C2 - 4815 (0x54 bytes), align: 1
+  Segment part 10.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIMER_PWM_SetChannelDuty
+                                   47C2            MOTOR_Init (motor)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4816 - 485F (0x4a bytes), align: 1
+  Segment part 11.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIMER_Interval_Us       4816            Encoder_Init (encoder)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4860 - 486B (0xc bytes), align: 1
+  Segment part 12.            Intra module refs:   TIMER_Interval_Us
+                                                   TIMER_PWM_SetFrequency
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine15           4860 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 486C - 4881 (0x16 bytes), align: 1
+  Segment part 13.            Intra module refs:   TIMER_Interval_Us
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine9            486C 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4882 - 4891 (0x10 bytes), align: 1
+  Segment part 14.            Intra module refs:   ?Subroutine9
+                                                   TIMER_PWM_SetFrequency
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4892 - 48BD (0x2c bytes), align: 1
+  Segment part 15.            Intra module refs:   TIMER_Interval_Us
+                                                   TIMER_PWM_SetFrequency
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine6            4892 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 48BE - 48D3 (0x16 bytes), align: 1
+  Segment part 17.            Intra module refs:   TIMER_Interval_Us
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine8            48BE 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 48D4 - 48E9 (0x16 bytes), align: 1
+  Segment part 18.            Intra module refs:   ?Subroutine8
+                                                   TIMER_PWM_SetFrequency
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine17           48D4 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 48EA - 4917 (0x2e bytes), align: 1
+  Segment part 19.            Intra module refs:   TIMER_Interval_Us
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine7            48EA 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4918 - 4925 (0xe bytes), align: 1
+  Segment part 20.            Intra module refs:   ?Subroutine7
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine20           4918 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4926 - 4931 (0xc bytes), align: 1
+  Segment part 40.            Intra module refs:   TIMER_ITConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine19           4926 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4932 - 49CD (0x9c bytes), align: 1
+  Segment part 6.             Intra module refs:   TIMER_PWM_MultiChannel_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIMER_PWM_SetFrequency
+                                   4932 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5DDE - 5E13 (0x36 bytes), align: 1
+  Segment part 52.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIMER_ITConfig          5DDE            Encoder_Init (encoder)
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_uart.r43
+  PROGRAM MODULE, NAME : msp430f5529_uart
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA20_C
+  Relative segment, address: 65A4 - 65AB (0x8 bytes), align: 0
+  Segment part 2.             Intra module refs:   UART_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           UART_PIN                65A4 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5AC8 - 5B31 (0x6a bytes), align: 1
+  Segment part 5.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           UART_Init               5AC8            app_main_init (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 58EA - 5965 (0x7c bytes), align: 1
+  Segment part 3.             Intra module refs:   UART_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           UART_SetBaudRate        58EA 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 636A - 6377 (0xe bytes), align: 1
+  Segment part 4.             Intra module refs:   UART_SetBaudRate
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine2            636A 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 62E4 - 62F3 (0x10 bytes), align: 1
+  Segment part 6.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           UART_GetChar            62E4            UART_RX_IRQ_Handler (app_main)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 63A2 - 63AD (0xc bytes), align: 1
+  Segment part 13.            Intra module refs:   UART_ClearITPendingBit
+                                                   UART_GetChar
+                                                   UART_GetITStatus
+                                                   UART_ITConfig
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            63A2 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6268 - 627B (0x14 bytes), align: 1
+  Segment part 12.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           UART_ITConfig           6268            app_main_init (app_main)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6254 - 6267 (0x14 bytes), align: 1
+  Segment part 14.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           UART_GetITStatus        6254            UART_RX_IRQ_Handler (app_main)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 63EA - 63F3 (0xa bytes), align: 1
+  Segment part 15.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           UART_ClearITPendingBit
+                                   63EA            UART_RX_IRQ_Handler (app_main)
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_vectors.r43
+  PROGRAM MODULE, NAME : msp430f5529_vectors
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 4380 - 43FF (0x80 bytes), align: 0
+  Segment part 1. ROOT        Intra module refs:   Set_Vector_Handler
+                                                   VectorTableCopyToRAM
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __VECTOR_RAM            4380 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 61D6 - 61EB (0x16 bytes), align: 1
+  Segment part 4.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           Set_Vector_Handler      61D6            Encoder_Init (encoder)
+                                                   app_main_init (app_main)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 646E - 6473 (0x6 bytes), align: 1
+  Segment part 5.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           Set_VectorTable_To_RAM
+                                   646E            __low_level_init (startup_msp430f5529)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5F72 - 5F95 (0x24 bytes), align: 1
+  Segment part 7.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           VectorTableCopyToRAM    5F72            RAM_data_Init (startup_msp430f5529)
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\msp430f5529_watchdog.r43
+  PROGRAM MODULE, NAME : msp430f5529_watchdog
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 015C - 015D (0x2 bytes), align: 0
+  Segment part 1. ROOT        Intra module refs:   DisableWatchDog
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_WDTCTL_L             015C 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           WDTCTL                  015C 
+           WDTCTL_H                015D 
+           WDTCTL_L                015C 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6304 - 630D (0xa bytes), align: 1
+  Segment part 5.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           DisableWatchDog         6304            __low_level_init (startup_msp430f5529)
+                                                   app_main_init (app_main)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 630E - 6313 (0x6 bytes), align: 1
+  Segment part 6.             Intra module refs:   DisableWatchDog
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            630E 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\nrf2401.r43
+  PROGRAM MODULE, NAME : nrf2401
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA16_AN
+  Relative segment, address: 0222 - 0223 (0x2 bytes), align: 0
+  Segment part 1. ROOT        Intra module refs:   OLED_Init (OLED)
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PBOUT_L              0222 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PBOUT                   0222 
+           PBOUT_H                 0223 
+           PBOUT_L                 0222 
+    -------------------------------------------------------------------------
+DATA16_AN
+  Relative segment, address: 0262 - 0263 (0x2 bytes), align: 0
+  Segment part 2. ROOT        Intra module refs:   OLED_Clear (OLED)
+                                                   OLED_DispChar (OLED)
+                                                   OLED_WriteByte (OLED)
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _A_PDOUT_L              0262 
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           PDOUT                   0262 
+           PDOUT_H                 0263 
+           PDOUT_L                 0262 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\OLED.r43
+  PROGRAM MODULE, NAME : OLED
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA20_C
+  Relative segment, address: 65AC - 67E5 (0x23a bytes), align: 0
+  Segment part 12.            Intra module refs:   Font
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ASCII_6X8               65AC 
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 67E6 - 6DD5 (0x5f0 bytes), align: 0
+  Segment part 13.            Intra module refs:   Font
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ASCII_8X16              67E6 
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 6DD6 - 6ED5 (0x100 bytes), align: 0
+  Segment part 14.            Intra module refs:   Font
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CHINESE_16X16           6DD6 
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 64DE - 64EF (0x12 bytes), align: 1
+  Segment part 17.            Intra module refs:   ?Subroutine12
+                                                   ?Subroutine15
+                                                   OLED_DispChar
+                                                   OLED_DispStringAt
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           Font                    64DE 
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 251E - 291D (0x400 bytes), align: 0
+  Segment part 18.            Intra module refs:   ?Subroutine14
+                                                   ?Subroutine22
+                                                   OLED_Clear
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           OLED_RAM_DATA           251E 
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 291E - 291E (0x1 bytes), align: 0
+  Segment part 19.            Intra module refs:   ?Subroutine23
+                                                   ?Subroutine24
+                                                   OLED_Clear
+                                                   OLED_SetPosition
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           line_position           291E 
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 291F - 291F (0x1 bytes), align: 0
+  Segment part 20.            Intra module refs:   ?Subroutine0
+                                                   ?Subroutine5
+                                                   OLED_Clear
+                                                   OLED_SetPosition
+                                                   OLED_WriteByte
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           row_position            291F 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 62B2 - 62C3 (0x12 bytes), align: 1
+  Segment part 38.            Intra module refs:   OLED_Init
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine4            62B2 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 61BE - 61D5 (0x18 bytes), align: 1
+  Segment part 39.            Intra module refs:   OLED_Init
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine2            61BE 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5E14 - 5E49 (0x36 bytes), align: 1
+  Segment part 25.            Intra module refs:   ?Subroutine25
+                                                   OLED_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           OLED_WriteByte          5E14 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 612C - 6133 (0x8 bytes), align: 1
+  Segment part 57.            Intra module refs:   ?Subroutine5
+                                                   OLED_WriteByte
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine22           612C 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6134 - 6145 (0x12 bytes), align: 1
+  Segment part 58.            Intra module refs:   ?Subroutine22
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine24           6134 
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 64F0 - 6507 (0x18 bytes), align: 1
+  Segment part 21.            Intra module refs:   OLED_DispFolatAt
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5FB8 - 5FC3 (0xc bytes), align: 1
+  Segment part 59.            Intra module refs:   OLED_DispChar
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            5FB8 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5FC4 - 5FCD (0xa bytes), align: 1
+  Segment part 61.            Intra module refs:   OLED_Clear
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine14           5FC4 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5FCE - 5FD3 (0x6 bytes), align: 1
+  Segment part 68.            Intra module refs:   ?Subroutine0
+                                                   OLED_WriteByte
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine23           5FCE 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5FD4 - 5FD9 (0x6 bytes), align: 1
+  Segment part 69.            Intra module refs:   ?Subroutine23
+                                                   OLED_Clear
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5E7C - 5EAD (0x32 bytes), align: 1
+  Segment part 26.            Intra module refs:   OLED_DispChar
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           OLED_SetPosition        5E7C 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6340 - 6345 (0x6 bytes), align: 1
+  Segment part 32.            Intra module refs:   ?Subroutine7
+                                                   OLED_Clear
+                                                   OLED_SetPosition
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine25           6340 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6346 - 634D (0x8 bytes), align: 1
+  Segment part 33.            Intra module refs:   OLED_Clear
+                                                   OLED_SetPosition
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine7            6346 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 59E0 - 5A53 (0x74 bytes), align: 1
+  Segment part 31.            Intra module refs:   OLED_Init
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           OLED_Clear              59E0            app_main_init (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5190 - 5249 (0xba bytes), align: 1
+  Segment part 37.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           OLED_Init               5190            app_main_init (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 545C - 5503 (0xa8 bytes), align: 1
+  Segment part 40.            Intra module refs:   ?Subroutine12
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           OLED_DispChar           545C 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6394 - 63A1 (0xe bytes), align: 1
+  Segment part 55.            Intra module refs:   OLED_DispChar
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine15           6394 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6146 - 615D (0x18 bytes), align: 1
+  Segment part 43.            Intra module refs:   OLED_DispStringAt
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine16           6146 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5DA4 - 5DDD (0x3a bytes), align: 1
+  Segment part 42.            Intra module refs:   OLED_DispDecAt
+                                                   OLED_DispFolatAt
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           OLED_DispStringAt       5DA4            display (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 635C - 6369 (0xe bytes), align: 1
+  Segment part 45.            Intra module refs:   OLED_DispStringAt
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine18           635C 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6324 - 6331 (0xe bytes), align: 1
+  Segment part 48.            Intra module refs:   OLED_DispStringAt
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine12           6324 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4EB2 - 4FC1 (0x110 bytes), align: 1
+  Segment part 49.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           OLED_DispDecAt          4EB2            display (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6426 - 642F (0xa bytes), align: 1
+  Segment part 51.            Intra module refs:   OLED_DispDecAt
+                                                   OLED_DispFolatAt
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine20           6426 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 4B32 - 4C6B (0x13a bytes), align: 1
+  Segment part 50.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           OLED_DispFolatAt        4B32            display (app_main)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 62C4 - 62D3 (0x10 bytes), align: 1
+  Segment part 52.            Intra module refs:   OLED_DispFolatAt
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine19           62C4 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 60DE - 60F7 (0x1a bytes), align: 1
+  Segment part 53.            Intra module refs:   OLED_DispFolatAt
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine8            60DE 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 643A - 643B (0x2 bytes), align: 1
+  Segment part 35.            Intra module refs:   OLED_Clear
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 643C - 6443 (0x8 bytes), align: 1
+  Segment part 36.            Intra module refs:   OLED_DispChar
+                                                   Segment part 35
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6378 - 6385 (0xe bytes), align: 1
+  Segment part 56.            Intra module refs:   OLED_DispChar
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine5            6378 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\PID.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\remote.r43
+    *************************************************************************
+
+  FILE NAME : D:\Dev\Project\TI_Car\Release\Obj\startup_msp430f5529.r43
+  PROGRAM MODULE, NAME : startup_msp430f5529
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 5D68 - 5DA3 (0x3c bytes), align: 1
+  Segment part 5. ROOT 
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __low_level_init        5D68            ?cstart_call_low_level_init (?cstart)
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5966 - 59DF (0x7a bytes), align: 1
+  Segment part 2.             Intra module refs:   __low_level_init
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           RAM_data_Init           5966 
+               calls direct
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 60C4 - 60DD (0x1a bytes), align: 1
+  Segment part 3.             Intra module refs:   RAM_data_Init
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine1            60C4 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6112 - 612B (0x1a bytes), align: 1
+  Segment part 4.             Intra module refs:   RAM_data_Init
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           ?Subroutine0            6112 
+
+    *************************************************************************
+
+  FILE NAME : D:\Dev\IAR\430\lib\dlib\dl430xllfn.r43
+  LIBRARY MODULE, NAME : ?__dbg_break
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 6480 - 6481 (0x2 bytes), align: 1
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __DebugBreak            6480            __exit (?__exit)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?__exit
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 6240 - 6253 (0x14 bytes), align: 1
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __exit                  6240            Segment part 6 (?_exit)
+                                                   _exit (?_exit)
+               calls direct
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?_exit
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 6474, align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _exit                   6474            exit (?exit)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6474 - 6477 (0x4 bytes), align: 1
+  Segment part 6.             Intra module refs:   _exit
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?cstart
+
+  SEGMENTS IN THE MODULE
+  ======================
+CSTACK
+  Relative segment, address: 42E0, align: 1
+  Segment part 1.
+    -------------------------------------------------------------------------
+CODE_I
+  Relative segment, address: 2400, align: 1
+  Segment part 5.
+    -------------------------------------------------------------------------
+CODE_ID
+  Relative segment, address: 6EDE, align: 1
+  Segment part 6.
+    -------------------------------------------------------------------------
+DATA20_Z
+  Relative segment, address: 241E, align: 1
+  Segment part 7.
+    -------------------------------------------------------------------------
+DATA20_I
+  Relative segment, address: 2408, align: 1
+  Segment part 8.
+    -------------------------------------------------------------------------
+DATA20_ID
+  Relative segment, address: 6EDE, align: 1
+  Segment part 9.
+    -------------------------------------------------------------------------
+DATA20_C
+  Relative segment, address: 6508, align: 1
+  Segment part 10.
+    -------------------------------------------------------------------------
+DATA20_N
+  Relative segment, address: 2948, align: 1
+  Segment part 12.
+    -------------------------------------------------------------------------
+CSTART
+  Relative segment, address: 4400 - 4403 (0x4 bytes), align: 1
+  Segment part 15.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __program_start         4400            ?reset_vector (?reset_vector)
+                                                   Absolute parts (?ABS_ENTRY_MOD)
+           ?cstart_begin           4400 
+    -------------------------------------------------------------------------
+CSTART
+  Relative segment, address: 4404 - 440B (0x8 bytes), align: 1
+  Segment part 17.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?cstart_call_low_level_init
+                                   4404            __low_level_init (startup_msp430f5529)
+    -------------------------------------------------------------------------
+CSTART
+  Relative segment, address: 440C - 441B (0x10 bytes), align: 1
+  Segment part 21.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?cstart_init_zero20     440C            OLED_RAM_DATA (OLED)
+                                                   RPM_A (encoder)
+                                                   RPM_B (encoder)
+                                                   RPM_C (encoder)
+                                                   RPM_D (encoder)
+                                                   cnt_Temp_A (encoder)
+                                                   cnt_Temp_B (encoder)
+                                                   cnt_Temp_C (encoder)
+                                                   cnt_Temp_D (encoder)
+                                                   databuf (app_main)
+                                                   line_position (OLED)
+                                                   num (app_main)
+                                                   row_position (OLED)
+                                                   speed (encoder)
+    -------------------------------------------------------------------------
+CSTART
+  Relative segment, address: 441C - 442F (0x14 bytes), align: 1
+  Segment part 22.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?cstart_init_copy20     441C            encoderCnt_A (encoder)
+                                                   encoderCnt_B (encoder)
+                                                   encoderCnt_C (encoder)
+                                                   encoderCnt_D (encoder)
+    -------------------------------------------------------------------------
+CSTART
+  Relative segment, address: 4430 - 4437 (0x8 bytes), align: 1
+  Segment part 26.            Intra module refs:   ?cstart_call_low_level_init
+                                                   Segment part 15
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?cstart_call_main       4430 
+           ?cstart_end             4438 
+    -------------------------------------------------------------------------
+CODE_ID
+  Relative segment, address: 6EDE, align: 1
+  Segment part 27.            Intra module refs:   Segment part 5
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?reset_vector
+
+  SEGMENTS IN THE MODULE
+  ======================
+RESET
+  Relative segment, address: FFFE - FFFF (0x2 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?reset_vector           FFFE            Segment part 15 (?cstart)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?exit
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 647C - 647F (0x4 bytes), align: 1
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           exit                    647C            Segment part 26 (?cstart)
+               calls direct
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?Mul32fHw32
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 4D9C - 4EB1 (0x116 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?Mul32fHw32             4D9C            ?Subroutine19 (OLED)
+                                                   OLED_DispFolatAt (OLED)
+                                                   TIMER_Interval_Us (msp430f5529_timer)
+                                                   UART_SetBaudRate (msp430f5529_uart)
+                                                   speed_Handle (encoder)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?Cast32f32i
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 5598 - 55AB (0x14 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _Cast32sto32f           5598            OLED_DispFolatAt (OLED)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 55AC - 5629 (0x7e bytes), align: 1
+  Segment part 1.             Intra module refs:   _Cast32sto32f
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _Cast32uto32f           55AC            ?Subroutine2 (msp430f5529_uart)
+                                                   ?Subroutine7 (msp430f5529_clock)
+                                                   ?Subroutine7 (msp430f5529_timer)
+                                                   ?Subroutine8 (OLED)
+                                                   ?Subroutine9 (msp430f5529_clock)
+                                                   CLOCK_DCO_PLLConfig (msp430f5529_clock)
+                                                   UART_SetBaudRate (msp430f5529_uart)
+                                                   speed_Handle (encoder)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : _Cast32fto32u
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 63D2 - 63DD (0xc bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _Cast32fto32u           63D2            TIMER_Interval_Us (msp430f5529_timer)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : _Cast32fto32s
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 5E4A - 5E7B (0x32 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _Cast32fto32s           5E4A            ?Subroutine8 (OLED)
+                                                   CLOCK_DCO_PLLConfig (msp430f5529_clock)
+                                                   OLED_DispFolatAt (OLED)
+                                                   UART_SetBaudRate (msp430f5529_uart)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?FLT_Extract
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 5C94 - 5CDF (0x4c bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?FLT_Extract            5C94            _Cast32fto32s (_Cast32fto32s)
+                                                   _Cast32fto32u (_Cast32fto32u)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?FLT_GE
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 5BEC - 5C41 (0x56 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?FLT_GE                 5BEC            OLED_DispFolatAt (OLED)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?FLT_LT
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 5C42 - 5C93 (0x52 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?FLT_LT                 5C42            ?Subroutine9 (msp430f5529_clock)
+                                                   CLOCK_DCO_PLLConfig (msp430f5529_clock)
+                                                   OLED_DispFolatAt (OLED)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : _Div32f
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 4C6C - 4D9B (0x130 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _Div32f                 4C6C            ?Subroutine7 (msp430f5529_clock)
+                                                   CLOCK_DCO_PLLConfig (msp430f5529_clock)
+                                                   OLED_DispFolatAt (OLED)
+                                                   UART_SetBaudRate (msp430f5529_uart)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : _Add32f
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 49CE - 49D1 (0x4 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _Sub32f                 49CE            OLED_DispFolatAt (OLED)
+                                                   UART_SetBaudRate (msp430f5529_uart)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 49D2 - 4B31 (0x160 bytes), align: 1
+  Segment part 1.             Intra module refs:   _Sub32f
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _Add32f                 49D2            CLOCK_DCO_PLLConfig (msp430f5529_clock)
+                                                   OLED_DispFolatAt (OLED)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?DivMod816u
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 6176 - 618D (0x18 bytes), align: 1
+  Segment part 1.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?DivMod16u              6176            ?DivMod16s (?DivMod816s)
+                                                   CLOCK_DCO_PLLConfig (msp430f5529_clock)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?DivMod816s
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 5F42 - 5F71 (0x30 bytes), align: 1
+  Segment part 1.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?DivMod16s              5F42            ?Subroutine16 (OLED)
+                                                   OLED_DispChar (OLED)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?DivMod32u
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 5F12 - 5F41 (0x30 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?DivMod32u              5F12            CLOCK_DCO_PLLConfig (msp430f5529_clock)
+                                                   OLED_DispDecAt (OLED)
+                                                   SPI_Master_Init (msp430f5529_spi)
+                                                   TIMER_PWM_SetChannelDuty (msp430f5529_timer)
+                                                   TIMER_PWM_SetFrequency (msp430f5529_timer)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?ShiftLeft32
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 601A - 601D (0x4 bytes), align: 1
+  Segment part 1.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftLeft32_7          601A            Segment part 69 (OLED)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 601E - 6021 (0x4 bytes), align: 1
+  Segment part 2.             Intra module refs:   ?ShiftLeft32_7
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftLeft32_6          601E 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6022 - 6025 (0x4 bytes), align: 1
+  Segment part 3.             Intra module refs:   ?ShiftLeft32_6
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftLeft32_5          6022 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6026 - 6029 (0x4 bytes), align: 1
+  Segment part 4.             Intra module refs:   ?ShiftLeft32_5
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftLeft32_4          6026 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 602A - 6037 (0xe bytes), align: 1
+  Segment part 5.             Intra module refs:   ?ShiftLeft32_4
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftLeft32_3          602A 
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?ShiftRight16s_n
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 6444 - 6445 (0x2 bytes), align: 1
+  Segment part 3.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftRight16s_4        6444            Segment part 28 (encoder)
+                                                   speed_Handle (encoder)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6446 - 644D (0x8 bytes), align: 1
+  Segment part 4.             Intra module refs:   ?ShiftRight16s_4
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftRight16s_3        6446 
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?ShiftRight32u
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 5B32 - 5B71 (0x40 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftRight32u          5B32            ?Subroutine4 (msp430f5529_clock)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5B72 - 5B75 (0x4 bytes), align: 1
+  Segment part 1.             Intra module refs:   ?ShiftRight32u
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftRight32u_7        5B72 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5B76 - 5B79 (0x4 bytes), align: 1
+  Segment part 2.             Intra module refs:   ?ShiftRight32u_7
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftRight32u_6        5B76 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5B7A - 5B7D (0x4 bytes), align: 1
+  Segment part 3.             Intra module refs:   ?ShiftRight32u_6
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftRight32u_5        5B7A 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5B7E - 5B81 (0x4 bytes), align: 1
+  Segment part 4.             Intra module refs:   ?ShiftRight32u_5
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftRight32u_4        5B7E 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5B82 - 5B85 (0x4 bytes), align: 1
+  Segment part 5.             Intra module refs:   ?ShiftRight32u_4
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftRight32u_3        5B82 
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 5B86 - 5B8F (0xa bytes), align: 1
+  Segment part 6.             Intra module refs:   ?ShiftRight32u_3
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?ShiftRight32u_2        5B86 
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?memcpy
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 6072 - 608D (0x1c bytes), align: 1
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           memcpy                  6072            __data20_memcpy (?memzero)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?CopyMemoryWords20
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 628E - 629F (0x12 bytes), align: 1
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?CopyMemoryWords20      628E            OLED_DispFolatAt (OLED)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?memzero
+
+  SEGMENTS IN THE MODULE
+  ======================
+<CODE> 1 (was CODE)
+  Relative segment, address: 615E - 6175 (0x18 bytes), align: 1
+  Segment part 5.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __data20_memzero        615E            ?cstart_init_zero20 (?cstart)
+    -------------------------------------------------------------------------
+<CODE> 1 (was CODE)
+  Relative segment, address: 6478 - 647B (0x4 bytes), align: 1
+  Segment part 6.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __data20_memcpy         6478            ?cstart_init_copy20 (?cstart)
+               calls direct
+
+
+
+
+                ****************************************
+                *                                      *
+                *      SEGMENTS IN ADDRESS ORDER       *
+                *                                      *
+                ****************************************
+
+
+SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
+=======              =====    =============   ===========     ====  ====  =====
+DATA16_AN                              0102 - 0103               2   rel    0
+                                       0120 - 0121               2 
+                                       0124 - 0127               4 
+                                       012C - 012D               2 
+                                       0140 - 0141               2 
+                                       0144 - 0145               2 
+                                       015C - 015D               2 
+                                       01B0 - 01B1               2 
+                                       01C0 - 01C3               4 
+                                       01E0 - 01E1               2 
+                                       0200 - 0203               4 
+                                       0220 - 0223               4 
+                                       0240 - 0241               2 
+                                       024A - 024B               2 
+                                       0260 - 0263               4 
+                                       04A0 - 04A1               2 
+                                       04A8 - 04AB               4 
+                                       04B0 - 04B1               2 
+                                       04B8 - 04BB               4 
+                                       0500 - 0501               2 
+                                       08C4 - 08C5               2 
+DATA16_Z                                  2400                       dse    0
+TLS16_I                                   2400                       dse    0
+DATA16_I                                  2400                       dse    0
+CODE_I                                    2400                       rel    1
+DATA20_I                               2400 - 2407               8   rel    1
+DATA20_Z                               2408 - 291F             518   rel    1
+DATA20_N                               2920 - 2947              28   rel    1
+CSTACK                                 42E0 - 437F              A0   rel    1
+DATA16_AN                              4380 - 43FF              80   rel    0
+TLS16_ID                                  4400                       dse    0
+DATA16_ID                                 4400                       dse    0
+CSTART                                 4400 - 4437              38   rel    1
+ISR_CODE                               4438 - 4537             100   rel    1
+<CODE> 1                               4538 - 6481            1F4A   rel    1
+DATA20_C                               6482 - 6ED5             A54   rel    1
+DATA20_ID                              6ED6 - 6EDD               8   rel    1
+CODE_ID                                   6EDE                       rel    1
+RESET                                  FFFE - FFFF               2   rel    1
+
+                ****************************************
+                *                                      *
+                *        END OF CROSS REFERENCE        *
+                *                                      *
+                ****************************************
+
+ 8 324 bytes of CODE  memory
+ 1 512 bytes of DATA  memory (+ 184 absolute )
+ 2 652 bytes of CONST memory
+
+Errors: none
+Warnings: none
+

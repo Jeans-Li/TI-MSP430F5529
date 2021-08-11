@@ -1,0 +1,396 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           03/Aug/2021  16:28:05
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\Project\TI_Car\HardWare\LED\LED.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW156D.tmp
+#        (D:\Dev\Project\TI_Car\HardWare\LED\LED.c -D NDEBUG -D RAM_VECTOR -lC
+#        D:\Dev\Project\TI_Car\Release\List -lA
+#        D:\Dev\Project\TI_Car\Release\List -o
+#        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+#        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+#        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+#        D:\Dev\Project\TI_Car\HardWare\key\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+#        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+#        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+#        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+#        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+#        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+#        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+#        D:\Dev\Project\TI_Car\User\USER\ -I
+#        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+#        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\Project\TI_Car\Release\List\LED.lst
+#    Object file   =  D:\Dev\Project\TI_Car\Release\Obj\LED.r43
+#
+###############################################################################
+
+D:\Dev\Project\TI_Car\HardWare\LED\LED.c
+      1          #include "led.h"
+      2          #include "msp430f5529_gpio.h"
+      3          #include "msp430f5529_system.h"
+      4          //定义LED引脚
+
+   \                                 In  segment DATA20_C, align 1, align-sorted
+      5          const GPIO_PIN LED_PIN[LED_NUM]=
+   \                     LED_PIN:
+   \   000000   00000307     DC8 0, 0, 3, 7
+      6          {
+      7            {LED1_PORT,LED1_PIN},
+      8            {LED2_PORT,LED2_PIN},
+      9          };//LED引脚
+     10          /*******************************************************************************
+     11          *  函数名称：LED_Init( LEDn led )
+     12          *  功能说明：LED灯初始化
+     13          *  参数说明：LEDn led :LED（LED0,LED1...）
+     14          *  函数返回：无
+     15          *  使用示例：LED_Init( LED0 );   //初始化LED0
+     16          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2, keep-with-next
+     17          void LED_Init( LEDn led )
+   \                     LED_Init:
+     18          {
+   \   000000   0A14         PUSHM.A #0x1, R10
+   \   000002   4A4C         MOV.B   R12, R10
+     19            if(led == LED_ALL)
+   \   000004   6C93         CMP.B   #0x2, R12
+   \   000006   0B20         JNE     ??LED_Init_1
+     20            {
+     21              for(led = LED1;led < LED_NUM;led++)
+     22              {
+     23                GPIO_Init(LED_PIN[led].Port, LED_PIN[led].Pin, GPO);
+   \   000008   2E43         MOV.W   #0x2, R14
+   \   00000A   1D43         MOV.W   #0x1, R13
+   \   00000C   4C43         MOV.B   #0x0, R12
+   \   00000E   ........     CALLA   #GPIO_MultiBits_Init
+   \   000012   2E43         MOV.W   #0x2, R14
+   \   000014   3D408000     MOV.W   #0x80, R13
+   \   000018   7C400300     MOV.B   #0x3, R12
+   \   00001C   0E3C         JMP     ??LED_Init_0
+     24              }
+     25            }
+     26            else
+     27            {
+     28              GPIO_Init(LED_PIN[led].Port, LED_PIN[led].Pin, GPO);
+   \                     ??LED_Init_1:
+   \   00001E   4F4C         MOV.B   R12, R15
+   \   000020   EF0F         ADDA    R15, R15
+   \   000022   2E43         MOV.W   #0x2, R14
+   \   000024   1D43         MOV.W   #0x1, R13
+   \   000026   ....5C4F.... MOVX.B  LED_PIN + 1(R15), R12
+   \   00002C   5C83         SUB.B   #0x1, R12
+   \   00002E   0230         JN      ??LED_Init_2
+   \   000030                RPT     R12
+   \   000030   CC180D5D     RLAX.W  R13
+   \                     ??LED_Init_2:
+   \   000034   ....5C4F.... MOVX.B  LED_PIN(R15), R12
+   \                     ??LED_Init_0:
+   \   00003A   ........     CALLA   #GPIO_MultiBits_Init
+     29            }
+     30            LED_Off (led);
+   \   00003E   4C4A         MOV.B   R10, R12
+   \   000040   ........     CALLA   #LED_Off
+     31          }
+   \   000044   0A16         POPM.A  #0x1, R10
+   \   000046   1001         RETA
+     32          /*******************************************************************************
+     33          *  函数名称：LED_SetStatus(LEDn led,STATUS status)
+     34          *  功能说明：设置LED状态
+     35          *  参数说明：LEDn led      :LED（LED1,LED2...）
+     36                       STATUS status :设置是否点亮LED
+     37          *  函数返回：无
+     38          *  使用示例：LED_SetStatus(LED1,SET);  //LED1亮
+     39          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine4:
+   \   000000   7D400700     MOV.B   #0x7, R13
+   \   000004   7C400300     MOV.B   #0x3, R12
+   \   000008   1001         RETA
+
+   \                                 In  segment CODE, align 2, keep-with-next
+     40          void LED_SetStatus(LEDn led,STATUS status)
+   \                     LED_SetStatus:
+     41          {
+   \   000000   0A14         PUSHM.A #0x1, R10
+   \   000002   4A4D         MOV.B   R13, R10
+     42            status = (LED_ON == BIT_SET) ? status : (STATUS)!status;
+     43            
+     44            if(led == LED_ALL)
+   \   000004   6C93         CMP.B   #0x2, R12
+   \   000006   0720         JNE     ??LED_SetStatus_1
+     45            {
+     46              for(led = LED1;led < LED_NUM;led++)
+     47              {
+     48                GPIO_WriteBit(LED_PIN[led].Port, LED_PIN[led].Pin, status);
+   \   000008   4E4D         MOV.B   R13, R14
+   \   00000A   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_8:
+   \   00000E   4E4A         MOV.B   R10, R14
+   \   000010   ........     CALLA   #?Subroutine4
+     49              }
+     50            }
+   \                     ??CrossCallReturnLabel_3:
+   \   000014   063C         JMP     ??LED_SetStatus_0
+     51            else
+     52            {
+     53              GPIO_WriteBit(LED_PIN[led].Port, LED_PIN[led].Pin, status);
+   \                     ??LED_SetStatus_1:
+   \   000016   4C4C         MOV.B   R12, R12
+   \   000018   EC0C         ADDA    R12, R12
+   \   00001A   CF0C         MOVA    R12, R15
+   \   00001C   4E4D         MOV.B   R13, R14
+   \   00001E   ........     CALLA   #?Subroutine2
+     54            }
+   \                     ??LED_SetStatus_0:
+   \   000022   ........     CALLA   #GPIO_WriteBit
+     55          }
+   \   000026   0A16         POPM.A  #0x1, R10
+   \   000028   1001         RETA
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine5:
+   \   000000   4D43         MOV.B   #0x0, R13
+   \   000002   4C43         MOV.B   #0x0, R12
+   \   000004   ........     BRA     #GPIO_WriteBit
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine2:
+   \   000000   ....5D4C.... MOVX.B  LED_PIN + 1(R12), R13
+   \   000006   ....5C4F.... MOVX.B  LED_PIN(R15), R12
+   \   00000C   1001         RETA
+     56          /*******************************************************************************
+     57          *  函数名称：LED_Off (LEDn led)
+     58          *  功能说明：关闭lED
+     59          *  参数说明：LEDn led      :LED（LED1,LED2...）
+     60          *  函数返回：无
+     61          *  使用示例：LED_Off(LED1);  //LED1灭
+     62          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2, keep-with-next
+     63          void LED_Off (LEDn led)
+   \                     LED_Off:
+     64          {
+     65            if(led == LED_ALL)
+   \   000000   6C93         CMP.B   #0x2, R12
+   \   000002   0520         JNE     ??LED_Off_0
+     66            {
+     67              for(led = LED1;led < LED_NUM;led++)
+     68              {
+     69                GPIO_WriteBit(LED_PIN[led].Port, LED_PIN[led].Pin, LED_OFF);
+   \   000004   4E43         MOV.B   #0x0, R14
+   \   000006   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_9:
+   \   00000A   4E43         MOV.B   #0x0, R14
+   \   00000C   ....         JMP     ?Subroutine1
+     70              }
+     71            }
+     72            else
+     73            {
+     74              GPIO_WriteBit(LED_PIN[led].Port, LED_PIN[led].Pin, LED_OFF);
+   \                     ??LED_Off_0:
+   \   00000E   4C4C         MOV.B   R12, R12
+   \   000010   EC0C         ADDA    R12, R12
+   \   000012   CF0C         MOVA    R12, R15
+   \   000014   4E43         MOV.B   #0x0, R14
+   \   000016   ....         JMP     ?Subroutine0
+     75            }
+     76          }
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine1:
+   \   000000   ........     CALLA   #?Subroutine4
+   \                     ??CrossCallReturnLabel_6:
+   \   000004   ........     BRA     #GPIO_WriteBit
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   ........     CALLA   #?Subroutine2
+   \                     ??CrossCallReturnLabel_1:
+   \   000004   ........     BRA     #GPIO_WriteBit
+     77          /*******************************************************************************
+     78          *  函数名称：LED_On  (LEDn led)
+     79          *  功能说明：灯亮
+     80          *  参数说明：LEDn led      :LED（LED1,LED2...）
+     81          *  函数返回：无
+     82          *  使用示例：LED_On(LED0);  //LED0亮
+     83          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+     84          void LED_On  (LEDn led)
+   \                     LED_On:
+     85          {
+     86            if(led == LED_ALL)
+   \   000000   6C93         CMP.B   #0x2, R12
+   \   000002   0520         JNE     ??LED_On_0
+     87            {
+     88              for(led = LED1;led < LED_NUM;led++)
+     89              {
+     90                GPIO_WriteBit(LED_PIN[led].Port, LED_PIN[led].Pin, LED_ON);
+   \   000004   5E43         MOV.B   #0x1, R14
+   \   000006   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_7:
+   \   00000A   5E43         MOV.B   #0x1, R14
+   \   00000C   ....         JMP     ?Subroutine1
+     91              }
+     92            }
+     93            else
+     94            {
+     95              GPIO_WriteBit(LED_PIN[led].Port, LED_PIN[led].Pin, LED_ON);
+   \                     ??LED_On_0:
+   \   00000E   4C4C         MOV.B   R12, R12
+   \   000010   EC0C         ADDA    R12, R12
+   \   000012   CF0C         MOVA    R12, R15
+   \   000014   5E43         MOV.B   #0x1, R14
+   \   000016   ....         JMP     ?Subroutine0
+   \   000018   0343         NOP
+     96            }
+     97          }
+     98          /*******************************************************************************
+     99          *  函数名称：LED_Turn(LEDn led)
+    100          *  功能说明：灯翻转
+    101          *  参数说明：LEDn led      :LED（LED1,LED2...）
+    102          *  函数返回：无
+    103          *  使用示例：LED_Turn(LED0);  //LED0输出翻转
+    104          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2
+    105          void LED_Turn(LEDn led)
+   \                     LED_Turn:
+    106          {
+    107            if(led == LED_ALL)
+   \   000000   6C93         CMP.B   #0x2, R12
+   \   000002   0820         JNE     ??LED_Turn_0
+    108            {
+    109              for(led = LED1;led < LED_NUM;led++)
+    110              {
+    111                GPIO_TurnBit(LED_PIN[led].Port, LED_PIN[led].Pin);
+   \   000004   4D43         MOV.B   #0x0, R13
+   \   000006   4C43         MOV.B   #0x0, R12
+   \   000008   ........     CALLA   #GPIO_TurnBit
+   \   00000C   ........     CALLA   #?Subroutine4
+    112              }
+    113            }
+   \                     ??CrossCallReturnLabel_4:
+   \   000010   ........     BRA     #GPIO_TurnBit
+    114            else
+    115            {
+    116              GPIO_TurnBit(LED_PIN[led].Port, LED_PIN[led].Pin);
+   \                     ??LED_Turn_0:
+   \   000014   4C4C         MOV.B   R12, R12
+   \   000016   EC0C         ADDA    R12, R12
+   \   000018   CF0C         MOVA    R12, R15
+   \   00001A   ........     CALLA   #?Subroutine2
+    117            }
+   \                     ??CrossCallReturnLabel_0:
+   \   00001E   ........     BRA     #GPIO_TurnBit
+    118          }
+    119          /*******************************************************************************
+    120          *  函数名称：water_lights(void)
+    121          *  功能说明：流水灯
+    122          *  参数说明：无
+    123          *  函数返回：无
+    124          *  使用示例：water_lights(); //流水灯亮一次
+    125          ********************************************************************************/
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    126          void LED_Water_Lights(void)
+   \                     LED_Water_Lights:
+    127          {
+    128            for(LEDn led = LED1;led < LED_NUM;led++)
+    129            {
+    130              LED_Turn(led);
+   \   000000   4D43         MOV.B   #0x0, R13
+   \   000002   4C43         MOV.B   #0x0, R12
+   \   000004   ........     CALLA   #?Subroutine3
+    131              DELAY_MS(500);
+   \                     ??CrossCallReturnLabel_2:
+   \   000008   ........     CALLA   #?Subroutine4
+    132            }
+   \                     ??CrossCallReturnLabel_5:
+   \   00000C                REQUIRE ?Subroutine3
+   \   00000C                // Fall through to label ?Subroutine3
+    133          }
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine3:
+   \   000000   ........     CALLA   #GPIO_TurnBit
+   \   000004                ////////////// Start of 12500000 cycles delay.
+   \   000004   3F4006AF     MOV.W   #0xaf06, R15
+   \   000008   3E402F00     MOV.W   #0x2f, R14
+   \                     ??Subroutine3_1:
+   \   00000C   3F53         ADD.W   #0xffff, R15
+   \   00000E   3E63         ADDC.W  #0xffff, R14
+   \   000010   FD2F         JC      ??Subroutine3_1
+   \   000012                ////////////// End of delay code.
+   \   000012   1001         RETA
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      8   LED_Init
+        8   -> GPIO_MultiBits_Init
+        8   -> LED_Off
+      4   LED_Off
+        0   -> GPIO_WriteBit
+        4   -> GPIO_WriteBit
+      4   LED_On
+        0   -> GPIO_WriteBit
+        4   -> GPIO_WriteBit
+      8   LED_SetStatus
+        8   -> GPIO_WriteBit
+      4   LED_Turn
+        0   -> GPIO_TurnBit
+        4   -> GPIO_TurnBit
+      4   LED_Water_Lights
+        4   -> GPIO_TurnBit
+        8   -> GPIO_TurnBit
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       8  ?Subroutine0
+       8  ?Subroutine1
+      14  ?Subroutine2
+      20  ?Subroutine3
+      10  ?Subroutine4
+       8  ?Subroutine5
+      72  LED_Init
+      24  LED_Off
+      26  LED_On
+       4  LED_PIN
+      42  LED_SetStatus
+      34  LED_Turn
+      12  LED_Water_Lights
+
+ 
+ 278 bytes in segment CODE
+   4 bytes in segment DATA20_C
+ 
+ 278 bytes of CODE  memory
+   4 bytes of CONST memory
+
+Errors: none
+Warnings: none

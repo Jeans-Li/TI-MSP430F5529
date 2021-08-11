@@ -1,0 +1,363 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           03/Aug/2021  16:28:02
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\Project\TI_Car\User\app_main.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EWAF5.tmp
+#        (D:\Dev\Project\TI_Car\User\app_main.c -D NDEBUG -D RAM_VECTOR -lC
+#        D:\Dev\Project\TI_Car\Release\List -lA
+#        D:\Dev\Project\TI_Car\Release\List -o
+#        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+#        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+#        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+#        D:\Dev\Project\TI_Car\HardWare\key\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+#        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+#        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+#        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+#        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+#        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+#        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+#        D:\Dev\Project\TI_Car\User\USER\ -I
+#        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+#        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\Project\TI_Car\Release\List\app_main.lst
+#    Object file   =  D:\Dev\Project\TI_Car\Release\Obj\app_main.r43
+#
+###############################################################################
+
+D:\Dev\Project\TI_Car\User\app_main.c
+      1          #include "app_main.h"
+      2          
+      3          
+      4          
+
+   \                                 In  segment DATA20_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+      5          char databuf[256];
+   \                     databuf:
+   \   000000                DS8 256
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+      6          static int num=0;
+   \                     num:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 1, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+      7          uint8_t flag = 0;
+   \                     flag:
+   \   000000                DS8 1
+      8          
+      9          
+
+   \                                 In  segment ISR_CODE, align 2
+     10          __interrupt void UART_RX_IRQ_Handler()
+   \                     UART_RX_IRQ_Handler:
+     11          { 
+   \   000000   3F14         PUSHM.A #0x4, R15
+     12            if(UART_GetITStatus(UART1,UART_RX_IRQn) == TRUE)   //清除串口某一个中断标志
+   \   000002   5D43         MOV.B   #0x1, R13
+   \   000004   5C43         MOV.B   #0x1, R12
+   \   000006   ........     CALLA   #UART_GetITStatus
+   \   00000A   5C93         CMP.B   #0x1, R12
+   \   00000C   1020         JNE     ??UART_RX_IRQ_Handler_0
+     13            {
+     14              //传输速率高时，接收中断里不要做其他事件，否则会丢失数据，另外主时钟也要设高一点
+     15              databuf[num]=UART_GetChar     (UART1);                 //读取一个字节1个字节
+   \   00000E   5C43         MOV.B   #0x1, R12
+   \   000010   ........     CALLA   #UART_GetChar
+   \   000014   ....1F42.... MOVX.W  &num, R15
+   \   00001A   ....CF4C.... MOVX.B  R12, databuf(R15)
+     16              num++;
+   \   000020   ....9253.... ADDX.W  #0x1, &num
+     17              UART_ClearITPendingBit(UART1,UART_RX_IRQn);    //清除串口某一个中断标志
+   \   000026   5D43         MOV.B   #0x1, R13
+   \   000028   5C43         MOV.B   #0x1, R12
+   \   00002A   ........     CALLA   #UART_ClearITPendingBit
+     18            }
+     19          }
+   \                     ??UART_RX_IRQ_Handler_0:
+   \   00002E   3C16         POPM.A  #0x4, R15
+   \   000030   0013         RETI
+     20          
+     21          
+
+   \                                 In  segment CODE, align 2
+     22          void app_main_init()
+   \                     app_main_init:
+     23          {
+     24            DisableInterrupts();          //禁止总中断
+   \   000000   32C2         DINT
+   \   000002   0343         NOP
+     25            DisableWatchDog();     //关闭开门狗
+   \   000004   ........     CALLA   #DisableWatchDog
+     26            LED_Init(LED_ALL);            //LED初始化
+   \   000008   6C43         MOV.B   #0x2, R12
+   \   00000A   ........     CALLA   #LED_Init
+     27            MOTOR_Init();  //电机pwm初始化、电机控制io口初始化
+   \   00000E   ........     CALLA   #MOTOR_Init
+     28            UART_Init        (UART1,115200);                      //初始化UART1模块,波特率115200，波特率高时最好把主时钟 设高些
+   \   000012   3E4000C2     MOV.W   #0xc200, R14
+   \   000016   1F43         MOV.W   #0x1, R15
+   \   000018   5C43         MOV.B   #0x1, R12
+   \   00001A   ........     CALLA   #UART_Init
+     29            Set_Vector_Handler(VECTOR_UART1,UART_RX_IRQ_Handler);    //设置接收中断向量
+   \   00001E   ........     MOVA    #UART_RX_IRQ_Handler, R13
+   \   000022   7C402E00     MOV.B   #0x2e, R12
+   \   000026   ........     CALLA   #Set_Vector_Handler
+     30            UART_ITConfig  (UART1,UART_RX_IRQn,TRUE);                //开串口接收中断
+   \   00002A   5E43         MOV.B   #0x1, R14
+   \   00002C   5D43         MOV.B   #0x1, R13
+   \   00002E   5C43         MOV.B   #0x1, R12
+   \   000030   ........     CALLA   #UART_ITConfig
+     31            Encoder_Init();   //编码器初始化
+   \   000034   ........     CALLA   #Encoder_Init
+     32            OLED_Init();   //OLED初始化
+   \   000038   ........     CALLA   #OLED_Init
+     33            OLED_Clear();
+   \   00003C   ........     CALLA   #OLED_Clear
+     34            Car_Go();
+   \   000040   ........     CALLA   #Car_Go
+   \   000044   0343         NOP
+     35            EnableInterrupts();     //开启总中断
+   \   000046   32D2         EINT
+     36          }
+   \   000048   1001         RETA
+     37          
+     38          
+
+   \                                 In  segment CODE, align 2
+     39          void app_main()
+   \                     app_main:
+     40          {
+     41            display();
+   \   000000   ........     CALLA   #display
+     42            speed_Handle();    //速度处理函数
+   \   000004   ........     BRA     #speed_Handle
+     43          //  Remote_Scan();
+     44          //    LED_Turn(LED2);
+     45          
+     46              
+     47          //    UART_Printf(UART1," Hello-CTGU!\n UART-TEST!\n");         //发送字符串
+     48          //    UART_Printf(UART1,"编码器1：%d\r\n",encoderCnt_A);
+     49          //    UART_Printf(UART1,"编码器2：%d\r\n",encoderCnt_B);
+     50          //    UART_Printf(UART1,"编码器3：%d\r\n",encoderCnt_C);
+     51          //    UART_Printf(UART1,"编码器4：%d\r\n",encoderCnt_D);
+     52          }
+     53          
+
+   \                                 In  segment CODE, align 2
+     54          void display()
+   \                     display:
+     55          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+     56                  //显示提示字
+     57                  OLED_DispStringAt(FONT_ASCII_6X8,0,0,"Speed:");  //显示提示字：Speed
+   \   000002   ........     MOVA    #OLED_DispStringAt, R11
+   \   000006   ........     MOVA    #`?<Constant "Speed:">`, R15
+   \   00000A   4E43         MOV.B   #0x0, R14
+   \   00000C   4D43         MOV.B   #0x0, R13
+   \   00000E   4C43         MOV.B   #0x0, R12
+   \   000010   4B13         CALLA   R11
+     58                  OLED_DispStringAt(FONT_ASCII_6X8,0,90,"m/min");
+   \   000012   ........     MOVA    #`?<Constant "m/min">`, R15
+   \   000016   7E405A00     MOV.B   #0x5a, R14
+   \   00001A   4D43         MOV.B   #0x0, R13
+   \   00001C   4C43         MOV.B   #0x0, R12
+   \   00001E   4B13         CALLA   R11
+     59                  OLED_DispStringAt(FONT_ASCII_6X8,2,0,"A:         B:     ");
+   \   000020   ........     MOVA    #`?<Constant "A:         B:     ">`, R15
+   \   000024   4E43         MOV.B   #0x0, R14
+   \   000026   6D43         MOV.B   #0x2, R13
+   \   000028   4C43         MOV.B   #0x0, R12
+   \   00002A   4B13         CALLA   R11
+     60                  OLED_DispStringAt(FONT_ASCII_6X8,4,0,"C:         D:     ");
+   \   00002C   ........     MOVA    #`?<Constant "C:         D:     ">`, R15
+   \   000030   4E43         MOV.B   #0x0, R14
+   \   000032   6D42         MOV.B   #0x4, R13
+   \   000034   4C43         MOV.B   #0x0, R12
+   \   000036   4B13         CALLA   R11
+     61                  OLED_DispStringAt(FONT_ASCII_6X8,6,0,"P:   I:   D:");
+   \   000038   ........     MOVA    #`?<Constant "P:   I:   D:">`, R15
+   \   00003C   4E43         MOV.B   #0x0, R14
+   \   00003E   7D400600     MOV.B   #0x6, R13
+   \   000042   4C43         MOV.B   #0x0, R12
+   \   000044   4B13         CALLA   R11
+     62                  
+     63                  //显示车轮转速
+     64                  OLED_DispDecAt(FONT_ASCII_6X8,2,15,RPM_A,3);
+   \   000046   ........     MOVA    #OLED_DispDecAt, R10
+   \   00004A   7B400300     MOV.B   #0x3, R11
+   \   00004E   ....1E42.... MOVX.W  &RPM_A, R14
+   \   000054   0312         PUSH.W  #0x0
+   \   000056   0E12         PUSH.W  R14
+   \   000058   4F4B         MOV.B   R11, R15
+   \   00005A   7E400F00     MOV.B   #0xf, R14
+   \   00005E   6D43         MOV.B   #0x2, R13
+   \   000060   4C43         MOV.B   #0x0, R12
+   \   000062   4A13         CALLA   R10
+     65                  OLED_DispDecAt(FONT_ASCII_6X8,2,80,RPM_B,3);
+   \   000064   ....1E42.... MOVX.W  &RPM_B, R14
+   \   00006A   0312         PUSH.W  #0x0
+   \   00006C   0E12         PUSH.W  R14
+   \   00006E   4F4B         MOV.B   R11, R15
+   \   000070   7E405000     MOV.B   #0x50, R14
+   \   000074   6D43         MOV.B   #0x2, R13
+   \   000076   4C43         MOV.B   #0x0, R12
+   \   000078   4A13         CALLA   R10
+     66                  OLED_DispDecAt(FONT_ASCII_6X8,4,15,RPM_C,3);
+   \   00007A   ....1E42.... MOVX.W  &RPM_C, R14
+   \   000080   0312         PUSH.W  #0x0
+   \   000082   0E12         PUSH.W  R14
+   \   000084   4F4B         MOV.B   R11, R15
+   \   000086   7E400F00     MOV.B   #0xf, R14
+   \   00008A   6D42         MOV.B   #0x4, R13
+   \   00008C   4C43         MOV.B   #0x0, R12
+   \   00008E   4A13         CALLA   R10
+     67                  OLED_DispDecAt(FONT_ASCII_6X8,4,80,RPM_D,3);
+   \   000090   ....1E42.... MOVX.W  &RPM_D, R14
+   \   000096   0312         PUSH.W  #0x0
+   \   000098   0E12         PUSH.W  R14
+   \   00009A   4F4B         MOV.B   R11, R15
+   \   00009C   7E405000     MOV.B   #0x50, R14
+   \   0000A0   6D42         MOV.B   #0x4, R13
+   \   0000A2   4C43         MOV.B   #0x0, R12
+   \   0000A4   4A13         CALLA   R10
+     68          
+     69                  //显示速度
+     70                  OLED_DispFolatAt(FONT_ASCII_6X8,0,50,speed,2);
+   \   0000A6   ....1212.... PUSHX.W &speed + 2
+   \   0000AC   ....1212.... PUSHX.W &speed
+   \   0000B2   6F43         MOV.B   #0x2, R15
+   \   0000B4   7E403200     MOV.B   #0x32, R14
+   \   0000B8   4D43         MOV.B   #0x0, R13
+   \   0000BA   4C43         MOV.B   #0x0, R12
+   \   0000BC   ........     CALLA   #OLED_DispFolatAt
+     71          
+     72          //	ssd1306_SetCursor(20, 15);
+     73          //	ssd1306_WriteString(showRPM(1), Font_7x10,White);     //A轮实际减速箱输出转速  单位RPM
+     74          //
+     75          //	ssd1306_SetCursor(80, 15);
+     76          //	ssd1306_WriteString(showRPM(2), Font_7x10,White);     //B轮实际减速箱输出转速  单位RPM
+     77          //
+     78          //	ssd1306_SetCursor(20, 30);
+     79          //	ssd1306_WriteString(showRPM(3), Font_7x10,White);     //C轮实际减速箱输出转速  单位RPM
+     80          //
+     81          //	ssd1306_SetCursor(80, 30);
+     82          //	ssd1306_WriteString(showRPM(4), Font_7x10,White);    //D轮实际减速箱输出转速  单位RPM
+     83          //
+     84          //	ssd1306_UpdateScreen();
+     85          //	ssd1306_Fill(Black);	//清屏
+     86          }
+   \   0000C0   A1001400     ADDA    #0x14, SP
+   \   0000C4   1A16         POPM.A  #0x2, R11
+   \   0000C6   1001         RETA
+
+   \                                 In  segment DATA20_C, align 1, align-sorted
+   \                     `?<Constant "Speed:">`:
+   \   000000   53706565643A DC8 "Speed:"
+   \            00          
+
+   \                                 In  segment DATA20_C, align 1, align-sorted
+   \                     `?<Constant "m/min">`:
+   \   000000   6D2F6D696E00 DC8 "m/min"
+
+   \                                 In  segment DATA20_C, align 1, align-sorted
+   \                     `?<Constant "A:         B:     ">`:
+   \   000000   413A20202020 DC8 "A:         B:     "
+   \            202020202042
+   \            3A2020202020
+   \            00          
+
+   \                                 In  segment DATA20_C, align 1, align-sorted
+   \                     `?<Constant "C:         D:     ">`:
+   \   000000   433A20202020 DC8 "C:         D:     "
+   \            202020202044
+   \            3A2020202020
+   \            00          
+
+   \                                 In  segment DATA20_C, align 1, align-sorted
+   \                     `?<Constant "P:   I:   D:">`:
+   \   000000   503A20202049 DC8 "P:   I:   D:"
+   \            3A202020443A
+   \            00          
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     20   UART_RX_IRQ_Handler
+       20   -> UART_ClearITPendingBit
+       20   -> UART_GetChar
+       20   -> UART_GetITStatus
+      4   app_main
+        4   -> display
+        0   -> speed_Handle
+      4   app_main_init
+        4   -> Car_Go
+        4   -> DisableWatchDog
+        4   -> Encoder_Init
+        4   -> LED_Init
+        4   -> MOTOR_Init
+        4   -> OLED_Clear
+        4   -> OLED_Init
+        4   -> Set_Vector_Handler
+        4   -> UART_ITConfig
+        4   -> UART_Init
+     32   display
+       16   -> OLED_DispDecAt
+       20   -> OLED_DispDecAt
+       24   -> OLED_DispDecAt
+       28   -> OLED_DispDecAt
+       32   -> OLED_DispFolatAt
+       12   -> OLED_DispStringAt
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      19  ?<Constant "A:         B:     ">
+      19  ?<Constant "C:         D:     ">
+      13  ?<Constant "P:   I:   D:">
+       7  ?<Constant "Speed:">
+       6  ?<Constant "m/min">
+      50  UART_RX_IRQ_Handler
+       8  app_main
+      74  app_main_init
+     256  databuf
+     200  display
+       1  flag
+       2  num
+
+ 
+ 282 bytes in segment CODE
+  64 bytes in segment DATA20_C
+ 259 bytes in segment DATA20_Z
+  50 bytes in segment ISR_CODE
+ 
+ 332 bytes of CODE  memory
+  64 bytes of CONST memory
+ 259 bytes of DATA  memory
+
+Errors: none
+Warnings: none

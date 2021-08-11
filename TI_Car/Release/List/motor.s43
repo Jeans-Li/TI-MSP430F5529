@@ -1,0 +1,1414 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// IAR C/C++ Compiler V7.10.1.973/W32 for MSP430          03/Aug/2021  16:28:06
+// Copyright 1996-2017 IAR Systems AB.
+// Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+//
+//    __rt_version  =  3
+//    __double_size =  32
+//    __reg_r4      =  free
+//    __reg_r5      =  free
+//    __pic         =  no
+//    __core        =  430X
+//    __data_model  =  large
+//    __code_model  =  large
+//    Source file   =  D:\Dev\Project\TI_Car\HardWare\motor\motor.c
+//    Command line  =  
+//        -f C:\Users\Jeans\AppData\Local\Temp\EW181E.tmp
+//        (D:\Dev\Project\TI_Car\HardWare\motor\motor.c -D NDEBUG -D RAM_VECTOR
+//        -lC D:\Dev\Project\TI_Car\Release\List -lA
+//        D:\Dev\Project\TI_Car\Release\List -o
+//        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+//        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+//        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+//        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+//        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+//        D:\Dev\Project\TI_Car\HardWare\key\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+//        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+//        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+//        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+//        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+//        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+//        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+//        D:\Dev\Project\TI_Car\User\USER\ -I
+//        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+//        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+//        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+//        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+//    Locale        =  Chinese (Simplified)_CHN.936
+//    List file     =  D:\Dev\Project\TI_Car\Release\List\motor.s43
+//
+///////////////////////////////////////////////////////////////////////////////
+
+        NAME motor
+
+        RTMODEL "__SystemLibrary", "DLib"
+        RTMODEL "__code_model", "large"
+        RTMODEL "__core", "430X"
+        RTMODEL "__data_model", "large"
+        RTMODEL "__double_size", "32"
+        RTMODEL "__pic", "no"
+        RTMODEL "__reg_r4", "free"
+        RTMODEL "__reg_r5", "free"
+        RTMODEL "__rt_version", "3"
+
+        RSEG CSTACK:DATA:SORT:NOROOT(0)
+
+        EXTERN ?longjmp_r4
+        EXTERN ?longjmp_r5
+        EXTERN ?setjmp_r4
+        EXTERN ?setjmp_r5
+
+        PUBWEAK ?setjmp_save_r4
+        PUBWEAK ?setjmp_save_r5
+        PUBLIC Car_Back
+        PUBLIC Car_Go
+        PUBLIC Car_Left
+        PUBLIC Car_Left_45H
+        PUBLIC Car_Left_45Q
+        PUBLIC Car_Right
+        PUBLIC Car_Right_45H
+        PUBLIC Car_Right_45Q
+        PUBLIC Car_Stop
+        PUBLIC Car_Turn_Left_Around
+        PUBLIC Car_Turn_Right_Around
+        PUBLIC MOTOR_A
+        PUBLIC MOTOR_B
+        PUBLIC MOTOR_C
+        PUBLIC MOTOR_D
+        PUBLIC MOTOR_Init
+        PUBLIC MOTOR_PWM_Out
+        
+          CFI Names cfiNames0
+          CFI StackFrame CFA SP DATA
+          CFI Resource PC:20, SP:20, SR:16, R4L:16, R4H:4, R4:20, R5L:16, R5H:4
+          CFI Resource R5:20, R6L:16, R6H:4, R6:20, R7L:16, R7H:4, R7:20, R8L:16
+          CFI Resource R8H:4, R8:20, R9L:16, R9H:4, R9:20, R10L:16, R10H:4
+          CFI Resource R10:20, R11L:16, R11H:4, R11:20, R12L:16, R12H:4, R12:20
+          CFI Resource R13L:16, R13H:4, R13:20, R14L:16, R14H:4, R14:20, R15L:16
+          CFI Resource R15H:4, R15:20
+          CFI ResourceParts R4 R4H, R4L
+          CFI ResourceParts R5 R5H, R5L
+          CFI ResourceParts R6 R6H, R6L
+          CFI ResourceParts R7 R7H, R7L
+          CFI ResourceParts R8 R8H, R8L
+          CFI ResourceParts R9 R9H, R9L
+          CFI ResourceParts R10 R10H, R10L
+          CFI ResourceParts R11 R11H, R11L
+          CFI ResourceParts R12 R12H, R12L
+          CFI ResourceParts R13 R13H, R13L
+          CFI ResourceParts R14 R14H, R14L
+          CFI ResourceParts R15 R15H, R15L
+          CFI EndNames cfiNames0
+        
+          CFI Common cfiCommon0 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L Undefined
+          CFI R12H Undefined
+          CFI R12 Undefined
+          CFI R13L Undefined
+          CFI R13H Undefined
+          CFI R13 Undefined
+          CFI R14L Undefined
+          CFI R14H Undefined
+          CFI R14 Undefined
+          CFI R15L Undefined
+          CFI R15H Undefined
+          CFI R15 Undefined
+          CFI EndCommon cfiCommon0
+        
+        
+          CFI Common cfiCommon1 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L SameValue
+          CFI R12H SameValue
+          CFI R12 Concat
+          CFI R13L SameValue
+          CFI R13H SameValue
+          CFI R13 Concat
+          CFI R14L SameValue
+          CFI R14H SameValue
+          CFI R14 Concat
+          CFI R15L SameValue
+          CFI R15H SameValue
+          CFI R15 Concat
+          CFI EndCommon cfiCommon1
+        
+        EXTERN TIMER_PWM_MultiChannel_Init
+        EXTERN TIMER_PWM_SetChannelDuty
+        EXTERN GPIO_MultiBits_Init
+        EXTERN GPIO_SetBits
+        EXTERN GPIO_ResetBits
+
+// D:\Dev\Project\TI_Car\HardWare\motor\motor.c
+//    1 /*
+//    2  *
+//    3  *
+//    4             麦克纳姆轮安装方向
+//    5 
+//    6              TA0.1(P1.2)  A轮 \\   ------   //  B轮     TA0.2(P1.3)
+//    7                              \\   ------  //
+//    8                                   ------
+//    9                                   ------
+//   10                                   ------
+//   11                               //  ------  \\ 
+//   12               TA0.3(P1.4) D轮  //   ------   \\  C轮     TA0.4(P1.5)
+//   13 
+//   14                 A轮 //左前
+//   15                 B轮 //右前
+//   16                 C轮 //右后
+//   17                 D轮 //左后
+//   18 
+//   19 
+//   20             A轮：控制前后运动   P6.0 --- AIN1，P6.1 --- AIN2
+//   21             B轮：控制前后运动   P6.2 --- BIN1，P6.3 --- BIN2
+//   22 
+//   23             C轮：控制前后运动   P6.4 --- BIN1，P7.0 --- BIN1
+//   24             D轮：控制前后运动   P8.1 --- AIN1，P3.6 --- AIN2
+//   25 */
+//   26 
+//   27 
+//   28 #include "motor.h"
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   29 void MOTOR_Init()
+MOTOR_Init:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function MOTOR_Init
+//   30 {
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+//   31   //定时器A0，频率1K,占空比为0,初始化4个通道，分别是：TIMER_CH1(P1.2), TIMER_CH2(P1.3), TIMER_CH3(P1.4), TIMER_CH4(P1.5)
+//   32   TIMER_PWM_Init(TIMER_A0,10000, TIMER_CH1, TIMER_CH2, TIMER_CH3, TIMER_CH4);
+        PUSH.W  #0x4
+          CFI CFA SP+22
+        PUSHX.A #0x30002
+          CFI CFA SP+26
+        PUSH.W  #0x1
+          CFI CFA SP+28
+        MOV.B   #0x4, R13
+        MOV.W   #0x2710, R14
+        MOV.W   #0x0, R15
+        MOV.B   #0x0, R12
+          CFI FunCall TIMER_PWM_MultiChannel_Init
+        CALLA   #TIMER_PWM_MultiChannel_Init
+//   33   TIMER_PWM_SetChannelDuty  (TIMER_A0,TIMER_CH1,500);       //设置某一个定时器某一个通道的占空比
+        MOVA    #TIMER_PWM_SetChannelDuty, R8
+        MOV.W   #0x1f4, R10
+        MOV.W   R10, R14
+        MOV.W   #0x0, R15
+        MOV.B   #0x1, R13
+        CALLA   #?Subroutine7
+//   34   TIMER_PWM_SetChannelDuty  (TIMER_A0,TIMER_CH2,500);     //设置某一个定时器某一个通道的占空比
+??CrossCallReturnLabel_4:
+        MOV.B   #0x2, R13
+        CALLA   #?Subroutine7
+//   35   TIMER_PWM_SetChannelDuty  (TIMER_A0,TIMER_CH3,500);     //设置某一个定时器某一个通道的占空比
+??CrossCallReturnLabel_5:
+        MOV.B   #0x3, R13
+        CALLA   #?Subroutine7
+//   36   TIMER_PWM_SetChannelDuty  (TIMER_A0,TIMER_CH4,500);    //设置某一个定时器某一个通道的占空比
+??CrossCallReturnLabel_6:
+        MOV.B   #0x4, R13
+        MOV.B   #0x0, R12
+          CFI FunCall TIMER_PWM_SetChannelDuty
+        CALLA   R8
+//   37   
+//   38   GPIO_MultiBits_Init(P6,BIT0,GPO|HDS); 
+        MOVA    #GPIO_MultiBits_Init, R11
+        MOV.B   #0x5, R10
+        MOV.W   #0xa, R8
+        MOV.W   R8, R14
+        MOV.W   #0x1, R13
+        CALLA   #?Subroutine9
+//   39   GPIO_MultiBits_Init(P6,BIT1,GPO|HDS);
+??CrossCallReturnLabel_11:
+        MOV.W   #0x2, R13
+        CALLA   #?Subroutine9
+//   40   GPIO_MultiBits_Init(P6,BIT2,GPO|HDS);
+??CrossCallReturnLabel_12:
+        MOV.W   #0x4, R13
+        CALLA   #?Subroutine9
+//   41   GPIO_MultiBits_Init(P6,BIT3,GPO|HDS);
+??CrossCallReturnLabel_13:
+        MOV.W   #0x8, R13
+        CALLA   #?Subroutine9
+//   42   GPIO_MultiBits_Init(P6,BIT4,GPO|HDS);
+??CrossCallReturnLabel_14:
+        MOV.W   #0x10, R13
+        CALLA   #?Subroutine9
+//   43   GPIO_MultiBits_Init(P7,BIT0,GPO|HDS);
+??CrossCallReturnLabel_15:
+        MOV.W   #0x1, R13
+        MOV.B   #0x6, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   R11
+//   44   GPIO_MultiBits_Init(P8,BIT1,GPO|HDS);
+        MOV.W   R8, R14
+        MOV.W   #0x2, R13
+        MOV.B   #0x7, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   R11
+//   45   GPIO_MultiBits_Init(P3,BIT6,GPO|HDS);
+        MOV.W   R8, R14
+        MOV.W   #0x40, R13
+        MOV.B   #0x2, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   R11
+//   46   
+//   47   
+//   48 }
+        ADDA    #0x8, SP
+          CFI CFA SP+20
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock0
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine9:
+          CFI Block cfiCond1 Using cfiCommon0
+          CFI Function MOTOR_Init
+          CFI Conditional ??CrossCallReturnLabel_11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+32
+          CFI Block cfiCond2 Using cfiCommon0
+          CFI (cfiCond2) Function MOTOR_Init
+          CFI (cfiCond2) Conditional ??CrossCallReturnLabel_12
+          CFI (cfiCond2) R8L Frame(CFA, -20)
+          CFI (cfiCond2) R8H Frame(CFA, -18)
+          CFI (cfiCond2) R9L Frame(CFA, -16)
+          CFI (cfiCond2) R9H Frame(CFA, -14)
+          CFI (cfiCond2) R10L Frame(CFA, -12)
+          CFI (cfiCond2) R10H Frame(CFA, -10)
+          CFI (cfiCond2) R11L Frame(CFA, -8)
+          CFI (cfiCond2) R11H Frame(CFA, -6)
+          CFI (cfiCond2) CFA SP+32
+          CFI Block cfiCond3 Using cfiCommon0
+          CFI (cfiCond3) Function MOTOR_Init
+          CFI (cfiCond3) Conditional ??CrossCallReturnLabel_13
+          CFI (cfiCond3) R8L Frame(CFA, -20)
+          CFI (cfiCond3) R8H Frame(CFA, -18)
+          CFI (cfiCond3) R9L Frame(CFA, -16)
+          CFI (cfiCond3) R9H Frame(CFA, -14)
+          CFI (cfiCond3) R10L Frame(CFA, -12)
+          CFI (cfiCond3) R10H Frame(CFA, -10)
+          CFI (cfiCond3) R11L Frame(CFA, -8)
+          CFI (cfiCond3) R11H Frame(CFA, -6)
+          CFI (cfiCond3) CFA SP+32
+          CFI Block cfiCond4 Using cfiCommon0
+          CFI (cfiCond4) Function MOTOR_Init
+          CFI (cfiCond4) Conditional ??CrossCallReturnLabel_14
+          CFI (cfiCond4) R8L Frame(CFA, -20)
+          CFI (cfiCond4) R8H Frame(CFA, -18)
+          CFI (cfiCond4) R9L Frame(CFA, -16)
+          CFI (cfiCond4) R9H Frame(CFA, -14)
+          CFI (cfiCond4) R10L Frame(CFA, -12)
+          CFI (cfiCond4) R10H Frame(CFA, -10)
+          CFI (cfiCond4) R11L Frame(CFA, -8)
+          CFI (cfiCond4) R11H Frame(CFA, -6)
+          CFI (cfiCond4) CFA SP+32
+          CFI Block cfiCond5 Using cfiCommon0
+          CFI (cfiCond5) Function MOTOR_Init
+          CFI (cfiCond5) Conditional ??CrossCallReturnLabel_15
+          CFI (cfiCond5) R8L Frame(CFA, -20)
+          CFI (cfiCond5) R8H Frame(CFA, -18)
+          CFI (cfiCond5) R9L Frame(CFA, -16)
+          CFI (cfiCond5) R9H Frame(CFA, -14)
+          CFI (cfiCond5) R10L Frame(CFA, -12)
+          CFI (cfiCond5) R10H Frame(CFA, -10)
+          CFI (cfiCond5) R11L Frame(CFA, -8)
+          CFI (cfiCond5) R11H Frame(CFA, -6)
+          CFI (cfiCond5) CFA SP+32
+          CFI Block cfiPicker6 Using cfiCommon1
+          CFI (cfiPicker6) NoFunction
+          CFI (cfiPicker6) Picker
+        MOV.B   R10, R12
+          CFI (cfiCond1) FunCall MOTOR_Init GPIO_MultiBits_Init
+          CFI (cfiCond1) FunCall MOTOR_Init GPIO_MultiBits_Init
+          CFI (cfiCond1) FunCall MOTOR_Init GPIO_MultiBits_Init
+          CFI (cfiCond1) FunCall MOTOR_Init GPIO_MultiBits_Init
+          CFI (cfiCond1) FunCall MOTOR_Init GPIO_MultiBits_Init
+        CALLA   R11
+        MOV.W   R8, R14
+        RETA
+          CFI EndBlock cfiCond1
+          CFI EndBlock cfiCond2
+          CFI EndBlock cfiCond3
+          CFI EndBlock cfiCond4
+          CFI EndBlock cfiCond5
+          CFI EndBlock cfiPicker6
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine7:
+          CFI Block cfiCond7 Using cfiCommon0
+          CFI Function MOTOR_Init
+          CFI Conditional ??CrossCallReturnLabel_4
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+32
+          CFI Block cfiCond8 Using cfiCommon0
+          CFI (cfiCond8) Function MOTOR_Init
+          CFI (cfiCond8) Conditional ??CrossCallReturnLabel_5
+          CFI (cfiCond8) R8L Frame(CFA, -20)
+          CFI (cfiCond8) R8H Frame(CFA, -18)
+          CFI (cfiCond8) R9L Frame(CFA, -16)
+          CFI (cfiCond8) R9H Frame(CFA, -14)
+          CFI (cfiCond8) R10L Frame(CFA, -12)
+          CFI (cfiCond8) R10H Frame(CFA, -10)
+          CFI (cfiCond8) R11L Frame(CFA, -8)
+          CFI (cfiCond8) R11H Frame(CFA, -6)
+          CFI (cfiCond8) CFA SP+32
+          CFI Block cfiCond9 Using cfiCommon0
+          CFI (cfiCond9) Function MOTOR_Init
+          CFI (cfiCond9) Conditional ??CrossCallReturnLabel_6
+          CFI (cfiCond9) R8L Frame(CFA, -20)
+          CFI (cfiCond9) R8H Frame(CFA, -18)
+          CFI (cfiCond9) R9L Frame(CFA, -16)
+          CFI (cfiCond9) R9H Frame(CFA, -14)
+          CFI (cfiCond9) R10L Frame(CFA, -12)
+          CFI (cfiCond9) R10H Frame(CFA, -10)
+          CFI (cfiCond9) R11L Frame(CFA, -8)
+          CFI (cfiCond9) R11H Frame(CFA, -6)
+          CFI (cfiCond9) CFA SP+32
+          CFI Block cfiPicker10 Using cfiCommon1
+          CFI (cfiPicker10) NoFunction
+          CFI (cfiPicker10) Picker
+        MOV.B   #0x0, R12
+          CFI (cfiCond7) FunCall MOTOR_Init TIMER_PWM_SetChannelDuty
+          CFI (cfiCond7) FunCall MOTOR_Init TIMER_PWM_SetChannelDuty
+          CFI (cfiCond7) FunCall MOTOR_Init TIMER_PWM_SetChannelDuty
+        CALLA   R8
+        MOV.W   R10, R14
+        MOV.W   #0x0, R15
+        RETA
+          CFI EndBlock cfiCond7
+          CFI EndBlock cfiCond8
+          CFI EndBlock cfiCond9
+          CFI EndBlock cfiPicker10
+//   49 
+//   50 //改变四个电机pwm占空比
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   51 void MOTOR_PWM_Out(int dutyCycle_A,int dutyCycle_B,int dutyCycle_C,int dutyCycle_D)
+MOTOR_PWM_Out:
+          CFI Block cfiBlock11 Using cfiCommon0
+          CFI Function MOTOR_PWM_Out
+//   52 {
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+        MOV.W   R13, R11
+        MOV.W   R14, R10
+        MOV.W   R15, R8
+//   53     TIMER_PWM_SetChannelDuty(TIMER_A0,TIMER_CH1,dutyCycle_A);
+        MOVA    #TIMER_PWM_SetChannelDuty, R9
+        MOV.W   R12, R14
+        MOV.W   R12, R15
+        RLA.W   R15
+        SUBC.W  R15, R15
+        XOR.W   #0xffff, R15
+        MOV.B   #0x1, R13
+        MOV.B   #0x0, R12
+          CFI FunCall TIMER_PWM_SetChannelDuty
+        CALLA   R9
+//   54     TIMER_PWM_SetChannelDuty(TIMER_A0,TIMER_CH2,dutyCycle_B);
+        MOV.W   R11, R14
+        MOV.W   R11, R15
+        RLA.W   R15
+        SUBC.W  R15, R15
+        XOR.W   #0xffff, R15
+        MOV.B   #0x2, R13
+        MOV.B   #0x0, R12
+          CFI FunCall TIMER_PWM_SetChannelDuty
+        CALLA   R9
+//   55     TIMER_PWM_SetChannelDuty(TIMER_A0,TIMER_CH3,dutyCycle_C);
+        MOV.W   R10, R14
+        MOV.W   R10, R15
+        RLA.W   R15
+        SUBC.W  R15, R15
+        XOR.W   #0xffff, R15
+        MOV.B   #0x3, R13
+        MOV.B   #0x0, R12
+          CFI FunCall TIMER_PWM_SetChannelDuty
+        CALLA   R9
+//   56     TIMER_PWM_SetChannelDuty(TIMER_A0,TIMER_CH4,dutyCycle_D);
+        MOV.W   R8, R14
+        MOV.W   R8, R15
+        RLA.W   R15
+        SUBC.W  R15, R15
+        XOR.W   #0xffff, R15
+        MOV.B   #0x4, R13
+        MOV.B   #0x0, R12
+          CFI FunCall TIMER_PWM_SetChannelDuty
+        CALLA   R9
+//   57 }
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock11
+//   58 
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//   59 void MOTOR_A(char state)
+MOTOR_A:
+          CFI Block cfiBlock12 Using cfiCommon0
+          CFI Function MOTOR_A
+          CFI NoCalls
+//   60 {
+//   61     if(state == GO)
+        CMP.B   #0x0, R12
+        JNE     ??MOTOR_A_1
+//   62     {
+//   63         GPIO_SetBits(PORT6, GPIO_Pin_0);
+        MOV.W   #0x1, R13
+        CALLA   #?Subroutine14
+//   64         GPIO_ResetBits(PORT6, GPIO_Pin_1);
+??CrossCallReturnLabel_31:
+        MOV.W   #0x2, R13
+        JMP     ??MOTOR_A_0
+//   65     }
+//   66     if(state == BACK)
+??MOTOR_A_1:
+        CMP.B   #0x1, R12
+        JNE     ??MOTOR_A_2
+//   67     {
+//   68         GPIO_SetBits(PORT6, GPIO_Pin_1);
+        MOV.W   #0x2, R13
+        CALLA   #?Subroutine14
+//   69         GPIO_ResetBits(PORT6, GPIO_Pin_0);
+??CrossCallReturnLabel_32:
+        MOV.W   #0x1, R13
+//   70     }
+??MOTOR_A_0:
+        JMP     ?Subroutine0
+//   71     if(state == STOP)
+??MOTOR_A_2:
+        CMP.B   #0x2, R12
+        JNE     ??MOTOR_A_3
+//   72     {
+//   73         GPIO_SetBits(PORT6, GPIO_Pin_0);
+        CALLA   #?Subroutine4
+//   74         GPIO_SetBits(PORT6, GPIO_Pin_1);
+//   75     }
+//   76 }
+??MOTOR_A_3:
+        RETA
+          CFI EndBlock cfiBlock12
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine0:
+          CFI Block cfiBlock13 Using cfiCommon0
+          CFI NoFunction
+        MOV.B   #0x5, R12
+          CFI TailCall MOTOR_A GPIO_ResetBits
+          CFI TailCall MOTOR_B GPIO_ResetBits
+          CFI TailCall MOTOR_C GPIO_ResetBits
+        BRA     #GPIO_ResetBits
+          CFI EndBlock cfiBlock13
+//   77 
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//   78 void MOTOR_B(char state)
+MOTOR_B:
+          CFI Block cfiBlock14 Using cfiCommon0
+          CFI Function MOTOR_B
+          CFI NoCalls
+//   79 {
+//   80     if(state == GO)
+        CMP.B   #0x0, R12
+        JNE     ??MOTOR_B_1
+//   81     {
+//   82         GPIO_SetBits(PORT6, GPIO_Pin_2);
+        CALLA   #?Subroutine10
+//   83         GPIO_ResetBits(PORT6, GPIO_Pin_3);
+//   84     }
+??CrossCallReturnLabel_16:
+        JMP     ??MOTOR_B_0
+//   85     if(state == BACK)
+??MOTOR_B_1:
+        CMP.B   #0x1, R12
+        JNE     ??MOTOR_B_2
+//   86     {
+//   87         GPIO_SetBits(PORT6, GPIO_Pin_3);
+        MOV.W   #0x8, R13
+        CALLA   #?Subroutine14
+//   88         GPIO_ResetBits(PORT6, GPIO_Pin_2);
+??CrossCallReturnLabel_33:
+        MOV.W   #0x4, R13
+//   89     }
+??MOTOR_B_0:
+        JMP     ?Subroutine0
+//   90     if(state == STOP)
+??MOTOR_B_2:
+        CMP.B   #0x2, R12
+        JNE     ??MOTOR_B_3
+//   91     {
+//   92         GPIO_SetBits(PORT6, GPIO_Pin_2);
+        CALLA   #?Subroutine10
+//   93         GPIO_SetBits(PORT6, GPIO_Pin_3);
+//   94     }
+??CrossCallReturnLabel_17:
+        CALLA   #?Subroutine14
+//   95 }
+??MOTOR_B_3:
+        RETA
+          CFI EndBlock cfiBlock14
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine10:
+          CFI Block cfiCond15 Using cfiCommon0
+          CFI Function MOTOR_B
+          CFI Conditional ??CrossCallReturnLabel_16
+          CFI CFA SP+8
+          CFI Block cfiCond16 Using cfiCommon0
+          CFI (cfiCond16) Function MOTOR_B
+          CFI (cfiCond16) Conditional ??CrossCallReturnLabel_17
+          CFI (cfiCond16) CFA SP+8
+          CFI Block cfiPicker17 Using cfiCommon1
+          CFI (cfiPicker17) NoFunction
+          CFI (cfiPicker17) Picker
+        MOV.W   #0x4, R13
+        CALLA   #?Subroutine14
+??CrossCallReturnLabel_30:
+        MOV.W   #0x8, R13
+        RETA
+          CFI EndBlock cfiCond15
+          CFI EndBlock cfiCond16
+          CFI EndBlock cfiPicker17
+//   96 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   97 void MOTOR_C(char state)
+MOTOR_C:
+          CFI Block cfiBlock18 Using cfiCommon0
+          CFI Function MOTOR_C
+//   98 {
+//   99     if(state == GO)
+        CMP.B   #0x0, R12
+        JNE     ??MOTOR_C_0
+//  100     {
+//  101         GPIO_SetBits(PORT6, GPIO_Pin_4);
+        CALLA   #?Subroutine5
+//  102         GPIO_ResetBits(PORT7, GPIO_Pin_0);
+//  103     }
+??CrossCallReturnLabel_0:
+          CFI TailCall GPIO_ResetBits
+        BRA     #GPIO_ResetBits
+//  104     if(state == BACK)
+??MOTOR_C_0:
+        CMP.B   #0x1, R12
+        JNE     ??MOTOR_C_1
+//  105     {
+//  106         GPIO_SetBits(PORT7, GPIO_Pin_0);
+        MOV.W   #0x1, R13
+        MOV.B   #0x6, R12
+          CFI FunCall GPIO_SetBits
+        CALLA   #GPIO_SetBits
+//  107         GPIO_ResetBits(PORT6, GPIO_Pin_4);
+        MOV.W   #0x10, R13
+        JMP     ?Subroutine0
+//  108     }
+//  109     if(state == STOP)
+??MOTOR_C_1:
+        CMP.B   #0x2, R12
+        JNE     ??MOTOR_C_2
+//  110     {
+//  111         GPIO_SetBits(PORT6, GPIO_Pin_4);
+        CALLA   #?Subroutine5
+//  112         GPIO_SetBits(PORT7, GPIO_Pin_0);
+//  113     }
+??CrossCallReturnLabel_1:
+          CFI FunCall GPIO_SetBits
+        CALLA   #GPIO_SetBits
+//  114 }
+??MOTOR_C_2:
+        RETA
+          CFI EndBlock cfiBlock18
+//  115 
+//  116 void MOTOR_D(char state)
+//  117 {
+//  118     if(state == GO)
+//  119     {
+//  120         GPIO_SetBits(PORT8, GPIO_Pin_1);
+//  121         GPIO_ResetBits(PORT3, GPIO_Pin_6);
+//  122     }
+//  123     if(state == BACK)
+//  124     {
+//  125         GPIO_SetBits(PORT3, GPIO_Pin_6);
+//  126         GPIO_ResetBits(PORT8, GPIO_Pin_1);
+//  127     }
+//  128     if(state == STOP)
+//  129     {
+//  130         GPIO_SetBits(PORT8, GPIO_Pin_1);
+//  131         GPIO_SetBits(PORT3, GPIO_Pin_6);
+//  132     }
+//  133 }
+//  134 
+//  135 //***************************前进***************************//
+//  136 //只要配置INx()的状态就可以改变电机转动方向
+//  137 void Car_Go(void)
+//  138 {
+//  139     //左前电机 前    //右前电机 前
+//  140     MOTOR_A(GO);       MOTOR_B(GO);
+//  141 
+//  142     //左后电机 前   //右后电机 前
+//  143     MOTOR_D(GO);       MOTOR_C(GO);
+//  144 
+//  145 
+//  146 }
+//  147 
+//  148 void Car_Back(void)
+//  149 {
+//  150         //左前电机 后    //右前电机 后
+//  151 MOTOR_A(BACK);       MOTOR_B(BACK);
+//  152 
+//  153     //左后电机 后   //右后电机 后
+//  154 MOTOR_D(BACK);       MOTOR_C(BACK);
+//  155 }
+//  156 
+//  157 //***************************原地左转圈***************************//
+//  158 void Car_Turn_Left_Around(void)
+//  159 {
+//  160 
+//  161     //左前电机 后    //右前电机 前
+//  162 MOTOR_A(BACK);       MOTOR_B(GO);
+//  163 
+//  164     //左后电机 后   //右后电机 前
+//  165 MOTOR_D(BACK);       MOTOR_C(GO);
+//  166 
+//  167 }
+//  168 //***************************原地右转圈***************************//
+//  169 void Car_Turn_Right_Around(void)
+//  170 {
+//  171 
+//  172     //左前电机 前    //右前电机 后
+//  173 MOTOR_A(GO);       MOTOR_B(BACK);
+//  174 
+//  175     //左后电机 前   //右后电机 后
+//  176 MOTOR_D(GO);       MOTOR_C(BACK);
+//  177 
+//  178 }
+//  179 
+//  180 
+//  181 //***************************右横运动***************************//
+//  182 void Car_Right(void)
+//  183 {
+//  184     //左前电机     //右前电机
+//  185 MOTOR_A(GO);       MOTOR_B(BACK);
+//  186 
+//  187     //左后电机    //右后电机
+//  188   MOTOR_D(BACK);       MOTOR_C(GO);
+//  189 
+//  190 }
+//  191 //***************************左横运动***************************//
+//  192 void Car_Left(void)
+//  193 {
+//  194 
+//  195     //左前电机     //右前电机
+//  196 MOTOR_A(BACK);       MOTOR_B(GO);
+//  197 
+//  198     //左后电机    //右后电机
+//  199 MOTOR_D(GO);       MOTOR_C(BACK);
+//  200 }
+//  201 //***************************右前45°运动***************************//
+//  202 void Car_Right_45Q(void)
+//  203 {
+//  204     //左前电机     //右前电机
+//  205 MOTOR_A(GO);       MOTOR_B(STOP);
+//  206 
+//  207     //左后电机    //右后电机
+//  208   MOTOR_D(STOP);       MOTOR_C(GO);
+//  209 
+//  210 }
+//  211 //***************************右后45°运动***************************//
+//  212 void Car_Left_45H(void)
+//  213 {
+//  214     //左前电机     //右前电机
+//  215 MOTOR_A(BACK);       MOTOR_B(STOP);
+//  216 
+//  217     //左后电机    //右后电机
+//  218   MOTOR_D(STOP);       MOTOR_C(BACK);
+//  219 
+//  220 }
+//  221 //***************************左前45运动***************************//
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  222 void Car_Left_45Q(void)
+Car_Left_45Q:
+          CFI Block cfiBlock19 Using cfiCommon0
+          CFI Function Car_Left_45Q
+//  223 {
+//  224 
+//  225     //左前电机     //右前电机
+//  226 MOTOR_A(STOP);       MOTOR_B(GO);
+        CALLA   #?Subroutine4
+??CrossCallReturnLabel_25:
+        MOV.B   #0x0, R12
+          CFI FunCall MOTOR_B
+        CALLA   #MOTOR_B
+//  227 
+//  228     //左后电机    //右后电机
+//  229 MOTOR_D(GO);       MOTOR_C(STOP);
+        MOV.B   #0x0, R12
+          CFI EndBlock cfiBlock19
+        REQUIRE ?Subroutine3
+        // Fall through to label ?Subroutine3
+//  230 
+//  231 }
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine3:
+          CFI Block cfiBlock20 Using cfiCommon0
+          CFI NoFunction
+          CFI FunCall Car_Left_45Q MOTOR_D
+          CFI FunCall Car_Right_45H MOTOR_D
+          CFI FunCall Car_Stop MOTOR_D
+        CALLA   #MOTOR_D
+        MOV.B   #0x2, R12
+          CFI TailCall Car_Left_45Q MOTOR_C
+          CFI TailCall Car_Right_45H MOTOR_C
+          CFI TailCall Car_Stop MOTOR_C
+        BRA     #MOTOR_C
+          CFI EndBlock cfiBlock20
+//  232 //***************************左后45运动***************************//
+
+        RSEG `CODE`:CODE:NOROOT(1)
+//  233 void Car_Right_45H(void)
+Car_Right_45H:
+          CFI Block cfiBlock21 Using cfiCommon0
+          CFI Function Car_Right_45H
+//  234 {
+//  235 
+//  236     //左前电机     //右前电机
+//  237 MOTOR_A(STOP);       MOTOR_B(BACK);
+        CALLA   #?Subroutine4
+??CrossCallReturnLabel_26:
+        MOV.B   #0x1, R12
+          CFI FunCall MOTOR_B
+        CALLA   #MOTOR_B
+//  238 
+//  239     //左后电机    //右后电机
+//  240 MOTOR_D(BACK);       MOTOR_C(STOP);
+        MOV.B   #0x1, R12
+        JMP     ?Subroutine3
+        NOP
+//  241 
+//  242 }
+          CFI EndBlock cfiBlock21
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine4:
+          CFI Block cfiCond22 Using cfiCommon0
+          CFI Function MOTOR_A
+          CFI Conditional ??MOTOR_A_3
+          CFI CFA SP+8
+          CFI Block cfiCond23 Using cfiCommon0
+          CFI (cfiCond23) Function Car_Left_45Q
+          CFI (cfiCond23) Conditional ??CrossCallReturnLabel_25
+          CFI (cfiCond23) CFA SP+8
+          CFI Block cfiCond24 Using cfiCommon0
+          CFI (cfiCond24) Function Car_Right_45H
+          CFI (cfiCond24) Conditional ??CrossCallReturnLabel_26
+          CFI (cfiCond24) CFA SP+8
+          CFI Block cfiCond25 Using cfiCommon0
+          CFI (cfiCond25) Function Car_Stop
+          CFI (cfiCond25) Conditional ??CrossCallReturnLabel_27
+          CFI (cfiCond25) CFA SP+8
+          CFI Block cfiPicker26 Using cfiCommon1
+          CFI (cfiPicker26) NoFunction
+          CFI (cfiPicker26) Picker
+        MOV.W   #0x1, R13
+        CALLA   #?Subroutine14
+??CrossCallReturnLabel_28:
+        MOV.W   #0x2, R13
+          CFI EndBlock cfiCond22
+          CFI EndBlock cfiCond23
+          CFI EndBlock cfiCond24
+          CFI EndBlock cfiCond25
+          CFI EndBlock cfiPicker26
+        REQUIRE ?Subroutine14
+        // Fall through to label ?Subroutine14
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine14:
+          CFI Block cfiCond27 Using cfiCommon0
+          CFI Function MOTOR_A
+          CFI Conditional ??CrossCallReturnLabel_31
+          CFI CFA SP+8
+          CFI Block cfiCond28 Using cfiCommon0
+          CFI (cfiCond28) Function MOTOR_A
+          CFI (cfiCond28) Conditional ??CrossCallReturnLabel_32
+          CFI (cfiCond28) CFA SP+8
+          CFI Block cfiCond29 Using cfiCommon0
+          CFI (cfiCond29) Function MOTOR_B
+          CFI (cfiCond29) Conditional ??CrossCallReturnLabel_33
+          CFI (cfiCond29) CFA SP+8
+          CFI Block cfiCond30 Using cfiCommon0
+          CFI (cfiCond30) Function MOTOR_B
+          CFI (cfiCond30) Conditional ??MOTOR_B_3
+          CFI (cfiCond30) CFA SP+8
+          CFI Block cfiCond31 Using cfiCommon0
+          CFI (cfiCond31) Function MOTOR_B
+          CFI (cfiCond31) Conditional ??CrossCallReturnLabel_30, ??CrossCallReturnLabel_16
+          CFI (cfiCond31) CFA SP+12
+          CFI Block cfiCond32 Using cfiCommon0
+          CFI (cfiCond32) Function MOTOR_B
+          CFI (cfiCond32) Conditional ??CrossCallReturnLabel_30, ??CrossCallReturnLabel_17
+          CFI (cfiCond32) CFA SP+12
+          CFI Block cfiCond33 Using cfiCommon0
+          CFI (cfiCond33) Function MOTOR_C
+          CFI (cfiCond33) Conditional ??CrossCallReturnLabel_29, ??CrossCallReturnLabel_0
+          CFI (cfiCond33) CFA SP+12
+          CFI Block cfiCond34 Using cfiCommon0
+          CFI (cfiCond34) Function MOTOR_C
+          CFI (cfiCond34) Conditional ??CrossCallReturnLabel_29, ??CrossCallReturnLabel_1
+          CFI (cfiCond34) CFA SP+12
+          CFI Block cfiCond35 Using cfiCommon0
+          CFI (cfiCond35) Function MOTOR_A
+          CFI (cfiCond35) Conditional ??CrossCallReturnLabel_28, ??MOTOR_A_3
+          CFI (cfiCond35) CFA SP+12
+          CFI Block cfiCond36 Using cfiCommon0
+          CFI (cfiCond36) Function Car_Left_45Q
+          CFI (cfiCond36) Conditional ??CrossCallReturnLabel_28, ??CrossCallReturnLabel_25
+          CFI (cfiCond36) CFA SP+12
+          CFI Block cfiCond37 Using cfiCommon0
+          CFI (cfiCond37) Function Car_Right_45H
+          CFI (cfiCond37) Conditional ??CrossCallReturnLabel_28, ??CrossCallReturnLabel_26
+          CFI (cfiCond37) CFA SP+12
+          CFI Block cfiCond38 Using cfiCommon0
+          CFI (cfiCond38) Function Car_Stop
+          CFI (cfiCond38) Conditional ??CrossCallReturnLabel_28, ??CrossCallReturnLabel_27
+          CFI (cfiCond38) CFA SP+12
+          CFI Block cfiCond39 Using cfiCommon0
+          CFI (cfiCond39) Function MOTOR_A
+          CFI (cfiCond39) Conditional ??MOTOR_A_3
+          CFI (cfiCond39) CFA SP+8
+          CFI Block cfiCond40 Using cfiCommon0
+          CFI (cfiCond40) Function Car_Left_45Q
+          CFI (cfiCond40) Conditional ??CrossCallReturnLabel_25
+          CFI (cfiCond40) CFA SP+8
+          CFI Block cfiCond41 Using cfiCommon0
+          CFI (cfiCond41) Function Car_Right_45H
+          CFI (cfiCond41) Conditional ??CrossCallReturnLabel_26
+          CFI (cfiCond41) CFA SP+8
+          CFI Block cfiCond42 Using cfiCommon0
+          CFI (cfiCond42) Function Car_Stop
+          CFI (cfiCond42) Conditional ??CrossCallReturnLabel_27
+          CFI (cfiCond42) CFA SP+8
+          CFI Block cfiPicker43 Using cfiCommon1
+          CFI (cfiPicker43) NoFunction
+          CFI (cfiPicker43) Picker
+        MOV.B   #0x5, R12
+          CFI (cfiCond27) TailCall MOTOR_A GPIO_SetBits
+          CFI (cfiCond27) TailCall MOTOR_A GPIO_SetBits
+          CFI (cfiCond29) TailCall MOTOR_B GPIO_SetBits
+          CFI (cfiCond29) TailCall MOTOR_B GPIO_SetBits
+          CFI (cfiCond29) TailCall MOTOR_B GPIO_SetBits
+          CFI (cfiCond29) TailCall MOTOR_B GPIO_SetBits
+          CFI (cfiCond33) TailCall MOTOR_C GPIO_SetBits
+          CFI (cfiCond33) TailCall MOTOR_C GPIO_SetBits
+          CFI (cfiCond27) TailCall MOTOR_A GPIO_SetBits
+          CFI (cfiCond36) TailCall Car_Left_45Q GPIO_SetBits
+          CFI (cfiCond37) TailCall Car_Right_45H GPIO_SetBits
+          CFI (cfiCond38) TailCall Car_Stop GPIO_SetBits
+          CFI (cfiCond27) TailCall MOTOR_A GPIO_SetBits
+          CFI (cfiCond36) TailCall Car_Left_45Q GPIO_SetBits
+          CFI (cfiCond37) TailCall Car_Right_45H GPIO_SetBits
+          CFI (cfiCond38) TailCall Car_Stop GPIO_SetBits
+        BRA     #GPIO_SetBits
+          CFI EndBlock cfiCond27
+          CFI EndBlock cfiCond28
+          CFI EndBlock cfiCond29
+          CFI EndBlock cfiCond30
+          CFI EndBlock cfiCond31
+          CFI EndBlock cfiCond32
+          CFI EndBlock cfiCond33
+          CFI EndBlock cfiCond34
+          CFI EndBlock cfiCond35
+          CFI EndBlock cfiCond36
+          CFI EndBlock cfiCond37
+          CFI EndBlock cfiCond38
+          CFI EndBlock cfiCond39
+          CFI EndBlock cfiCond40
+          CFI EndBlock cfiCond41
+          CFI EndBlock cfiCond42
+          CFI EndBlock cfiPicker43
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+Car_Stop:
+          CFI Block cfiBlock44 Using cfiCommon0
+          CFI Function Car_Stop
+          CFI NoCalls
+        CALLA   #?Subroutine4
+??CrossCallReturnLabel_27:
+        CALLA   #?Subroutine12
+??CrossCallReturnLabel_20:
+        JMP     ?Subroutine3
+        NOP
+          CFI EndBlock cfiBlock44
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine5:
+          CFI Block cfiCond45 Using cfiCommon0
+          CFI Function MOTOR_C
+          CFI Conditional ??CrossCallReturnLabel_0
+          CFI CFA SP+8
+          CFI Block cfiCond46 Using cfiCommon0
+          CFI (cfiCond46) Function MOTOR_C
+          CFI (cfiCond46) Conditional ??CrossCallReturnLabel_1
+          CFI (cfiCond46) CFA SP+8
+          CFI Block cfiPicker47 Using cfiCommon1
+          CFI (cfiPicker47) NoFunction
+          CFI (cfiPicker47) Picker
+        MOV.W   #0x10, R13
+        CALLA   #?Subroutine14
+??CrossCallReturnLabel_29:
+        MOV.W   #0x1, R13
+        MOV.B   #0x6, R12
+        RETA
+          CFI EndBlock cfiCond45
+          CFI EndBlock cfiCond46
+          CFI EndBlock cfiPicker47
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+MOTOR_D:
+          CFI Block cfiBlock48 Using cfiCommon0
+          CFI Function MOTOR_D
+        CMP.B   #0x0, R12
+        JNE     ??MOTOR_D_0
+        CALLA   #?Subroutine6
+??CrossCallReturnLabel_2:
+          CFI TailCall GPIO_ResetBits
+        BRA     #GPIO_ResetBits
+??MOTOR_D_0:
+        CMP.B   #0x1, R12
+        JNE     ??MOTOR_D_1
+        MOV.W   #0x40, R13
+        MOV.B   #0x2, R12
+          CFI FunCall GPIO_SetBits
+        CALLA   #GPIO_SetBits
+        MOV.W   #0x2, R13
+        MOV.B   #0x7, R12
+          CFI TailCall GPIO_ResetBits
+        BRA     #GPIO_ResetBits
+??MOTOR_D_1:
+        CMP.B   #0x2, R12
+        JNE     ??MOTOR_D_2
+        CALLA   #?Subroutine6
+??CrossCallReturnLabel_3:
+          CFI FunCall GPIO_SetBits
+        CALLA   #GPIO_SetBits
+??MOTOR_D_2:
+        RETA
+          CFI EndBlock cfiBlock48
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine6:
+          CFI Block cfiCond49 Using cfiCommon0
+          CFI Function MOTOR_D
+          CFI Conditional ??CrossCallReturnLabel_2
+          CFI CFA SP+8
+          CFI Block cfiCond50 Using cfiCommon0
+          CFI (cfiCond50) Function MOTOR_D
+          CFI (cfiCond50) Conditional ??CrossCallReturnLabel_3
+          CFI (cfiCond50) CFA SP+8
+          CFI Block cfiPicker51 Using cfiCommon1
+          CFI (cfiPicker51) NoFunction
+          CFI (cfiPicker51) Picker
+        MOV.W   #0x2, R13
+        MOV.B   #0x7, R12
+          CFI (cfiCond49) FunCall MOTOR_D GPIO_SetBits
+          CFI (cfiCond49) FunCall MOTOR_D GPIO_SetBits
+        CALLA   #GPIO_SetBits
+        MOV.W   #0x40, R13
+        MOV.B   #0x2, R12
+        RETA
+          CFI EndBlock cfiCond49
+          CFI EndBlock cfiCond50
+          CFI EndBlock cfiPicker51
+
+        RSEG `CODE`:CODE:NOROOT(1)
+Car_Go:
+          CFI Block cfiBlock52 Using cfiCommon0
+          CFI Function Car_Go
+        CALLA   #?Subroutine8
+??CrossCallReturnLabel_10:
+        MOV.B   #0x0, R12
+          CFI FunCall MOTOR_B
+        CALLA   #MOTOR_B
+        MOV.B   #0x0, R12
+        JMP     ??Subroutine1_0
+          CFI EndBlock cfiBlock52
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine1:
+          CFI Block cfiBlock53 Using cfiCommon0
+          CFI NoFunction
+          CFI FunCall Car_Turn_Left_Around MOTOR_B
+          CFI FunCall Car_Right MOTOR_B
+        CALLA   #MOTOR_B
+        MOV.B   #0x1, R12
+          CFI EndBlock cfiBlock53
+        REQUIRE ??Subroutine1_0
+        // Fall through to label ??Subroutine1_0
+
+        RSEG `CODE`:CODE:NOROOT(1)
+??Subroutine1_0:
+          CFI Block cfiBlock54 Using cfiCommon0
+          CFI NoFunction
+          CFI FunCall Car_Go MOTOR_D
+          CFI FunCall Car_Right_45Q MOTOR_D
+          CFI FunCall Car_Turn_Left_Around MOTOR_D
+          CFI FunCall Car_Right MOTOR_D
+        CALLA   #MOTOR_D
+        MOV.B   #0x0, R12
+          CFI TailCall Car_Go MOTOR_C
+          CFI TailCall Car_Right_45Q MOTOR_C
+          CFI TailCall Car_Turn_Left_Around MOTOR_C
+          CFI TailCall Car_Right MOTOR_C
+        BRA     #MOTOR_C
+          CFI EndBlock cfiBlock54
+
+        RSEG `CODE`:CODE:NOROOT(1)
+Car_Back:
+          CFI Block cfiBlock55 Using cfiCommon0
+          CFI Function Car_Back
+        CALLA   #?Subroutine13
+??CrossCallReturnLabel_24:
+        MOV.B   #0x1, R12
+          CFI FunCall MOTOR_B
+        CALLA   #MOTOR_B
+        MOV.B   #0x1, R12
+        JMP     ??Subroutine2_0
+          CFI EndBlock cfiBlock55
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine2:
+          CFI Block cfiBlock56 Using cfiCommon0
+          CFI NoFunction
+          CFI FunCall Car_Turn_Right_Around MOTOR_B
+          CFI FunCall Car_Left MOTOR_B
+        CALLA   #MOTOR_B
+        MOV.B   #0x0, R12
+          CFI EndBlock cfiBlock56
+        REQUIRE ??Subroutine2_0
+        // Fall through to label ??Subroutine2_0
+
+        RSEG `CODE`:CODE:NOROOT(1)
+??Subroutine2_0:
+          CFI Block cfiBlock57 Using cfiCommon0
+          CFI NoFunction
+          CFI FunCall Car_Back MOTOR_D
+          CFI FunCall Car_Left_45H MOTOR_D
+          CFI FunCall Car_Turn_Right_Around MOTOR_D
+          CFI FunCall Car_Left MOTOR_D
+        CALLA   #MOTOR_D
+        MOV.B   #0x1, R12
+          CFI TailCall Car_Back MOTOR_C
+          CFI TailCall Car_Left_45H MOTOR_C
+          CFI TailCall Car_Turn_Right_Around MOTOR_C
+          CFI TailCall Car_Left MOTOR_C
+        BRA     #MOTOR_C
+          CFI EndBlock cfiBlock57
+
+        RSEG `CODE`:CODE:NOROOT(1)
+Car_Turn_Left_Around:
+          CFI Block cfiBlock58 Using cfiCommon0
+          CFI Function Car_Turn_Left_Around
+          CFI NoCalls
+        CALLA   #?Subroutine13
+??CrossCallReturnLabel_23:
+        MOV.B   #0x0, R12
+        JMP     ?Subroutine1
+        NOP
+          CFI EndBlock cfiBlock58
+
+        RSEG `CODE`:CODE:NOROOT(1)
+Car_Turn_Right_Around:
+          CFI Block cfiBlock59 Using cfiCommon0
+          CFI Function Car_Turn_Right_Around
+          CFI NoCalls
+        CALLA   #?Subroutine8
+??CrossCallReturnLabel_9:
+        MOV.B   #0x1, R12
+        JMP     ?Subroutine2
+        NOP
+          CFI EndBlock cfiBlock59
+
+        RSEG `CODE`:CODE:NOROOT(1)
+Car_Right:
+          CFI Block cfiBlock60 Using cfiCommon0
+          CFI Function Car_Right
+          CFI NoCalls
+        CALLA   #?Subroutine8
+??CrossCallReturnLabel_8:
+        MOV.B   #0x1, R12
+        JMP     ?Subroutine1
+        NOP
+          CFI EndBlock cfiBlock60
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine8:
+          CFI Block cfiCond61 Using cfiCommon0
+          CFI Function Car_Go
+          CFI Conditional ??CrossCallReturnLabel_10
+          CFI CFA SP+8
+          CFI Block cfiCond62 Using cfiCommon0
+          CFI (cfiCond62) Function Car_Turn_Right_Around
+          CFI (cfiCond62) Conditional ??CrossCallReturnLabel_9
+          CFI (cfiCond62) CFA SP+8
+          CFI Block cfiCond63 Using cfiCommon0
+          CFI (cfiCond63) Function Car_Right
+          CFI (cfiCond63) Conditional ??CrossCallReturnLabel_8
+          CFI (cfiCond63) CFA SP+8
+          CFI Block cfiCond64 Using cfiCommon0
+          CFI (cfiCond64) Function Car_Right_45Q
+          CFI (cfiCond64) Conditional ??CrossCallReturnLabel_7
+          CFI (cfiCond64) CFA SP+8
+          CFI Block cfiPicker65 Using cfiCommon1
+          CFI (cfiPicker65) NoFunction
+          CFI (cfiPicker65) Picker
+        MOV.B   #0x0, R12
+          CFI (cfiCond61) TailCall Car_Go MOTOR_A
+          CFI (cfiCond62) TailCall Car_Turn_Right_Around MOTOR_A
+          CFI (cfiCond63) TailCall Car_Right MOTOR_A
+          CFI (cfiCond64) TailCall Car_Right_45Q MOTOR_A
+        BRA     #MOTOR_A
+          CFI EndBlock cfiCond61
+          CFI EndBlock cfiCond62
+          CFI EndBlock cfiCond63
+          CFI EndBlock cfiCond64
+          CFI EndBlock cfiPicker65
+
+        RSEG `CODE`:CODE:NOROOT(1)
+Car_Left:
+          CFI Block cfiBlock66 Using cfiCommon0
+          CFI Function Car_Left
+          CFI NoCalls
+        CALLA   #?Subroutine13
+??CrossCallReturnLabel_22:
+        MOV.B   #0x0, R12
+        JMP     ?Subroutine2
+        NOP
+          CFI EndBlock cfiBlock66
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine13:
+          CFI Block cfiCond67 Using cfiCommon0
+          CFI Function Car_Back
+          CFI Conditional ??CrossCallReturnLabel_24
+          CFI CFA SP+8
+          CFI Block cfiCond68 Using cfiCommon0
+          CFI (cfiCond68) Function Car_Turn_Left_Around
+          CFI (cfiCond68) Conditional ??CrossCallReturnLabel_23
+          CFI (cfiCond68) CFA SP+8
+          CFI Block cfiCond69 Using cfiCommon0
+          CFI (cfiCond69) Function Car_Left
+          CFI (cfiCond69) Conditional ??CrossCallReturnLabel_22
+          CFI (cfiCond69) CFA SP+8
+          CFI Block cfiCond70 Using cfiCommon0
+          CFI (cfiCond70) Function Car_Left_45H
+          CFI (cfiCond70) Conditional ??CrossCallReturnLabel_21
+          CFI (cfiCond70) CFA SP+8
+          CFI Block cfiPicker71 Using cfiCommon1
+          CFI (cfiPicker71) NoFunction
+          CFI (cfiPicker71) Picker
+        MOV.B   #0x1, R12
+          CFI (cfiCond67) TailCall Car_Back MOTOR_A
+          CFI (cfiCond68) TailCall Car_Turn_Left_Around MOTOR_A
+          CFI (cfiCond69) TailCall Car_Left MOTOR_A
+          CFI (cfiCond70) TailCall Car_Left_45H MOTOR_A
+        BRA     #MOTOR_A
+          CFI EndBlock cfiCond67
+          CFI EndBlock cfiCond68
+          CFI EndBlock cfiCond69
+          CFI EndBlock cfiCond70
+          CFI EndBlock cfiPicker71
+
+        RSEG `CODE`:CODE:NOROOT(1)
+Car_Right_45Q:
+          CFI Block cfiBlock72 Using cfiCommon0
+          CFI Function Car_Right_45Q
+          CFI NoCalls
+        CALLA   #?Subroutine8
+??CrossCallReturnLabel_7:
+        CALLA   #?Subroutine12
+??CrossCallReturnLabel_18:
+        JMP     ??Subroutine1_0
+        NOP
+          CFI EndBlock cfiBlock72
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+Car_Left_45H:
+          CFI Block cfiBlock73 Using cfiCommon0
+          CFI Function Car_Left_45H
+          CFI NoCalls
+        CALLA   #?Subroutine13
+??CrossCallReturnLabel_21:
+        CALLA   #?Subroutine12
+??CrossCallReturnLabel_19:
+        JMP     ??Subroutine2_0
+        NOP
+          CFI EndBlock cfiBlock73
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine12:
+          CFI Block cfiCond74 Using cfiCommon0
+          CFI Function Car_Right_45Q
+          CFI Conditional ??CrossCallReturnLabel_18
+          CFI CFA SP+8
+          CFI Block cfiCond75 Using cfiCommon0
+          CFI (cfiCond75) Function Car_Left_45H
+          CFI (cfiCond75) Conditional ??CrossCallReturnLabel_19
+          CFI (cfiCond75) CFA SP+8
+          CFI Block cfiCond76 Using cfiCommon0
+          CFI (cfiCond76) Function Car_Stop
+          CFI (cfiCond76) Conditional ??CrossCallReturnLabel_20
+          CFI (cfiCond76) CFA SP+8
+          CFI Block cfiPicker77 Using cfiCommon1
+          CFI (cfiPicker77) NoFunction
+          CFI (cfiPicker77) Picker
+//  243 //***************************停车***************************//
+//  244 void Car_Stop(void)
+//  245 {
+//  246     //左前电机 停    //右前电机 停
+//  247 MOTOR_A(STOP);       MOTOR_B(STOP);
+        MOV.B   #0x2, R12
+          CFI (cfiCond74) FunCall Car_Right_45Q MOTOR_B
+          CFI (cfiCond75) FunCall Car_Left_45H MOTOR_B
+          CFI (cfiCond76) FunCall Car_Stop MOTOR_B
+        CALLA   #MOTOR_B
+//  248 
+//  249     //左后电机 停   //右后电机 停
+//  250   MOTOR_D(STOP);       MOTOR_C(STOP);
+        MOV.B   #0x2, R12
+        RETA
+          CFI EndBlock cfiCond74
+          CFI EndBlock cfiCond75
+          CFI EndBlock cfiCond76
+          CFI EndBlock cfiPicker77
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r4:
+        REQUIRE ?setjmp_r4
+        REQUIRE ?longjmp_r4
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r5:
+        REQUIRE ?setjmp_r5
+        REQUIRE ?longjmp_r5
+
+        END
+//  251 }
+// 
+// 682 bytes in segment CODE
+// 
+// 682 bytes of CODE memory
+//
+//Errors: none
+//Warnings: none

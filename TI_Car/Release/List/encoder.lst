@@ -1,0 +1,530 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           03/Aug/2021  16:28:03
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\Project\TI_Car\HardWare\encoder\encoder.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EWB15.tmp
+#        (D:\Dev\Project\TI_Car\HardWare\encoder\encoder.c -D NDEBUG -D
+#        RAM_VECTOR -lC D:\Dev\Project\TI_Car\Release\List -lA
+#        D:\Dev\Project\TI_Car\Release\List -o
+#        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+#        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+#        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+#        D:\Dev\Project\TI_Car\HardWare\key\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+#        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+#        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+#        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+#        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+#        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+#        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+#        D:\Dev\Project\TI_Car\User\USER\ -I
+#        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+#        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\Project\TI_Car\Release\List\encoder.lst
+#    Object file   =  D:\Dev\Project\TI_Car\Release\Obj\encoder.r43
+#
+###############################################################################
+
+D:\Dev\Project\TI_Car\HardWare\encoder\encoder.c
+      1          #include "encoder.h"
+      2            
+      3          #define wheelDiam 0.08     //车轮直径
+      4          #define pulseNum  4680     //编码器一圈脉冲数
+      5          
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+      6          uint32_t PulseValue1=0;      //脉冲计数
+   \                     PulseValue1:
+   \   000000                DS8 4
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+      7          uint32_t PulseValue2=0;      //脉冲计数
+   \                     PulseValue2:
+   \   000000                DS8 4
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+      8          int16_t overflowTime=0;     //溢出次数
+   \                     overflowTime:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy20
+      9          uint16_t encoderCnt_A = 30000;
+   \                     encoderCnt_A:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for encoderCnt_A>`
+
+   \                                 In  segment DATA20_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy20
+     10          uint16_t encoderCnt_B = 30000;
+   \                     encoderCnt_B:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for encoderCnt_B>`
+
+   \                                 In  segment DATA20_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy20
+     11          uint16_t encoderCnt_C = 30000;
+   \                     encoderCnt_C:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for encoderCnt_C>`
+
+   \                                 In  segment DATA20_I, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_copy20
+     12          uint16_t encoderCnt_D = 30000;
+   \                     encoderCnt_D:
+   \   000000                DS8 2
+   \   000002                REQUIRE `?<Initializer for encoderCnt_D>`
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     13          uint16_t cnt_Temp_A = 0;
+   \                     cnt_Temp_A:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     14          uint16_t cnt_Temp_B = 0;
+   \                     cnt_Temp_B:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     15          uint16_t cnt_Temp_C = 0;
+   \                     cnt_Temp_C:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     16          uint16_t cnt_Temp_D = 0;
+   \                     cnt_Temp_D:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     17          uint16_t RPM_A = 0;
+   \                     RPM_A:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     18          uint16_t RPM_B = 0;
+   \                     RPM_B:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     19          uint16_t RPM_C = 0;
+   \                     RPM_C:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     20          uint16_t RPM_D = 0;
+   \                     RPM_D:
+   \   000000                DS8 2
+
+   \                                 In  segment DATA20_Z, align 2, align-sorted
+   \   000000                REQUIRE ?cstart_init_zero20
+     21          float speed = 0;
+   \                     speed:
+   \   000000                DS8 4
+     22          //100ms定时中断
+
+   \                                 In  segment ISR_CODE, align 2
+     23          __interrupt void TIMER_TA1_A0_IRQ_Handler()
+   \                     TIMER_TA1_A0_IRQ_Handler:
+     24          { 
+   \   000000   1F14         PUSHM.A #0x2, R15
+     25             cnt_Temp_A = encoderCnt_A - 30000;
+   \   000002   3F40D08A     MOV.W   #0x8ad0, R15
+   \   000006   0E4F         MOV.W   R15, R14
+   \   000008   ....1E52.... ADDX.W  &encoderCnt_A, R14
+   \   00000E   ....824E.... MOVX.W  R14, &cnt_Temp_A
+     26             cnt_Temp_B = encoderCnt_B - 30000;
+   \   000014   0E4F         MOV.W   R15, R14
+   \   000016   ....1E52.... ADDX.W  &encoderCnt_B, R14
+   \   00001C   ....824E.... MOVX.W  R14, &cnt_Temp_B
+     27             cnt_Temp_C = encoderCnt_C - 30000;
+   \   000022   0E4F         MOV.W   R15, R14
+   \   000024   ....1E52.... ADDX.W  &encoderCnt_C, R14
+   \   00002A   ....824E.... MOVX.W  R14, &cnt_Temp_C
+     28             cnt_Temp_D = encoderCnt_D - 30000;
+   \   000030   ....1F52.... ADDX.W  &encoderCnt_D, R15
+   \   000036   ....824F.... MOVX.W  R15, &cnt_Temp_D
+     29             encoderCnt_A = 30000;
+   \   00003C   3F403075     MOV.W   #0x7530, R15
+   \   000040   ....824F.... MOVX.W  R15, &encoderCnt_A
+     30             encoderCnt_B = 30000;
+   \   000046   ....824F.... MOVX.W  R15, &encoderCnt_B
+     31             encoderCnt_C = 30000;
+   \   00004C   ....824F.... MOVX.W  R15, &encoderCnt_C
+     32             encoderCnt_D = 30000;
+   \   000052   ....824F.... MOVX.W  R15, &encoderCnt_D
+     33          }
+   \   000058   1E16         POPM.A  #0x2, R15
+   \   00005A   0013         RETI
+     34          
+     35          
+
+   \                                 In  segment ISR_CODE, align 2
+     36          __interrupt void GPIO_IRQ_Handler()
+   \                     GPIO_IRQ_Handler:
+     37          {
+   \   000000   5F14         PUSHM.A #0x6, R15
+     38            //2.0中断
+     39           if(GPIO_GetITStatus(P2,0)==TRUE)
+   \   000002   ........     MOVA    #GPIO_GetITStatus, R10
+   \   000006   4D43         MOV.B   #0x0, R13
+   \   000008   5C43         MOV.B   #0x1, R12
+   \   00000A   4A13         CALLA   R10
+   \   00000C   5C93         CMP.B   #0x1, R12
+   \   00000E   0620         JNE     ??GPIO_IRQ_Handler_0
+     40           {
+     41              encoderCnt_A++;
+   \   000010   ....9253.... ADDX.W  #0x1, &encoderCnt_A
+     42            GPIO_ClearITPendingBit(P2,0);                //清除位中断标志
+   \   000016   4D43         MOV.B   #0x0, R13
+   \   000018   ........     CALLA   #?Subroutine0
+     43           }
+     44           //2.2中断
+     45            if(GPIO_GetITStatus(P2,2)==TRUE)
+   \                     ??GPIO_IRQ_Handler_0:
+   \   00001C   6D43         MOV.B   #0x2, R13
+   \   00001E   5C43         MOV.B   #0x1, R12
+   \   000020   4A13         CALLA   R10
+   \   000022   5C93         CMP.B   #0x1, R12
+   \   000024   0620         JNE     ??GPIO_IRQ_Handler_1
+     46           {
+     47              encoderCnt_B++;
+   \   000026   ....9253.... ADDX.W  #0x1, &encoderCnt_B
+     48            GPIO_ClearITPendingBit(P2,2);                //清除位中断标志
+   \   00002C   6D43         MOV.B   #0x2, R13
+   \   00002E   ........     CALLA   #?Subroutine0
+     49           }
+     50           //2.5中断
+     51             if(GPIO_GetITStatus(P2,5)==TRUE)
+   \                     ??GPIO_IRQ_Handler_1:
+   \   000032   7D400500     MOV.B   #0x5, R13
+   \   000036   5C43         MOV.B   #0x1, R12
+   \   000038   4A13         CALLA   R10
+   \   00003A   5C93         CMP.B   #0x1, R12
+   \   00003C   0720         JNE     ??GPIO_IRQ_Handler_2
+     52           {
+     53              encoderCnt_C++;
+   \   00003E   ....9253.... ADDX.W  #0x1, &encoderCnt_C
+     54            GPIO_ClearITPendingBit(P2,5);                //清除位中断标志
+   \   000044   7D400500     MOV.B   #0x5, R13
+   \   000048   ........     CALLA   #?Subroutine0
+     55           }
+     56           //2.6中断
+     57             if(GPIO_GetITStatus(P2,6)==TRUE)
+   \                     ??GPIO_IRQ_Handler_2:
+   \   00004C   7D400600     MOV.B   #0x6, R13
+   \   000050   5C43         MOV.B   #0x1, R12
+   \   000052   4A13         CALLA   R10
+   \   000054   5C93         CMP.B   #0x1, R12
+   \   000056   0720         JNE     ??GPIO_IRQ_Handler_3
+     58           {
+     59              encoderCnt_D++;
+   \   000058   ....9253.... ADDX.W  #0x1, &encoderCnt_D
+     60            GPIO_ClearITPendingBit(P2,6);                //清除位中断标志
+   \   00005E   7D400600     MOV.B   #0x6, R13
+   \   000062   ........     CALLA   #?Subroutine0
+     61           }
+     62           
+     63          }
+   \                     ??GPIO_IRQ_Handler_3:
+   \   000066   5A16         POPM.A  #0x6, R15
+   \   000068   0013         RETI
+
+   \                                 In  segment ISR_CODE, align 2
+   \                     ?Subroutine0:
+   \   000000   5C43         MOV.B   #0x1, R12
+   \   000002   ........     BRA     #GPIO_ClearITPendingBit
+     64          
+     65          
+
+   \                                 In  segment CODE, align 2
+     66          void Encoder_Init()
+   \                     Encoder_Init:
+     67          {  
+   \   000000   3B14         PUSHM.A #0x4, R11
+     68            
+     69            Set_Vector_Handler(VECTOR_TIMER1_A0,TIMER_TA1_A0_IRQ_Handler);    //设置中断向量，最好先设置中断向量，在开启中断
+   \   000002   ........     MOVA    #TIMER_TA1_A0_IRQ_Handler, R13
+   \   000006   7C403100     MOV.B   #0x31, R12
+   \   00000A   ........     CALLA   #Set_Vector_Handler
+     70            TIMER_Interval_Ms(TIMER_A1,100);                    //初始化一个100ms的定时中断
+   \   00000E   3E40A086     MOV.W   #0x86a0, R14
+   \   000012   1F43         MOV.W   #0x1, R15
+   \   000014   5C43         MOV.B   #0x1, R12
+   \   000016   ........     CALLA   #TIMER_Interval_Us
+     71            TIMER_ITConfig (TIMER_A1,TIMER_CCR0_IRQn,ENABLE);              //使能TIMER的某一个中断
+   \   00001A   5E43         MOV.B   #0x1, R14
+   \   00001C   4D43         MOV.B   #0x0, R13
+   \   00001E   5C43         MOV.B   #0x1, R12
+   \   000020   ........     CALLA   #TIMER_ITConfig
+     72            
+     73            Set_Vector_Handler(VECTOR_PORT2,GPIO_IRQ_Handler);    //设置中断向量，最好先设置中断向量，在开启中断
+   \   000024   ........     MOVA    #GPIO_IRQ_Handler, R13
+   \   000028   7C402A00     MOV.B   #0x2a, R12
+   \   00002C   ........     CALLA   #Set_Vector_Handler
+     74            GPIO_Init     (P2,0 ,GPI|PULL_UP|IRQ_FALLING);                   //设为上拉且下降沿触发中断
+   \   000030   ........     MOVA    #GPIO_MultiBits_Init, R10
+   \   000034   3B40A100     MOV.W   #0xa1, R11
+   \   000038   0E4B         MOV.W   R11, R14
+   \   00003A   1D43         MOV.W   #0x1, R13
+   \   00003C   5C43         MOV.B   #0x1, R12
+   \   00003E   4A13         CALLA   R10
+     75            GPIO_ITConfig (P2,0 ,ENABLE);                           //使能中断
+   \   000040   ........     MOVA    #GPIO_ITConfig, R8
+   \   000044   5E43         MOV.B   #0x1, R14
+   \   000046   4D43         MOV.B   #0x0, R13
+   \   000048   5C43         MOV.B   #0x1, R12
+   \   00004A   4813         CALLA   R8
+     76            GPIO_Init     (P2,2 ,GPI|PULL_UP|IRQ_FALLING);                   //设为上拉且下降沿触发中断
+   \   00004C   0E4B         MOV.W   R11, R14
+   \   00004E   2D42         MOV.W   #0x4, R13
+   \   000050   5C43         MOV.B   #0x1, R12
+   \   000052   4A13         CALLA   R10
+     77            GPIO_ITConfig (P2,2 ,ENABLE);                           //使能中断
+   \   000054   5E43         MOV.B   #0x1, R14
+   \   000056   6D43         MOV.B   #0x2, R13
+   \   000058   5C43         MOV.B   #0x1, R12
+   \   00005A   4813         CALLA   R8
+     78            GPIO_Init     (P2,5 ,GPI|PULL_UP|IRQ_FALLING);                   //设为上拉且下降沿触发中断
+   \   00005C   0E4B         MOV.W   R11, R14
+   \   00005E   3D402000     MOV.W   #0x20, R13
+   \   000062   5C43         MOV.B   #0x1, R12
+   \   000064   4A13         CALLA   R10
+     79            GPIO_ITConfig (P2,5 ,ENABLE);                           //使能中断
+   \   000066   5E43         MOV.B   #0x1, R14
+   \   000068   7D400500     MOV.B   #0x5, R13
+   \   00006C   5C43         MOV.B   #0x1, R12
+   \   00006E   4813         CALLA   R8
+     80            GPIO_Init     (P2,6 ,GPI|PULL_UP|IRQ_FALLING);                   //设为上拉且下降沿触发中断
+   \   000070   0E4B         MOV.W   R11, R14
+   \   000072   3D404000     MOV.W   #0x40, R13
+   \   000076   5C43         MOV.B   #0x1, R12
+   \   000078   4A13         CALLA   R10
+     81            GPIO_ITConfig (P2,6 ,ENABLE);                           //使能中断
+   \   00007A   5E43         MOV.B   #0x1, R14
+   \   00007C   7D400600     MOV.B   #0x6, R13
+   \   000080   5C43         MOV.B   #0x1, R12
+   \   000082   4813         CALLA   R8
+     82            
+     83          }
+   \   000084   3816         POPM.A  #0x4, R11
+   \   000086   1001         RETA
+     84          
+
+   \                                 In  segment CODE, align 2
+     85          void speed_Handle()
+   \                     speed_Handle:
+     86          {
+   \   000000   1B14         PUSHM.A #0x2, R11
+     87          //  UART_Printf(UART1,"A:%d B:%d C:%d D:%d",cnt_Temp_A,cnt_Temp_B,cnt_Temp_C,cnt_Temp_D);
+     88            speed = (cnt_Temp_A+cnt_Temp_B+cnt_Temp_C+cnt_Temp_D)/4/pulseNum*wheelDiam*3.14159*600;
+   \   000002   3A400EE0     MOV.W   #0xe00e, R10
+   \   000006   0B43         MOV.W   #0x0, R11
+   \   000008   ....1F42.... MOVX.W  &cnt_Temp_A, R15
+   \   00000E   ....1F52.... ADDX.W  &cnt_Temp_B, R15
+   \   000014   ....1F52.... ADDX.W  &cnt_Temp_C, R15
+   \   00001A   ....1F52.... ADDX.W  &cnt_Temp_D, R15
+   \   000020   5F07         RRUM.W  #0x2, R15
+   \   000022   ........     CALLA   #??Subroutine4_0
+   \                     ??CrossCallReturnLabel_2:
+   \   000026   0D43         MOV.W   #0x0, R13
+   \   000028   ........     CALLA   #_Cast32uto32f
+   \   00002C   3E400AD7     MOV.W   #0xd70a, R14
+   \   000030   3F40A33D     MOV.W   #0x3da3, R15
+   \   000034   ........     CALLA   #_Mul32f
+   \   000038   3E40D00F     MOV.W   #0xfd0, R14
+   \   00003C   3F404940     MOV.W   #0x4049, R15
+   \   000040   ........     CALLA   #_Mul32f
+   \   000044   0E43         MOV.W   #0x0, R14
+   \   000046   3F401644     MOV.W   #0x4416, R15
+   \   00004A   ........     CALLA   #_Mul32f
+   \   00004E   ....824C.... MOVX.W  R12, &speed
+   \   000054   ....824D.... MOVX.W  R13, &speed + 2
+     89            RPM_A = cnt_Temp_A *600 /pulseNum;
+   \   00005A   ....1F42.... MOVX.W  &cnt_Temp_A, R15
+   \   000060   ........     CALLA   #?Subroutine1
+   \                     ??CrossCallReturnLabel_3:
+   \   000064   ....824C.... MOVX.W  R12, &RPM_A
+     90            RPM_B = cnt_Temp_B *600 /pulseNum;
+   \   00006A   ....1F42.... MOVX.W  &cnt_Temp_B, R15
+   \   000070   ........     CALLA   #?Subroutine1
+   \                     ??CrossCallReturnLabel_4:
+   \   000074   ....824C.... MOVX.W  R12, &RPM_B
+     91            RPM_C = cnt_Temp_C *600 /pulseNum;
+   \   00007A   ....1F42.... MOVX.W  &cnt_Temp_C, R15
+   \   000080   ........     CALLA   #?Subroutine1
+   \                     ??CrossCallReturnLabel_5:
+   \   000084   ....824C.... MOVX.W  R12, &RPM_C
+     92            RPM_D = cnt_Temp_D *600 /pulseNum;
+   \   00008A   ....1F42.... MOVX.W  &cnt_Temp_D, R15
+   \   000090   ........     CALLA   #?Subroutine2
+   \                     ??CrossCallReturnLabel_0:
+   \   000094   0212         PUSH.W  SR
+   \   000096   ........     CALLA   #?Subroutine3
+   \                     ??CrossCallReturnLabel_6:
+   \   00009A   1A52....     ADD.W   &__iar_HWMUL + 10, R10         // RESLO
+   \   00009E   1B62....     ADDC.W  &__iar_HWMUL + 12, R11         // RESHI
+   \   0000A2   0343         NOP
+   \   0000A4   3241         POP.W   SR
+   \   0000A6   0D4B         MOV.W   R11, R13
+   \   0000A8   8D10         SWPB    R13
+   \   0000AA   4C4D         MOV.B   R13, R12
+   \   0000AC   ........     CALLA   #?ShiftRight16s_4
+   \   0000B0   ....824C.... MOVX.W  R12, &RPM_D
+     93          }
+   \   0000B6   1A16         POPM.A  #0x2, R11
+   \   0000B8   1001         RETA
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine1:
+   \   000000   ........     CALLA   #?Subroutine2
+   \                     ??CrossCallReturnLabel_1:
+   \   000004                REQUIRE ??Subroutine4_0
+   \   000004                // Fall through to label ??Subroutine4_0
+
+   \                                 In  segment CODE, align 2
+   \                     ??Subroutine4_0:
+   \   000000   0C4A         MOV.W   R10, R12
+   \   000002   0D43         MOV.W   #0x0, R13
+   \   000004   0212         PUSH.W  SR
+   \   000006   ........     CALLA   #?Subroutine3
+   \                     ??CrossCallReturnLabel_7:
+   \   00000A   1C52....     ADD.W   &__iar_HWMUL + 10, R12         // RESLO
+   \   00000E   1D62....     ADDC.W  &__iar_HWMUL + 12, R13         // RESHI
+   \   000012   0343         NOP
+   \   000014   3241         POP.W   SR
+   \   000016   8D10         SWPB    R13
+   \   000018   4C4D         MOV.B   R13, R12
+   \   00001A   ........     BRA     #?ShiftRight16s_4
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine3:
+   \   000000   32C2         DINT
+   \   000002   0343         NOP
+   \   000004   824F....     MOV.W   R15, &__iar_HWMUL              // MPY
+   \   000008   824A....     MOV.W   R10, &__iar_HWMUL + 8          // OP2
+   \   00000C   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine2:
+   \   000000   5F0A         RLAM.W  #0x3, R15
+   \   000002   0E4F         MOV.W   R15, R14
+   \   000004   0F5F         RLA.W   R15
+   \   000006   0E5F         ADD.W   R15, R14
+   \   000008   5F06         RLAM.W  #0x2, R15
+   \   00000A   0E5F         ADD.W   R15, R14
+   \   00000C   5F0A         RLAM.W  #0x3, R15
+   \   00000E   0F5E         ADD.W   R14, R15
+   \   000010   1001         RETA
+
+   \                                 In  segment DATA20_ID, align 2, align-sorted
+   \                     `?<Initializer for encoderCnt_A>`:
+   \   000000   3075         DC16 30000
+
+   \                                 In  segment DATA20_ID, align 2, align-sorted
+   \                     `?<Initializer for encoderCnt_B>`:
+   \   000000   3075         DC16 30000
+
+   \                                 In  segment DATA20_ID, align 2, align-sorted
+   \                     `?<Initializer for encoderCnt_C>`:
+   \   000000   3075         DC16 30000
+
+   \                                 In  segment DATA20_ID, align 2, align-sorted
+   \                     `?<Initializer for encoderCnt_D>`:
+   \   000000   3075         DC16 30000
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     20   Encoder_Init
+       20   -> GPIO_ITConfig
+       20   -> GPIO_MultiBits_Init
+       20   -> Set_Vector_Handler
+       20   -> TIMER_ITConfig
+       20   -> TIMER_Interval_Us
+     28   GPIO_IRQ_Handler
+       28   -> GPIO_ClearITPendingBit
+       28   -> GPIO_GetITStatus
+     12   TIMER_TA1_A0_IRQ_Handler
+     14   speed_Handle
+       12 ?ShiftRight16s_4
+       12 _Cast32uto32f
+       12 _Mul32f
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       2  ?<Initializer for encoderCnt_A>
+       2  ?<Initializer for encoderCnt_B>
+       2  ?<Initializer for encoderCnt_C>
+       2  ?<Initializer for encoderCnt_D>
+      30  ??Subroutine4_0
+       6  ?Subroutine0
+       4  ?Subroutine1
+      18  ?Subroutine2
+      14  ?Subroutine3
+     136  Encoder_Init
+     106  GPIO_IRQ_Handler
+       4  PulseValue1
+       4  PulseValue2
+       2  RPM_A
+       2  RPM_B
+       2  RPM_C
+       2  RPM_D
+      92  TIMER_TA1_A0_IRQ_Handler
+       2  cnt_Temp_A
+       2  cnt_Temp_B
+       2  cnt_Temp_C
+       2  cnt_Temp_D
+       2  encoderCnt_A
+       2  encoderCnt_B
+       2  encoderCnt_C
+       2  encoderCnt_D
+       2  overflowTime
+       4  speed
+     186  speed_Handle
+
+ 
+ 388 bytes in segment CODE
+   8 bytes in segment DATA20_I
+   8 bytes in segment DATA20_ID
+  30 bytes in segment DATA20_Z
+ 204 bytes in segment ISR_CODE
+ 
+ 592 bytes of CODE  memory
+   8 bytes of CONST memory
+  38 bytes of DATA  memory
+
+Errors: none
+Warnings: none

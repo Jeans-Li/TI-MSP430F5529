@@ -1,0 +1,1297 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// IAR C/C++ Compiler V7.10.1.973/W32 for MSP430          03/Aug/2021  16:28:03
+// Copyright 1996-2017 IAR Systems AB.
+// Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+//
+//    __rt_version  =  3
+//    __double_size =  32
+//    __reg_r4      =  free
+//    __reg_r5      =  free
+//    __pic         =  no
+//    __core        =  430X
+//    __data_model  =  large
+//    __code_model  =  large
+//    Source file   =  D:\Dev\Project\TI_Car\HardWare\2.2TFT\LCD.c
+//    Command line  =  
+//        -f C:\Users\Jeans\AppData\Local\Temp\EWC13.tmp
+//        (D:\Dev\Project\TI_Car\HardWare\2.2TFT\LCD.c -D NDEBUG -D RAM_VECTOR
+//        -lC D:\Dev\Project\TI_Car\Release\List -lA
+//        D:\Dev\Project\TI_Car\Release\List -o
+//        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+//        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+//        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+//        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+//        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+//        D:\Dev\Project\TI_Car\HardWare\key\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+//        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+//        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+//        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+//        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+//        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+//        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+//        D:\Dev\Project\TI_Car\User\USER\ -I
+//        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+//        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+//        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+//        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+//    Locale        =  Chinese (Simplified)_CHN.936
+//    List file     =  D:\Dev\Project\TI_Car\Release\List\LCD.s43
+//
+///////////////////////////////////////////////////////////////////////////////
+
+        NAME LCD
+
+        RTMODEL "__SystemLibrary", "DLib"
+        RTMODEL "__code_model", "large"
+        RTMODEL "__core", "430X"
+        RTMODEL "__data_model", "large"
+        RTMODEL "__double_size", "32"
+        RTMODEL "__pic", "no"
+        RTMODEL "__reg_r4", "free"
+        RTMODEL "__reg_r5", "free"
+        RTMODEL "__rt_version", "3"
+
+        RSEG CSTACK:DATA:SORT:NOROOT(0)
+
+        EXTERN ?longjmp_r4
+        EXTERN ?longjmp_r5
+        EXTERN ?setjmp_r4
+        EXTERN ?setjmp_r5
+
+        PUBWEAK ?setjmp_save_r4
+        PUBWEAK ?setjmp_save_r5
+        PUBLIC LCD_Init
+        PUBLIC LCD_PORT_Init
+        PUBLIC LCD_SetPos
+        PUBLIC LCD_Writ_Bus
+        PUBLIC LCD_Write_DATA16
+        PUBLIC LCD_Write_DATA8
+        PUBLIC LCD_Write_REG
+        PUBLIC LCD_Write_REG_DATA
+        PUBWEAK _A_PAOUT_L
+        
+          CFI Names cfiNames0
+          CFI StackFrame CFA SP DATA
+          CFI Resource PC:20, SP:20, SR:16, R4L:16, R4H:4, R4:20, R5L:16, R5H:4
+          CFI Resource R5:20, R6L:16, R6H:4, R6:20, R7L:16, R7H:4, R7:20, R8L:16
+          CFI Resource R8H:4, R8:20, R9L:16, R9H:4, R9:20, R10L:16, R10H:4
+          CFI Resource R10:20, R11L:16, R11H:4, R11:20, R12L:16, R12H:4, R12:20
+          CFI Resource R13L:16, R13H:4, R13:20, R14L:16, R14H:4, R14:20, R15L:16
+          CFI Resource R15H:4, R15:20
+          CFI ResourceParts R4 R4H, R4L
+          CFI ResourceParts R5 R5H, R5L
+          CFI ResourceParts R6 R6H, R6L
+          CFI ResourceParts R7 R7H, R7L
+          CFI ResourceParts R8 R8H, R8L
+          CFI ResourceParts R9 R9H, R9L
+          CFI ResourceParts R10 R10H, R10L
+          CFI ResourceParts R11 R11H, R11L
+          CFI ResourceParts R12 R12H, R12L
+          CFI ResourceParts R13 R13H, R13L
+          CFI ResourceParts R14 R14H, R14L
+          CFI ResourceParts R15 R15H, R15L
+          CFI EndNames cfiNames0
+        
+          CFI Common cfiCommon0 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L Undefined
+          CFI R12H Undefined
+          CFI R12 Undefined
+          CFI R13L Undefined
+          CFI R13H Undefined
+          CFI R13 Undefined
+          CFI R14L Undefined
+          CFI R14H Undefined
+          CFI R14 Undefined
+          CFI R15L Undefined
+          CFI R15H Undefined
+          CFI R15 Undefined
+          CFI EndCommon cfiCommon0
+        
+        
+          CFI Common cfiCommon1 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L SameValue
+          CFI R12H SameValue
+          CFI R12 Concat
+          CFI R13L SameValue
+          CFI R13H SameValue
+          CFI R13 Concat
+          CFI R14L SameValue
+          CFI R14H SameValue
+          CFI R14 Concat
+          CFI R15L SameValue
+          CFI R15H SameValue
+          CFI R15 Concat
+          CFI EndCommon cfiCommon1
+        
+        EXTERN SPI_Master_Init
+        EXTERN GPIO_MultiBits_Init
+        EXTERN SPI_SendReadByte
+        EXTERN delay_us
+
+// D:\Dev\Project\TI_Car\HardWare\2.2TFT\LCD.c
+//    1 #include "lcd.h"
+
+        ASEGN DATA16_AN:DATA:NOROOT,0202H
+// union <unnamed> __data16 _A_PAOUT_L
+_A_PAOUT_L:
+        DS8 2
+//    2 #include "delay.h" 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//    3 void LCD_PORT_Init(void)
+LCD_PORT_Init:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function LCD_PORT_Init
+//    4 {
+//    5 #if(LCDHardWareSPI)
+//    6   LCDHardWareSPI_Init();
+        PUSH.B  #0x3
+          CFI CFA SP+6
+        PUSH.B  #0x0
+          CFI CFA SP+8
+        MOV.B   #0x1, R13
+        MOV.W   #0x9680, R14
+        MOV.W   #0x98, R15
+        MOV.B   #0x2, R12
+          CFI FunCall SPI_Master_Init
+        CALLA   #SPI_Master_Init
+//    7 #else
+//    8   GPIO_Init(LCD_SCL_PORT,LCD_SCL_PIN,GPO);
+//    9   GPIO_Init(LCD_SDI_PORT,LCD_SDI_PIN,GPO);
+//   10 #endif
+//   11   GPIO_Init(LCD_RST_PORT,LCD_RST_PIN,GPO);
+        MOV.W   #0x2, R14
+        MOV.W   #0x10, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   #GPIO_MultiBits_Init
+//   12   GPIO_Init(LCD_DC_PORT,LCD_DC_PIN,GPO);
+        MOV.W   #0x2, R14
+        MOV.W   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   #GPIO_MultiBits_Init
+//   13   GPIO_Init(LCD_CS_PORT, LCD_CS_PIN,GPO);
+        MOV.W   #0x2, R14
+        MOV.W   #0x80, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   #GPIO_MultiBits_Init
+//   14 }
+        ADDA    #0x4, SP
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock0
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   15 void LCD_Writ_Bus(char data)   //串行数据写入
+LCD_Writ_Bus:
+          CFI Block cfiBlock1 Using cfiCommon0
+          CFI Function LCD_Writ_Bus
+//   16 {  
+//   17 #if(LCDHardWareSPI)
+//   18   LCD_CS = RESET;
+        BIC.B   #0x80, &0x203
+//   19   LCDHardWareSPI_SendByte(data);
+        MOV.B   R12, R13
+        MOV.B   #0x2, R12
+          CFI FunCall SPI_SendReadByte
+        CALLA   #SPI_SendReadByte
+//   20   LCD_CS = BIT_SET;
+        BIS.B   #0x80, &0x203
+//   21 #else
+//   22   LCD_CS = RESET;	
+//   23   LCD_SCL = RESET;
+//   24   for(uint8_t i=0;i<8;i++)
+//   25   {
+//   26     LCD_SDI = (data&0x80) ? BIT_SET : RESET;//上升沿发送数据
+//   27     LCD_SCL = BIT_SET;
+//   28     LCD_SCL = RESET;		
+//   29     data <<= 1;    
+//   30   }
+//   31   LCD_CS = BIT_SET;
+//   32 #endif 
+//   33 } 
+        RETA
+          CFI EndBlock cfiBlock1
+        REQUIRE _A_PAOUT_L
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   34 void LCD_Write_DATA8(char da) //发送数据-8位参数
+LCD_Write_DATA8:
+          CFI Block cfiBlock2 Using cfiCommon0
+          CFI Function LCD_Write_DATA8
+//   35 {
+//   36     LCD_DC = BIT_SET;
+        BIS.B   #0x1, &0x203
+//   37 	LCD_Writ_Bus(da);
+          CFI TailCall LCD_Writ_Bus
+        BRA     #LCD_Writ_Bus
+          CFI EndBlock cfiBlock2
+        REQUIRE _A_PAOUT_L
+//   38 }  
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   39  void LCD_Write_DATA16(uint16_t da)
+LCD_Write_DATA16:
+          CFI Block cfiBlock3 Using cfiCommon0
+          CFI Function LCD_Write_DATA16
+//   40 {
+        PUSHM.A #0x1, R10
+          CFI R10L Frame(CFA, -8)
+          CFI R10H Frame(CFA, -6)
+          CFI CFA SP+8
+        MOV.B   R12, R10
+//   41     LCD_DC = BIT_SET;
+        BIS.B   #0x1, &0x203
+//   42 	LCD_Writ_Bus(da>>8);
+        SWPB    R12
+          CFI FunCall LCD_Writ_Bus
+        CALLA   #LCD_Writ_Bus
+//   43 	LCD_Writ_Bus(da);
+        MOV.B   R10, R12
+          CFI FunCall LCD_Writ_Bus
+        CALLA   #LCD_Writ_Bus
+//   44 }	  
+        POPM.A  #0x1, R10
+          CFI R10H SameValue
+          CFI R10L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock3
+        REQUIRE _A_PAOUT_L
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   45 void LCD_Write_REG(char da)	 
+LCD_Write_REG:
+          CFI Block cfiBlock4 Using cfiCommon0
+          CFI Function LCD_Write_REG
+//   46 {
+//   47     LCD_DC = RESET;
+        BIC.B   #0x1, &0x203
+//   48         LCD_Writ_Bus(da);
+          CFI TailCall LCD_Writ_Bus
+        BRA     #LCD_Writ_Bus
+          CFI EndBlock cfiBlock4
+        REQUIRE _A_PAOUT_L
+//   49 }
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   50  void LCD_Write_REG_DATA(int reg,int da)
+LCD_Write_REG_DATA:
+          CFI Block cfiBlock5 Using cfiCommon0
+          CFI Function LCD_Write_REG_DATA
+//   51 {
+        PUSHM.A #0x1, R10
+          CFI R10L Frame(CFA, -8)
+          CFI R10H Frame(CFA, -6)
+          CFI CFA SP+8
+        MOV.W   R13, R10
+//   52     LCD_Write_REG(reg);
+          CFI FunCall LCD_Write_REG
+        CALLA   #LCD_Write_REG
+//   53 	LCD_Write_DATA16(da);
+        MOV.W   R10, R12
+          CFI FunCall LCD_Write_DATA16
+        CALLA   #LCD_Write_DATA16
+//   54 }
+        POPM.A  #0x1, R10
+          CFI R10H SameValue
+          CFI R10L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock5
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   55 void LCD_SetPos(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
+LCD_SetPos:
+          CFI Block cfiBlock6 Using cfiCommon0
+          CFI Function LCD_SetPos
+//   56 {  
+        PUSHM.A #0x6, R11
+          CFI R6L Frame(CFA, -28)
+          CFI R6H Frame(CFA, -26)
+          CFI R7L Frame(CFA, -24)
+          CFI R7H Frame(CFA, -22)
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+28
+        MOV.W   R12, R11
+        MOV.W   R13, R8
+        MOV.W   R14, R10
+        MOV.W   R15, R9
+//   57    LCD_Write_REG(0x2a);
+        MOV.B   #0x2a, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   #LCD_Write_REG
+//   58    LCD_Write_DATA8(x1>>8);
+        MOVA    #LCD_Write_DATA8, R6
+        MOV.W   R11, R12
+        SWPB    R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R6
+//   59    LCD_Write_DATA8(x1);
+        MOV.B   R11, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R6
+//   60    LCD_Write_DATA8(x2>>8);
+        MOV.W   R10, R12
+        SWPB    R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R6
+//   61    LCD_Write_DATA8(x2);
+        MOV.B   R10, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R6
+//   62   
+//   63    LCD_Write_REG(0x2b);
+        MOV.B   #0x2b, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   #LCD_Write_REG
+//   64    LCD_Write_DATA8(y1>>8);
+        MOV.W   R8, R12
+        SWPB    R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R6
+//   65    LCD_Write_DATA8(y1);
+        MOV.B   R8, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R6
+//   66    LCD_Write_DATA8(y2>>8);
+        MOV.W   R9, R12
+        SWPB    R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R6
+//   67    LCD_Write_DATA8(y2);
+        MOV.B   R9, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R6
+//   68 
+//   69    LCD_Write_REG(0x2C);
+        MOV.B   #0x2c, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   #LCD_Write_REG
+//   70 }
+        POPM.A  #0x6, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R6H SameValue
+          CFI R7H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R6L SameValue
+          CFI R7L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock6
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   71 void LCD_Init(void)
+LCD_Init:
+          CFI Block cfiBlock7 Using cfiCommon0
+          CFI Function LCD_Init
+//   72 {
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+//   73         LCD_PORT_Init();
+          CFI FunCall LCD_PORT_Init
+        CALLA   #LCD_PORT_Init
+//   74 //调用一次这些函数，免得编译的时候提示警告
+//   75    	//LCD_CS=1;   
+//   76 	LCD_RST = RESET;
+        MOV.W   #0x203, R10
+        MOV.W   R10, R15
+        BIC.B   #0x10, 0(R15)
+//   77 	delay_ms(10);
+        CALLA   #?Subroutine1
+//   78 	LCD_RST = BIT_SET;
+??CrossCallReturnLabel_2:
+        MOV.W   R10, R15
+        BIS.B   #0x10, 0(R15)
+//   79 	delay_ms(10);
+        CALLA   #?Subroutine1
+//   80 	//LCD_CS =0;  //打开片选使能
+//   81 
+//   82 	LCD_Write_REG(0xCB);  
+??CrossCallReturnLabel_1:
+        MOVA    #LCD_Write_REG, R11
+        MOV.B   #0xcb, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//   83         LCD_Write_DATA8(0x39); 
+        MOVA    #LCD_Write_DATA8, R8
+        MOV.B   #0x39, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   84         LCD_Write_DATA8(0x2C); 
+        MOV.B   #0x2c, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   85         LCD_Write_DATA8(0x00); 
+        MOV.B   #0x0, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   86         LCD_Write_DATA8(0x34); 
+        MOV.B   #0x34, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   87         LCD_Write_DATA8(0x02); 
+        MOV.B   #0x2, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   88 
+//   89         LCD_Write_REG(0xCF);  
+        MOV.B   #0xcf, R12
+        CALLA   #?Subroutine3
+//   90         LCD_Write_DATA8(0x00); 
+//   91         LCD_Write_DATA8(0XC1); 
+??CrossCallReturnLabel_7:
+        MOV.B   #0xc1, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   92         LCD_Write_DATA8(0X30); 
+        MOV.B   #0x30, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   93  
+//   94         LCD_Write_REG(0xE8);  
+        MOV.B   #0xe8, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//   95         LCD_Write_DATA8(0x85); 
+        MOV.B   #0x85, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   96         LCD_Write_DATA8(0x00); 
+        MOV.B   #0x0, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   97         LCD_Write_DATA8(0x78); 
+        MOV.B   #0x78, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//   98  
+//   99         LCD_Write_REG(0xEA);  
+        MOV.B   #0xea, R12
+        CALLA   #?Subroutine3
+//  100         LCD_Write_DATA8(0x00); 
+//  101         LCD_Write_DATA8(0x00); 
+??CrossCallReturnLabel_6:
+        MOV.B   #0x0, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  102  
+//  103         LCD_Write_REG(0xED);  
+        MOV.B   #0xed, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  104         LCD_Write_DATA8(0x64); 
+        MOV.B   #0x64, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  105         LCD_Write_DATA8(0x03); 
+        MOV.B   R10, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  106         LCD_Write_DATA8(0X12); 
+        MOV.B   #0x12, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  107         LCD_Write_DATA8(0X81); 
+        MOV.B   #0x81, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  108 
+//  109         LCD_Write_REG(0xF7);  
+        MOV.B   #0xf7, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  110         LCD_Write_DATA8(0x20); 
+        MOV.B   #0x20, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  111   
+//  112         LCD_Write_REG(0xC0);    //Power control 
+        MOV.B   #0xc0, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  113         LCD_Write_DATA8(0x23);   //VRH[5:0] 
+        MOV.B   #0x23, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  114  
+//  115         LCD_Write_REG(0xC1);    //Power control 
+        MOV.B   #0xc1, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  116         LCD_Write_DATA8(0x10);   //SAP[2:0];BT[3:0] 
+        MOV.B   #0x10, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  117  
+//  118         LCD_Write_REG(0xC5);    //VCM control 
+        MOV.B   #0xc5, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  119         LCD_Write_DATA8(0x3e); //对比度调节
+        MOV.B   #0x3e, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  120         LCD_Write_DATA8(0x28); 
+        MOV.B   #0x28, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  121  
+//  122         LCD_Write_REG(0xC7);    //VCM control2 
+        MOV.B   #0xc7, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  123         LCD_Write_DATA8(0x86);  //--
+        MOV.B   #0x86, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  124  
+//  125         LCD_Write_REG(0x36);    // Memory Access Control 
+        MOV.B   #0x36, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  126         LCD_Write_DATA8(0x48); //C8	   //48 68竖屏//28 E8 横屏
+        MOV.B   #0x48, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  127 
+//  128         LCD_Write_REG(0x3A);    
+        MOV.B   #0x3a, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  129         LCD_Write_DATA8(0x55); 
+        MOV.B   #0x55, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  130 
+//  131         LCD_Write_REG(0xB1);    
+        MOV.B   #0xb1, R12
+        CALLA   #?Subroutine3
+//  132         LCD_Write_DATA8(0x00);  
+//  133         LCD_Write_DATA8(0x18); 
+??CrossCallReturnLabel_5:
+        MOV.B   #0x18, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  134  
+//  135         LCD_Write_REG(0xB6);    // Display Function Control 
+        MOV.B   #0xb6, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  136         LCD_Write_DATA8(0x08); 
+        MOV.B   #0x8, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  137         LCD_Write_DATA8(0x82);
+        MOV.B   #0x82, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  138         LCD_Write_DATA8(0x27);  
+        MOV.B   #0x27, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  139  
+//  140         LCD_Write_REG(0xF2);    // 3Gamma Function Disable 
+        MOV.B   #0xf2, R12
+        CALLA   #?Subroutine3
+//  141         LCD_Write_DATA8(0x00); 
+//  142  
+//  143         LCD_Write_REG(0x26);    //Gamma curve selected 
+??CrossCallReturnLabel_4:
+        MOV.B   #0x26, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  144         LCD_Write_DATA8(0x01); 
+        MOV.B   #0x1, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  145  
+//  146         LCD_Write_REG(0xE0);    //Set Gamma 
+        MOV.B   #0xe0, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  147         LCD_Write_DATA8(0x0F); 
+        MOV.B   #0xf, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  148         LCD_Write_DATA8(0x31); 
+        MOV.B   #0x31, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  149         LCD_Write_DATA8(0x2B); 
+        MOV.B   #0x2b, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  150         LCD_Write_DATA8(0x0C); 
+        MOV.B   #0xc, R12
+        CALLA   #?Subroutine4
+//  151         LCD_Write_DATA8(0x0E); 
+//  152         LCD_Write_DATA8(0x08); 
+??CrossCallReturnLabel_20:
+        MOV.B   #0x8, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  153         LCD_Write_DATA8(0x4E); 
+        MOV.B   #0x4e, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  154         LCD_Write_DATA8(0xF1); 
+        MOV.B   #0xf1, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  155         LCD_Write_DATA8(0x37); 
+        MOV.B   #0x37, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  156         LCD_Write_DATA8(0x07); 
+        MOV.B   #0x7, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  157         LCD_Write_DATA8(0x10); 
+        MOV.B   #0x10, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  158         LCD_Write_DATA8(0x03); 
+        MOV.B   R10, R12
+        CALLA   #?Subroutine4
+//  159         LCD_Write_DATA8(0x0E); 
+//  160         LCD_Write_DATA8(0x09); 
+??CrossCallReturnLabel_19:
+        MOV.B   #0x9, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  161         LCD_Write_DATA8(0x00); 
+        MOV.B   #0x0, R12
+          CFI FunCall LCD_Write_DATA8
+        CALLA   R8
+//  162 
+//  163         LCD_Write_REG(0XE1);    //Set Gamma 
+        MOV.B   #0xe1, R12
+        CALLA   #?Subroutine3
+//  164         LCD_Write_DATA8(0x00); 
+//  165         LCD_Write_DATA8(0x0E); 
+??CrossCallReturnLabel_3:
+        CALLA   #??Subroutine6_0
+//  166         LCD_Write_DATA8(0x14); 
+??CrossCallReturnLabel_18:
+        MOV.B   #0x14, R12
+        CALLA   #?Subroutine5
+??CrossCallReturnLabel_14:
+        MOVA    #LCD_Writ_Bus, R8
+        MOV.B   R10, R12
+        CALLA   #?Subroutine5
+??CrossCallReturnLabel_13:
+        MOV.B   #0x11, R12
+        CALLA   #?Subroutine5
+??CrossCallReturnLabel_12:
+        MOV.B   #0x7, R12
+        CALLA   #?Subroutine0
+??CrossCallReturnLabel_17:
+        MOV.B   #0xc1, R12
+        CALLA   #?Subroutine5
+??CrossCallReturnLabel_11:
+        MOV.B   #0x48, R12
+        CALLA   #?Subroutine5
+??CrossCallReturnLabel_10:
+        MOV.B   #0x8, R12
+        CALLA   #?Subroutine5
+??CrossCallReturnLabel_9:
+        MOV.B   #0xf, R12
+        CALLA   #?Subroutine5
+??CrossCallReturnLabel_8:
+        MOV.B   #0xc, R12
+        CALLA   #?Subroutine0
+??CrossCallReturnLabel_16:
+        MOV.B   #0x36, R12
+          CFI FunCall LCD_Writ_Bus
+        CALLA   R8
+//  167         LCD_Write_DATA8(0x03); 
+//  168         LCD_Write_DATA8(0x11); 
+//  169         LCD_Write_DATA8(0x07); 
+//  170         LCD_Write_DATA8(0x31); 
+//  171         LCD_Write_DATA8(0xC1); 
+//  172         LCD_Write_DATA8(0x48); 
+//  173         LCD_Write_DATA8(0x08); 
+//  174         LCD_Write_DATA8(0x0F); 
+//  175         LCD_Write_DATA8(0x0C); 
+//  176         LCD_Write_DATA8(0x31); 
+//  177         LCD_Write_DATA8(0x36); 
+//  178         LCD_Write_DATA8(0x0F); 
+        BIS.B   #0x1, 0(R10)
+        MOV.B   #0xf, R12
+          CFI FunCall LCD_Writ_Bus
+        CALLA   R8
+//  179  
+//  180         LCD_Write_REG(0x11);    //Exit Sleep 
+        MOV.B   #0x11, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  181         delay_ms(10); 
+        CALLA   #?Subroutine1
+//  182 				
+//  183         LCD_Write_REG(0x29);    //Display on 
+??CrossCallReturnLabel_0:
+        MOV.B   #0x29, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  184         LCD_Write_REG(0x2c); 
+        MOV.B   #0x2c, R12
+          CFI FunCall LCD_Write_REG
+        CALLA   R11
+//  185 }
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock7
+        REQUIRE _A_PAOUT_L
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine4:
+          CFI Block cfiCond8 Using cfiCommon0
+          CFI Function LCD_Init
+          CFI Conditional ??CrossCallReturnLabel_20
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond9 Using cfiCommon0
+          CFI (cfiCond9) Function LCD_Init
+          CFI (cfiCond9) Conditional ??CrossCallReturnLabel_19
+          CFI (cfiCond9) R8L Frame(CFA, -20)
+          CFI (cfiCond9) R8H Frame(CFA, -18)
+          CFI (cfiCond9) R9L Frame(CFA, -16)
+          CFI (cfiCond9) R9H Frame(CFA, -14)
+          CFI (cfiCond9) R10L Frame(CFA, -12)
+          CFI (cfiCond9) R10H Frame(CFA, -10)
+          CFI (cfiCond9) R11L Frame(CFA, -8)
+          CFI (cfiCond9) R11H Frame(CFA, -6)
+          CFI (cfiCond9) CFA SP+24
+          CFI Block cfiPicker10 Using cfiCommon1
+          CFI (cfiPicker10) NoFunction
+          CFI (cfiPicker10) Picker
+          CFI (cfiCond8) FunCall LCD_Init LCD_Write_DATA8
+          CFI (cfiCond8) FunCall LCD_Init LCD_Write_DATA8
+        CALLA   R8
+          CFI EndBlock cfiCond8
+          CFI EndBlock cfiCond9
+          CFI EndBlock cfiPicker10
+        REQUIRE ??Subroutine6_0
+        // Fall through to label ??Subroutine6_0
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+??Subroutine6_0:
+          CFI Block cfiCond11 Using cfiCommon0
+          CFI Function LCD_Init
+          CFI Conditional ??CrossCallReturnLabel_18
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond12 Using cfiCommon0
+          CFI (cfiCond12) Function LCD_Init
+          CFI (cfiCond12) Conditional ??CrossCallReturnLabel_20
+          CFI (cfiCond12) R8L Frame(CFA, -20)
+          CFI (cfiCond12) R8H Frame(CFA, -18)
+          CFI (cfiCond12) R9L Frame(CFA, -16)
+          CFI (cfiCond12) R9H Frame(CFA, -14)
+          CFI (cfiCond12) R10L Frame(CFA, -12)
+          CFI (cfiCond12) R10H Frame(CFA, -10)
+          CFI (cfiCond12) R11L Frame(CFA, -8)
+          CFI (cfiCond12) R11H Frame(CFA, -6)
+          CFI (cfiCond12) CFA SP+24
+          CFI Block cfiCond13 Using cfiCommon0
+          CFI (cfiCond13) Function LCD_Init
+          CFI (cfiCond13) Conditional ??CrossCallReturnLabel_19
+          CFI (cfiCond13) R8L Frame(CFA, -20)
+          CFI (cfiCond13) R8H Frame(CFA, -18)
+          CFI (cfiCond13) R9L Frame(CFA, -16)
+          CFI (cfiCond13) R9H Frame(CFA, -14)
+          CFI (cfiCond13) R10L Frame(CFA, -12)
+          CFI (cfiCond13) R10H Frame(CFA, -10)
+          CFI (cfiCond13) R11L Frame(CFA, -8)
+          CFI (cfiCond13) R11H Frame(CFA, -6)
+          CFI (cfiCond13) CFA SP+24
+          CFI Block cfiPicker14 Using cfiCommon1
+          CFI (cfiPicker14) NoFunction
+          CFI (cfiPicker14) Picker
+        MOV.B   #0xe, R12
+          CFI (cfiCond11) TailCall LCD_Init LCD_Write_DATA8
+          CFI (cfiCond11) TailCall LCD_Init LCD_Write_DATA8
+          CFI (cfiCond11) TailCall LCD_Init LCD_Write_DATA8
+        BRA     R8
+          CFI EndBlock cfiCond11
+          CFI EndBlock cfiCond12
+          CFI EndBlock cfiCond13
+          CFI EndBlock cfiPicker14
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine3:
+          CFI Block cfiCond15 Using cfiCommon0
+          CFI Function LCD_Init
+          CFI Conditional ??CrossCallReturnLabel_7
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond16 Using cfiCommon0
+          CFI (cfiCond16) Function LCD_Init
+          CFI (cfiCond16) Conditional ??CrossCallReturnLabel_6
+          CFI (cfiCond16) R8L Frame(CFA, -20)
+          CFI (cfiCond16) R8H Frame(CFA, -18)
+          CFI (cfiCond16) R9L Frame(CFA, -16)
+          CFI (cfiCond16) R9H Frame(CFA, -14)
+          CFI (cfiCond16) R10L Frame(CFA, -12)
+          CFI (cfiCond16) R10H Frame(CFA, -10)
+          CFI (cfiCond16) R11L Frame(CFA, -8)
+          CFI (cfiCond16) R11H Frame(CFA, -6)
+          CFI (cfiCond16) CFA SP+24
+          CFI Block cfiCond17 Using cfiCommon0
+          CFI (cfiCond17) Function LCD_Init
+          CFI (cfiCond17) Conditional ??CrossCallReturnLabel_5
+          CFI (cfiCond17) R8L Frame(CFA, -20)
+          CFI (cfiCond17) R8H Frame(CFA, -18)
+          CFI (cfiCond17) R9L Frame(CFA, -16)
+          CFI (cfiCond17) R9H Frame(CFA, -14)
+          CFI (cfiCond17) R10L Frame(CFA, -12)
+          CFI (cfiCond17) R10H Frame(CFA, -10)
+          CFI (cfiCond17) R11L Frame(CFA, -8)
+          CFI (cfiCond17) R11H Frame(CFA, -6)
+          CFI (cfiCond17) CFA SP+24
+          CFI Block cfiCond18 Using cfiCommon0
+          CFI (cfiCond18) Function LCD_Init
+          CFI (cfiCond18) Conditional ??CrossCallReturnLabel_4
+          CFI (cfiCond18) R8L Frame(CFA, -20)
+          CFI (cfiCond18) R8H Frame(CFA, -18)
+          CFI (cfiCond18) R9L Frame(CFA, -16)
+          CFI (cfiCond18) R9H Frame(CFA, -14)
+          CFI (cfiCond18) R10L Frame(CFA, -12)
+          CFI (cfiCond18) R10H Frame(CFA, -10)
+          CFI (cfiCond18) R11L Frame(CFA, -8)
+          CFI (cfiCond18) R11H Frame(CFA, -6)
+          CFI (cfiCond18) CFA SP+24
+          CFI Block cfiCond19 Using cfiCommon0
+          CFI (cfiCond19) Function LCD_Init
+          CFI (cfiCond19) Conditional ??CrossCallReturnLabel_3
+          CFI (cfiCond19) R8L Frame(CFA, -20)
+          CFI (cfiCond19) R8H Frame(CFA, -18)
+          CFI (cfiCond19) R9L Frame(CFA, -16)
+          CFI (cfiCond19) R9H Frame(CFA, -14)
+          CFI (cfiCond19) R10L Frame(CFA, -12)
+          CFI (cfiCond19) R10H Frame(CFA, -10)
+          CFI (cfiCond19) R11L Frame(CFA, -8)
+          CFI (cfiCond19) R11H Frame(CFA, -6)
+          CFI (cfiCond19) CFA SP+24
+          CFI Block cfiPicker20 Using cfiCommon1
+          CFI (cfiPicker20) NoFunction
+          CFI (cfiPicker20) Picker
+          CFI (cfiCond15) FunCall LCD_Init LCD_Write_REG
+          CFI (cfiCond15) FunCall LCD_Init LCD_Write_REG
+          CFI (cfiCond15) FunCall LCD_Init LCD_Write_REG
+          CFI (cfiCond15) FunCall LCD_Init LCD_Write_REG
+          CFI (cfiCond15) FunCall LCD_Init LCD_Write_REG
+        CALLA   R11
+        MOV.B   #0x0, R12
+          CFI (cfiCond15) TailCall LCD_Init LCD_Write_DATA8
+          CFI (cfiCond15) TailCall LCD_Init LCD_Write_DATA8
+          CFI (cfiCond15) TailCall LCD_Init LCD_Write_DATA8
+          CFI (cfiCond15) TailCall LCD_Init LCD_Write_DATA8
+          CFI (cfiCond15) TailCall LCD_Init LCD_Write_DATA8
+        BRA     R8
+          CFI EndBlock cfiCond15
+          CFI EndBlock cfiCond16
+          CFI EndBlock cfiCond17
+          CFI EndBlock cfiCond18
+          CFI EndBlock cfiCond19
+          CFI EndBlock cfiPicker20
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine1:
+          CFI Block cfiCond21 Using cfiCommon0
+          CFI Function LCD_Init
+          CFI Conditional ??CrossCallReturnLabel_2
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond22 Using cfiCommon0
+          CFI (cfiCond22) Function LCD_Init
+          CFI (cfiCond22) Conditional ??CrossCallReturnLabel_1
+          CFI (cfiCond22) R8L Frame(CFA, -20)
+          CFI (cfiCond22) R8H Frame(CFA, -18)
+          CFI (cfiCond22) R9L Frame(CFA, -16)
+          CFI (cfiCond22) R9H Frame(CFA, -14)
+          CFI (cfiCond22) R10L Frame(CFA, -12)
+          CFI (cfiCond22) R10H Frame(CFA, -10)
+          CFI (cfiCond22) R11L Frame(CFA, -8)
+          CFI (cfiCond22) R11H Frame(CFA, -6)
+          CFI (cfiCond22) CFA SP+24
+          CFI Block cfiCond23 Using cfiCommon0
+          CFI (cfiCond23) Function LCD_Init
+          CFI (cfiCond23) Conditional ??CrossCallReturnLabel_0
+          CFI (cfiCond23) R8L Frame(CFA, -20)
+          CFI (cfiCond23) R8H Frame(CFA, -18)
+          CFI (cfiCond23) R9L Frame(CFA, -16)
+          CFI (cfiCond23) R9H Frame(CFA, -14)
+          CFI (cfiCond23) R10L Frame(CFA, -12)
+          CFI (cfiCond23) R10H Frame(CFA, -10)
+          CFI (cfiCond23) R11L Frame(CFA, -8)
+          CFI (cfiCond23) R11H Frame(CFA, -6)
+          CFI (cfiCond23) CFA SP+24
+          CFI Block cfiPicker24 Using cfiCommon1
+          CFI (cfiPicker24) NoFunction
+          CFI (cfiPicker24) Picker
+        MOV.W   #0x2710, R12
+        MOV.W   #0x0, R13
+          CFI (cfiCond21) TailCall LCD_Init delay_us
+          CFI (cfiCond21) TailCall LCD_Init delay_us
+          CFI (cfiCond21) TailCall LCD_Init delay_us
+        BRA     #delay_us
+          CFI EndBlock cfiCond21
+          CFI EndBlock cfiCond22
+          CFI EndBlock cfiCond23
+          CFI EndBlock cfiPicker24
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine0:
+          CFI Block cfiCond25 Using cfiCommon0
+          CFI Function LCD_Init
+          CFI Conditional ??CrossCallReturnLabel_17
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond26 Using cfiCommon0
+          CFI (cfiCond26) Function LCD_Init
+          CFI (cfiCond26) Conditional ??CrossCallReturnLabel_16
+          CFI (cfiCond26) R8L Frame(CFA, -20)
+          CFI (cfiCond26) R8H Frame(CFA, -18)
+          CFI (cfiCond26) R9L Frame(CFA, -16)
+          CFI (cfiCond26) R9H Frame(CFA, -14)
+          CFI (cfiCond26) R10L Frame(CFA, -12)
+          CFI (cfiCond26) R10H Frame(CFA, -10)
+          CFI (cfiCond26) R11L Frame(CFA, -8)
+          CFI (cfiCond26) R11H Frame(CFA, -6)
+          CFI (cfiCond26) CFA SP+24
+          CFI Block cfiPicker27 Using cfiCommon1
+          CFI (cfiPicker27) NoFunction
+          CFI (cfiPicker27) Picker
+        CALLA   #?Subroutine5
+??CrossCallReturnLabel_15:
+        MOV.B   #0x31, R12
+          CFI EndBlock cfiCond25
+          CFI EndBlock cfiCond26
+          CFI EndBlock cfiPicker27
+        REQUIRE ?Subroutine5
+        // Fall through to label ?Subroutine5
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine5:
+          CFI Block cfiCond28 Using cfiCommon0
+          CFI Function LCD_Init
+          CFI Conditional ??CrossCallReturnLabel_14
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+24
+          CFI Block cfiCond29 Using cfiCommon0
+          CFI (cfiCond29) Function LCD_Init
+          CFI (cfiCond29) Conditional ??CrossCallReturnLabel_13
+          CFI (cfiCond29) R8L Frame(CFA, -20)
+          CFI (cfiCond29) R8H Frame(CFA, -18)
+          CFI (cfiCond29) R9L Frame(CFA, -16)
+          CFI (cfiCond29) R9H Frame(CFA, -14)
+          CFI (cfiCond29) R10L Frame(CFA, -12)
+          CFI (cfiCond29) R10H Frame(CFA, -10)
+          CFI (cfiCond29) R11L Frame(CFA, -8)
+          CFI (cfiCond29) R11H Frame(CFA, -6)
+          CFI (cfiCond29) CFA SP+24
+          CFI Block cfiCond30 Using cfiCommon0
+          CFI (cfiCond30) Function LCD_Init
+          CFI (cfiCond30) Conditional ??CrossCallReturnLabel_12
+          CFI (cfiCond30) R8L Frame(CFA, -20)
+          CFI (cfiCond30) R8H Frame(CFA, -18)
+          CFI (cfiCond30) R9L Frame(CFA, -16)
+          CFI (cfiCond30) R9H Frame(CFA, -14)
+          CFI (cfiCond30) R10L Frame(CFA, -12)
+          CFI (cfiCond30) R10H Frame(CFA, -10)
+          CFI (cfiCond30) R11L Frame(CFA, -8)
+          CFI (cfiCond30) R11H Frame(CFA, -6)
+          CFI (cfiCond30) CFA SP+24
+          CFI Block cfiCond31 Using cfiCommon0
+          CFI (cfiCond31) Function LCD_Init
+          CFI (cfiCond31) Conditional ??CrossCallReturnLabel_11
+          CFI (cfiCond31) R8L Frame(CFA, -20)
+          CFI (cfiCond31) R8H Frame(CFA, -18)
+          CFI (cfiCond31) R9L Frame(CFA, -16)
+          CFI (cfiCond31) R9H Frame(CFA, -14)
+          CFI (cfiCond31) R10L Frame(CFA, -12)
+          CFI (cfiCond31) R10H Frame(CFA, -10)
+          CFI (cfiCond31) R11L Frame(CFA, -8)
+          CFI (cfiCond31) R11H Frame(CFA, -6)
+          CFI (cfiCond31) CFA SP+24
+          CFI Block cfiCond32 Using cfiCommon0
+          CFI (cfiCond32) Function LCD_Init
+          CFI (cfiCond32) Conditional ??CrossCallReturnLabel_10
+          CFI (cfiCond32) R8L Frame(CFA, -20)
+          CFI (cfiCond32) R8H Frame(CFA, -18)
+          CFI (cfiCond32) R9L Frame(CFA, -16)
+          CFI (cfiCond32) R9H Frame(CFA, -14)
+          CFI (cfiCond32) R10L Frame(CFA, -12)
+          CFI (cfiCond32) R10H Frame(CFA, -10)
+          CFI (cfiCond32) R11L Frame(CFA, -8)
+          CFI (cfiCond32) R11H Frame(CFA, -6)
+          CFI (cfiCond32) CFA SP+24
+          CFI Block cfiCond33 Using cfiCommon0
+          CFI (cfiCond33) Function LCD_Init
+          CFI (cfiCond33) Conditional ??CrossCallReturnLabel_9
+          CFI (cfiCond33) R8L Frame(CFA, -20)
+          CFI (cfiCond33) R8H Frame(CFA, -18)
+          CFI (cfiCond33) R9L Frame(CFA, -16)
+          CFI (cfiCond33) R9H Frame(CFA, -14)
+          CFI (cfiCond33) R10L Frame(CFA, -12)
+          CFI (cfiCond33) R10H Frame(CFA, -10)
+          CFI (cfiCond33) R11L Frame(CFA, -8)
+          CFI (cfiCond33) R11H Frame(CFA, -6)
+          CFI (cfiCond33) CFA SP+24
+          CFI Block cfiCond34 Using cfiCommon0
+          CFI (cfiCond34) Function LCD_Init
+          CFI (cfiCond34) Conditional ??CrossCallReturnLabel_8
+          CFI (cfiCond34) R8L Frame(CFA, -20)
+          CFI (cfiCond34) R8H Frame(CFA, -18)
+          CFI (cfiCond34) R9L Frame(CFA, -16)
+          CFI (cfiCond34) R9H Frame(CFA, -14)
+          CFI (cfiCond34) R10L Frame(CFA, -12)
+          CFI (cfiCond34) R10H Frame(CFA, -10)
+          CFI (cfiCond34) R11L Frame(CFA, -8)
+          CFI (cfiCond34) R11H Frame(CFA, -6)
+          CFI (cfiCond34) CFA SP+24
+          CFI Block cfiCond35 Using cfiCommon0
+          CFI (cfiCond35) Function LCD_Init
+          CFI (cfiCond35) Conditional ??CrossCallReturnLabel_15, ??CrossCallReturnLabel_17
+          CFI (cfiCond35) R8L Frame(CFA, -20)
+          CFI (cfiCond35) R8H Frame(CFA, -18)
+          CFI (cfiCond35) R9L Frame(CFA, -16)
+          CFI (cfiCond35) R9H Frame(CFA, -14)
+          CFI (cfiCond35) R10L Frame(CFA, -12)
+          CFI (cfiCond35) R10H Frame(CFA, -10)
+          CFI (cfiCond35) R11L Frame(CFA, -8)
+          CFI (cfiCond35) R11H Frame(CFA, -6)
+          CFI (cfiCond35) CFA SP+28
+          CFI Block cfiCond36 Using cfiCommon0
+          CFI (cfiCond36) Function LCD_Init
+          CFI (cfiCond36) Conditional ??CrossCallReturnLabel_15, ??CrossCallReturnLabel_16
+          CFI (cfiCond36) R8L Frame(CFA, -20)
+          CFI (cfiCond36) R8H Frame(CFA, -18)
+          CFI (cfiCond36) R9L Frame(CFA, -16)
+          CFI (cfiCond36) R9H Frame(CFA, -14)
+          CFI (cfiCond36) R10L Frame(CFA, -12)
+          CFI (cfiCond36) R10H Frame(CFA, -10)
+          CFI (cfiCond36) R11L Frame(CFA, -8)
+          CFI (cfiCond36) R11H Frame(CFA, -6)
+          CFI (cfiCond36) CFA SP+28
+          CFI Block cfiCond37 Using cfiCommon0
+          CFI (cfiCond37) Function LCD_Init
+          CFI (cfiCond37) Conditional ??CrossCallReturnLabel_17
+          CFI (cfiCond37) R8L Frame(CFA, -20)
+          CFI (cfiCond37) R8H Frame(CFA, -18)
+          CFI (cfiCond37) R9L Frame(CFA, -16)
+          CFI (cfiCond37) R9H Frame(CFA, -14)
+          CFI (cfiCond37) R10L Frame(CFA, -12)
+          CFI (cfiCond37) R10H Frame(CFA, -10)
+          CFI (cfiCond37) R11L Frame(CFA, -8)
+          CFI (cfiCond37) R11H Frame(CFA, -6)
+          CFI (cfiCond37) CFA SP+24
+          CFI Block cfiCond38 Using cfiCommon0
+          CFI (cfiCond38) Function LCD_Init
+          CFI (cfiCond38) Conditional ??CrossCallReturnLabel_16
+          CFI (cfiCond38) R8L Frame(CFA, -20)
+          CFI (cfiCond38) R8H Frame(CFA, -18)
+          CFI (cfiCond38) R9L Frame(CFA, -16)
+          CFI (cfiCond38) R9H Frame(CFA, -14)
+          CFI (cfiCond38) R10L Frame(CFA, -12)
+          CFI (cfiCond38) R10H Frame(CFA, -10)
+          CFI (cfiCond38) R11L Frame(CFA, -8)
+          CFI (cfiCond38) R11H Frame(CFA, -6)
+          CFI (cfiCond38) CFA SP+24
+          CFI Block cfiPicker39 Using cfiCommon1
+          CFI (cfiPicker39) NoFunction
+          CFI (cfiPicker39) Picker
+          CFI (cfiCond28) FunCall LCD_Init LCD_Write_DATA8
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+          CFI (cfiCond28) FunCall LCD_Init LCD_Writ_Bus
+        CALLA   R8
+        MOV.W   R10, R15
+        BIS.B   #0x1, 0(R15)
+        RETA
+          CFI EndBlock cfiCond28
+          CFI EndBlock cfiCond29
+          CFI EndBlock cfiCond30
+          CFI EndBlock cfiCond31
+          CFI EndBlock cfiCond32
+          CFI EndBlock cfiCond33
+          CFI EndBlock cfiCond34
+          CFI EndBlock cfiCond35
+          CFI EndBlock cfiCond36
+          CFI EndBlock cfiCond37
+          CFI EndBlock cfiCond38
+          CFI EndBlock cfiPicker39
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r4:
+        REQUIRE ?setjmp_r4
+        REQUIRE ?longjmp_r4
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r5:
+        REQUIRE ?setjmp_r5
+        REQUIRE ?longjmp_r5
+
+        END
+//  186 
+//  187 
+//  188 
+//  189 
+//  190 
+//  191 
+//  192 
+// 
+// 774 bytes in segment CODE
+//   2 bytes in segment DATA16_AN
+// 
+// 774 bytes of CODE memory
+//   0 bytes of DATA memory (+ 2 bytes shared)
+//
+//Errors: none
+//Warnings: none

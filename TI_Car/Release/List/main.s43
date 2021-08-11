@@ -1,0 +1,251 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// IAR C/C++ Compiler V7.10.1.973/W32 for MSP430          03/Aug/2021  16:28:05
+// Copyright 1996-2017 IAR Systems AB.
+// Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+//
+//    __rt_version  =  3
+//    __double_size =  32
+//    __reg_r4      =  free
+//    __reg_r5      =  free
+//    __pic         =  no
+//    __core        =  430X
+//    __data_model  =  large
+//    __code_model  =  large
+//    Source file   =  D:\Dev\Project\TI_Car\User\main.c
+//    Command line  =  
+//        -f C:\Users\Jeans\AppData\Local\Temp\EW1668.tmp
+//        (D:\Dev\Project\TI_Car\User\main.c -D NDEBUG -D RAM_VECTOR -lC
+//        D:\Dev\Project\TI_Car\Release\List -lA
+//        D:\Dev\Project\TI_Car\Release\List -o
+//        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+//        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+//        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+//        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+//        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+//        D:\Dev\Project\TI_Car\HardWare\key\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+//        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+//        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+//        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+//        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+//        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+//        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+//        D:\Dev\Project\TI_Car\User\USER\ -I
+//        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+//        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+//        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+//        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+//    Locale        =  Chinese (Simplified)_CHN.936
+//    List file     =  D:\Dev\Project\TI_Car\Release\List\main.s43
+//
+///////////////////////////////////////////////////////////////////////////////
+
+        NAME main
+
+        RTMODEL "__SystemLibrary", "DLib"
+        RTMODEL "__code_model", "large"
+        RTMODEL "__core", "430X"
+        RTMODEL "__data_model", "large"
+        RTMODEL "__double_size", "32"
+        RTMODEL "__pic", "no"
+        RTMODEL "__reg_r4", "free"
+        RTMODEL "__reg_r5", "free"
+        RTMODEL "__rt_version", "3"
+
+        RSEG CSTACK:DATA:SORT:NOROOT(0)
+
+        EXTERN ?longjmp_r4
+        EXTERN ?longjmp_r5
+        EXTERN ?setjmp_r4
+        EXTERN ?setjmp_r5
+
+        PUBWEAK ?setjmp_save_r4
+        PUBWEAK ?setjmp_save_r5
+        PUBLIC main
+        
+          CFI Names cfiNames0
+          CFI StackFrame CFA SP DATA
+          CFI Resource PC:20, SP:20, SR:16, R4L:16, R4H:4, R4:20, R5L:16, R5H:4
+          CFI Resource R5:20, R6L:16, R6H:4, R6:20, R7L:16, R7H:4, R7:20, R8L:16
+          CFI Resource R8H:4, R8:20, R9L:16, R9H:4, R9:20, R10L:16, R10H:4
+          CFI Resource R10:20, R11L:16, R11H:4, R11:20, R12L:16, R12H:4, R12:20
+          CFI Resource R13L:16, R13H:4, R13:20, R14L:16, R14H:4, R14:20, R15L:16
+          CFI Resource R15H:4, R15:20
+          CFI ResourceParts R4 R4H, R4L
+          CFI ResourceParts R5 R5H, R5L
+          CFI ResourceParts R6 R6H, R6L
+          CFI ResourceParts R7 R7H, R7L
+          CFI ResourceParts R8 R8H, R8L
+          CFI ResourceParts R9 R9H, R9L
+          CFI ResourceParts R10 R10H, R10L
+          CFI ResourceParts R11 R11H, R11L
+          CFI ResourceParts R12 R12H, R12L
+          CFI ResourceParts R13 R13H, R13L
+          CFI ResourceParts R14 R14H, R14L
+          CFI ResourceParts R15 R15H, R15L
+          CFI EndNames cfiNames0
+        
+          CFI Common cfiCommon0 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L Undefined
+          CFI R4H Undefined
+          CFI R4 Undefined
+          CFI R5L Undefined
+          CFI R5H Undefined
+          CFI R5 Undefined
+          CFI R6L Undefined
+          CFI R6H Undefined
+          CFI R6 Undefined
+          CFI R7L Undefined
+          CFI R7H Undefined
+          CFI R7 Undefined
+          CFI R8L Undefined
+          CFI R8H Undefined
+          CFI R8 Undefined
+          CFI R9L Undefined
+          CFI R9H Undefined
+          CFI R9 Undefined
+          CFI R10L Undefined
+          CFI R10H Undefined
+          CFI R10 Undefined
+          CFI R11L Undefined
+          CFI R11H Undefined
+          CFI R11 Undefined
+          CFI R12L Undefined
+          CFI R12H Undefined
+          CFI R12 Undefined
+          CFI R13L Undefined
+          CFI R13H Undefined
+          CFI R13 Undefined
+          CFI R14L Undefined
+          CFI R14H Undefined
+          CFI R14 Undefined
+          CFI R15L Undefined
+          CFI R15H Undefined
+          CFI R15 Undefined
+          CFI EndCommon cfiCommon0
+        
+        EXTERN app_main_init
+        EXTERN app_main
+
+// D:\Dev\Project\TI_Car\User\main.c
+//    1 ///*!
+//    2 // *     COPYRIGHT NOTICE
+//    3 // *     Copyright (c) 2016,CTGU-GB
+//    4 // *     All rights reserved.
+//    5 // *
+//    6 // *
+//    7 // * @file       main.c
+//    8 //* @brief      MSP430F5529 平台主程序
+//    9 //
+//   10 // * @author     CTGU-GB
+//   11 // * @version    v2.7
+//   12 // * @date       2016-11-26
+//   13 // */
+//   14 //#include "include.h"
+//   15 //
+//   16 //uint16_t data=1000;
+//   17 //float fdata=1.0; 
+//   18 //__interrupt void TIMER1_A0_IRQ_Handler()
+//   19 //{
+//   20 //   //GPIO_TurnBit  (PB, 15);//PIN_OUT(P4,7) = !PIN_OUT(P4,7);
+//   21 //   GPIO_TurnBit  (P4, 7);
+//   22 //   data++;  
+//   23 //   fdata+=0.1;
+//   24 //}
+//   25 //void main()
+//   26 //{
+//   27 //  DisableInterrupts();            //禁止总中断
+//   28 //  SMCLK_OUT();
+//   29 //  LED_Init(LED_ALL);              //LED灯初始化
+//   30 //  OLED_Init();                       //OLED初始化
+//   31 //  //LCD_INIT();
+//   32 //  
+//   33 //  Set_Vector_Handler(VECTOR_TIMER_A1_CCR0, TIMER1_A0_IRQ_Handler);   //设置定时器TA1的中断服务程序为：TIMER1_A0_IRQ_Handler
+//   34 //  TIMER_Interval_Ms(TIMER_A1, 500);    //设置TA1为定时中断，中断时间为500Ms
+//   35 //  TIMER_ITConfig (TIMER_A1, TIMER_CCR0_IRQn, ENABLE);            //使能TIMER的某一个中断
+//   36 //  
+//   37 //  //OLED显示字符，字符串，整数，小数，一个函数就够了
+//   38 //  OLED_PrintfAt(FONT_ASCII_6X8,0,0,"A");//显示一个字符
+//   39 //  OLED_PrintfAt(FONT_ASCII_6X8,0,6,"BCDE!");//显示一个字符串
+//   40 //  OLED_PrintfAt(FONT_ASCII_6X8,1,0,"%d",-100);//显示一个整数
+//   41 //  OLED_PrintfAt(FONT_ASCII_6X8,2,0,"%.5f",-100.008310);//显示一个浮点数
+//   42 //  
+//   43 //  EnableInterrupts();
+//   44 //  while(1)
+//   45 //  {  
+//   46 //    //OLED_PrintfAt(FONT_ASCII_6X8,3,0,"data=%d\nfdata=%f",data,fdata);//显示更新 
+//   47 //     DELAY_MS(500);
+//   48 //     GPIO_TurnBit  (P1, 0);
+//   49 //     //GPIO_TurnBit  (PA, 0);
+//   50 //     //PIN_OUT(P1,0) = !PIN_OUT(P1,0);
+//   51 //  }
+//   52 //}
+//   53 
+//   54 
+//   55 #include "include.h"
+//   56 
+//   57 
+//   58 
+//   59 
+//   60 
+//   61 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   62 void main()
+main:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function main
+//   63 {
+//   64    app_main_init();
+          CFI FunCall app_main_init
+        CALLA   #app_main_init
+//   65 
+//   66   
+//   67   while(1)
+//   68   {
+//   69     app_main();
+??main_0:
+          CFI FunCall app_main
+        CALLA   #app_main
+//   70     DELAY_MS(100);
+        ////////////// Start of 2500000 cycles delay.
+        MOV.W   #0x8966, R15
+        MOV.W   #0x9, R14
+??main_1:
+        ADD.W   #0xffff, R15
+        ADDC.W  #0xffff, R14
+        JC      ??main_1
+        ////////////// End of delay code.
+        JMP     ??main_0
+        NOP
+//   71   }
+//   72 }
+          CFI EndBlock cfiBlock0
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r4:
+        REQUIRE ?setjmp_r4
+        REQUIRE ?longjmp_r4
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r5:
+        REQUIRE ?setjmp_r5
+        REQUIRE ?longjmp_r5
+
+        END
+//   73 
+// 
+// 26 bytes in segment CODE
+// 
+// 26 bytes of CODE memory
+//
+//Errors: none
+//Warnings: none

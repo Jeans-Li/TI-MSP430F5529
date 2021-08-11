@@ -1,0 +1,510 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           03/Aug/2021  16:28:13
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\Project\TI_Car\User\USER\PID.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW35AD.tmp
+#        (D:\Dev\Project\TI_Car\User\USER\PID.c -D NDEBUG -D RAM_VECTOR -lC
+#        D:\Dev\Project\TI_Car\Release\List -lA
+#        D:\Dev\Project\TI_Car\Release\List -o
+#        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+#        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+#        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+#        D:\Dev\Project\TI_Car\HardWare\key\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+#        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+#        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+#        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+#        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+#        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+#        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+#        D:\Dev\Project\TI_Car\User\USER\ -I
+#        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+#        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\Project\TI_Car\Release\List\PID.lst
+#    Object file   =  D:\Dev\Project\TI_Car\Release\Obj\PID.r43
+#
+###############################################################################
+
+D:\Dev\Project\TI_Car\User\USER\PID.c
+      1          #include"pid.h"
+      2          #include"math.h"
+      3          
+      4          //初始化PID结构体参数
+
+   \                                 In  segment CODE, align 2
+      5          void PID_Init(PID * s_PID,PID_VAR_TYPE set_point,PID_VAR_TYPE Proportion,PID_VAR_TYPE Integral, PID_VAR_TYPE Derivative)
+   \                     PID_Init:
+      6          {
+      7             s_PID->SetPoint = set_point;
+   \   000000   8C4E0000     MOV.W   R14, 0(R12)
+   \   000004   8C4F0200     MOV.W   R15, 0x2(R12)
+      8             s_PID->Proportion = Proportion;
+   \   000008   9C4104000400 MOV.W   0x4(SP), 0x4(R12)
+   \   00000E   9C4106000600 MOV.W   0x6(SP), 0x6(R12)
+      9             s_PID->Integral = Integral;
+   \   000014   9C4108000800 MOV.W   0x8(SP), 0x8(R12)
+   \   00001A   9C410A000A00 MOV.W   0xa(SP), 0xa(R12)
+     10             s_PID->Derivative = Derivative;
+   \   000020   9C410C000C00 MOV.W   0xc(SP), 0xc(R12)
+   \   000026   9C410E000E00 MOV.W   0xe(SP), 0xe(R12)
+     11             s_PID->Error = 0;
+   \   00002C   7C031400     MOVA    #0x0, 0x14(R12)
+     12             s_PID->LastError = 0;
+   \   000030   7C031800     MOVA    #0x0, 0x18(R12)
+     13             s_PID->PrevError = 0;
+   \   000034   7C031C00     MOVA    #0x0, 0x1c(R12)
+     14             s_PID->SumError = 0;
+   \   000038   7C031000     MOVA    #0x0, 0x10(R12)
+     15             s_PID->LastResult = 0;
+   \   00003C   7C032000     MOVA    #0x0, 0x20(R12)
+     16             s_PID->Result = 0;
+   \   000040   7C032400     MOVA    #0x0, 0x24(R12)
+     17             s_PID->OutMax = DEFAULT_PID_OUT_MAX;
+   \   000044   BC4000402800 MOV.W   #0x4000, 0x28(R12)
+   \   00004A   BC401C462A00 MOV.W   #0x461c, 0x2a(R12)
+     18             s_PID->OutMin = DEFAULT_PID_OUT_MIN;
+   \   000050   BC4000402C00 MOV.W   #0x4000, 0x2c(R12)
+   \   000056   BC401CC62E00 MOV.W   #0xc61c, 0x2e(R12)
+     19             s_PID->IntegralMax = DEFAULT_PID_INTEGRAL_OUT_MAX;
+   \   00005C   BC4000403000 MOV.W   #0x4000, 0x30(R12)
+   \   000062   BC401C463200 MOV.W   #0x461c, 0x32(R12)
+     20             s_PID->IntegralMin = DEFAULT_PID_INTEGRAL_OUT_MIN;
+   \   000068   BC4000403400 MOV.W   #0x4000, 0x34(R12)
+   \   00006E   BC401CC63600 MOV.W   #0xc61c, 0x36(R12)
+     21          }
+   \   000074   1001         RETA
+     22          //设置目标值
+
+   \                                 In  segment CODE, align 2
+     23          void  PID_SetPoint     (PID * s_PID, PID_VAR_TYPE set_point) 
+   \                     PID_SetPoint:
+     24          {
+     25             s_PID->SetPoint = set_point;
+   \   000000   8C4E0000     MOV.W   R14, 0(R12)
+   \   000004   8C4F0200     MOV.W   R15, 0x2(R12)
+     26          }      
+   \   000008   1001         RETA
+     27          //设置PID输出范围
+
+   \                                 In  segment CODE, align 2
+     28          void  PID_SetOutRange  (PID * s_PID, PID_VAR_TYPE outMax,PID_VAR_TYPE outMin)
+   \                     PID_SetOutRange:
+     29          {
+     30            s_PID->OutMax = outMax;
+   \   000000   8C4E2800     MOV.W   R14, 0x28(R12)
+   \   000004   8C4F2A00     MOV.W   R15, 0x2a(R12)
+     31            s_PID->OutMin = outMin;
+   \   000008   9C4104002C00 MOV.W   0x4(SP), 0x2c(R12)
+   \   00000E   9C4106002E00 MOV.W   0x6(SP), 0x2e(R12)
+     32          }
+   \   000014   1001         RETA
+     33          //设置PID积分范围
+
+   \                                 In  segment CODE, align 2
+     34          void  PID_SetIntegralOutRange(PID * s_PID, PID_VAR_TYPE outMax,PID_VAR_TYPE outMin)
+   \                     PID_SetIntegralOutRange:
+     35          {
+     36            s_PID->IntegralMax = outMax;
+   \   000000   8C4E3000     MOV.W   R14, 0x30(R12)
+   \   000004   8C4F3200     MOV.W   R15, 0x32(R12)
+     37            s_PID->IntegralMin = outMin;
+   \   000008   9C4104003400 MOV.W   0x4(SP), 0x34(R12)
+   \   00000E   9C4106003600 MOV.W   0x6(SP), 0x36(R12)
+     38          }
+   \   000014   1001         RETA
+     39          //增量式PID计算
+
+   \                                 In  segment CODE, align 2
+     40          PID_VAR_TYPE Increment_PID_Cal(PID * s_PID,PID_VAR_TYPE now_point)
+   \                     Increment_PID_Cal:
+     41          {
+   \   000000   7B14         PUSHM.A #0x8, R11
+   \   000002   C80C         MOVA    R12, R8
+     42              s_PID->LastResult = s_PID->Result;					       // 简单赋值运算	
+   \   000004   1A4C2400     MOV.W   0x24(R12), R10
+   \   000008   1B4C2600     MOV.W   0x26(R12), R11
+   \   00000C   8C4A2000     MOV.W   R10, 0x20(R12)
+   \   000010   8C4B2200     MOV.W   R11, 0x22(R12)
+     43              //误差计算   
+     44              s_PID->Error = s_PID->SetPoint - now_point;
+   \   000014   2C48         MOV.W   @R8, R12
+   \   000016   1D480200     MOV.W   0x2(R8), R13
+   \   00001A   ........     CALLA   #_Sub32f
+   \   00001E   064C         MOV.W   R12, R6
+   \   000020   074D         MOV.W   R13, R7
+   \   000022   88461400     MOV.W   R6, 0x14(R8)
+   \   000026   88471600     MOV.W   R7, 0x16(R8)
+     45              //PID计算   
+     46              s_PID->Result = s_PID->LastResult 
+     47                            + s_PID->Proportion  * (s_PID->Error - s_PID->LastError)                          // 比例项
+     48                            + s_PID->Integral    *  s_PID->Error	                                       // 积分项 
+     49                            + s_PID->Derivative  * (s_PID->Error - 2*(s_PID->LastError) + s_PID->PrevError);  // 微分项
+   \   00002A   14481800     MOV.W   0x18(R8), R4
+   \   00002E   15481A00     MOV.W   0x1a(R8), R5
+   \   000032   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_10:
+   \   000036   1C480400     MOV.W   0x4(R8), R12
+   \   00003A   1D480600     MOV.W   0x6(R8), R13
+   \   00003E   ........     CALLA   #?Subroutine3
+   \                     ??CrossCallReturnLabel_4:
+   \   000042   1C480800     MOV.W   0x8(R8), R12
+   \   000046   1D480A00     MOV.W   0xa(R8), R13
+   \   00004A   0E46         MOV.W   R6, R14
+   \   00004C   0F47         MOV.W   R7, R15
+   \   00004E   ........     CALLA   #?Subroutine3
+   \                     ??CrossCallReturnLabel_5:
+   \   000052   0C44         MOV.W   R4, R12
+   \   000054   0D45         MOV.W   R5, R13
+   \   000056   0E43         MOV.W   #0x0, R14
+   \   000058   3F400040     MOV.W   #0x4000, R15
+   \   00005C   ........     CALLA   #?Subroutine6
+   \                     ??CrossCallReturnLabel_6:
+   \   000060   ........     CALLA   #??Subroutine7_0
+   \                     ??CrossCallReturnLabel_9:
+   \   000064   1C481C00     MOV.W   0x1c(R8), R12
+   \   000068   1D481E00     MOV.W   0x1e(R8), R13
+   \   00006C   ........     CALLA   #_Add32f
+   \   000070   0E4C         MOV.W   R12, R14
+   \   000072   0F4D         MOV.W   R13, R15
+   \   000074   1C480C00     MOV.W   0xc(R8), R12
+   \   000078   1D480E00     MOV.W   0xe(R8), R13
+   \   00007C   ........     CALLA   #_Mul32f
+   \   000080   0E4A         MOV.W   R10, R14
+   \   000082   0F4B         MOV.W   R11, R15
+   \   000084   ........     CALLA   #_Add32f
+   \   000088   0A4C         MOV.W   R12, R10
+   \   00008A   0B4D         MOV.W   R13, R11
+     50             
+     51              s_PID->PrevError = s_PID->LastError;		               // 简单赋值运算
+   \   00008C   88441C00     MOV.W   R4, 0x1c(R8)
+   \   000090   88451E00     MOV.W   R5, 0x1e(R8)
+     52              s_PID->LastError = s_PID->Error; 				       // 简单赋值运算
+   \   000094   88461800     MOV.W   R6, 0x18(R8)
+   \   000098   88471A00     MOV.W   R7, 0x1a(R8)
+     53              //输出限幅
+     54              if(s_PID->Result > s_PID->OutMax)s_PID->Result = s_PID->OutMax;
+   \   00009C   1C482800     MOV.W   0x28(R8), R12
+   \   0000A0   1D482A00     MOV.W   0x2a(R8), R13
+   \   0000A4   0E4A         MOV.W   R10, R14
+   \   0000A6   0F4B         MOV.W   R11, R15
+   \   0000A8   ........     CALLA   #?FLT_LT
+   \   0000AC   0328         JNC     ??Increment_PID_Cal_1
+   \   0000AE   0A4C         MOV.W   R12, R10
+   \   0000B0   0B4D         MOV.W   R13, R11
+   \   0000B2   0B3C         JMP     ??Increment_PID_Cal_0
+     55              else if(s_PID->Result < s_PID->OutMin)s_PID->Result = s_PID->OutMin;
+   \                     ??Increment_PID_Cal_1:
+   \   0000B4   1E482C00     MOV.W   0x2c(R8), R14
+   \   0000B8   1F482E00     MOV.W   0x2e(R8), R15
+   \   0000BC   0C4A         MOV.W   R10, R12
+   \   0000BE   0D4B         MOV.W   R11, R13
+   \   0000C0   ........     CALLA   #?FLT_LT
+   \   0000C4   0228         JNC     ??Increment_PID_Cal_0
+   \   0000C6   0A4E         MOV.W   R14, R10
+   \   0000C8   0B4F         MOV.W   R15, R11
+   \                     ??Increment_PID_Cal_0:
+   \   0000CA   884A2400     MOV.W   R10, 0x24(R8)
+   \   0000CE   884B2600     MOV.W   R11, 0x26(R8)
+     56              
+     57              return s_PID->Result;	
+   \   0000D2   1C482400     MOV.W   0x24(R8), R12
+   \   0000D6   0D4B         MOV.W   R11, R13
+   \   0000D8   7416         POPM.A  #0x8, R11
+   \   0000DA   1001         RETA
+     58          }
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine3:
+   \   000000   ........     CALLA   #_Mul32f
+   \   000004   0E4C         MOV.W   R12, R14
+   \   000006   0F4D         MOV.W   R13, R15
+   \   000008   0C4A         MOV.W   R10, R12
+   \   00000A   0D4B         MOV.W   R11, R13
+   \   00000C   ........     CALLA   #_Add32f
+   \   000010   0A4C         MOV.W   R12, R10
+   \   000012   0B4D         MOV.W   R13, R11
+   \   000014   1001         RETA
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine6:
+   \   000000   ........     CALLA   #_Mul32f
+   \   000004   0E4C         MOV.W   R12, R14
+   \   000006   0F4D         MOV.W   R13, R15
+   \   000008   0C46         MOV.W   R6, R12
+   \   00000A   0D47         MOV.W   R7, R13
+   \   00000C   1001         RETA
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine5:
+   \   000000   0E44         MOV.W   R4, R14
+   \   000002   0F45         MOV.W   R5, R15
+   \   000004                REQUIRE ??Subroutine7_0
+   \   000004                // Fall through to label ??Subroutine7_0
+
+   \                                 In  segment CODE, align 2
+   \                     ??Subroutine7_0:
+   \   000000   ........     CALLA   #_Sub32f
+   \   000004   0E4C         MOV.W   R12, R14
+   \   000006   0F4D         MOV.W   R13, R15
+   \   000008   1001         RETA
+     59          //位置式PID计算
+
+   \                                 In  segment CODE, align 2, keep-with-next
+     60          PID_VAR_TYPE Position_PID_Cal(PID * s_PID,PID_VAR_TYPE now_point)
+   \                     Position_PID_Cal:
+     61          {
+   \   000000   6A14         PUSHM.A #0x7, R10
+   \   000002   ........     CALLA   #?Subroutine1
+     62              s_PID->LastResult = s_PID->Result;			       // 简单赋值运算
+     63              //误差计算
+     64              s_PID->Error = s_PID->SetPoint - now_point;
+     65              s_PID->SumError += s_PID->Error;                            //积分误差累加
+     66              //积分限幅
+     67              PID_VAR_TYPE IOutValue = s_PID->SumError * s_PID->Integral;
+     68              if(IOutValue > s_PID->IntegralMax)IOutValue = s_PID->IntegralMax;
+     69              else if(IOutValue < s_PID->IntegralMin)IOutValue = s_PID->IntegralMin;
+     70              //PID计算
+     71              s_PID->Result =  s_PID->Proportion  *  s_PID->Error                          // 比例项
+     72                             + IOutValue                                                     // 积分项 
+     73                             + s_PID->Derivative  * (s_PID->Error - s_PID->LastError);     // 微分项
+   \                     ??CrossCallReturnLabel_0:
+   \   000006   1C4A0400     MOV.W   0x4(R10), R12
+   \   00000A   1D4A0600     MOV.W   0x6(R10), R13
+   \   00000E   0E48         MOV.W   R8, R14
+   \   000010   0F49         MOV.W   R9, R15
+   \   000012   ........     CALLA   #?Subroutine6
+   \                     ??CrossCallReturnLabel_7:
+   \   000016   ........     CALLA   #?Subroutine2
+   \                     ??CrossCallReturnLabel_2:
+   \   00001A                REQUIRE ?Subroutine0
+   \   00001A                // Fall through to label ?Subroutine0
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   8A4C2400     MOV.W   R12, 0x24(R10)
+   \   000004   8A4D2600     MOV.W   R13, 0x26(R10)
+     74              
+     75              s_PID->PrevError = s_PID->LastError;		                       // 简单赋值运算
+   \   000008   8A441C00     MOV.W   R4, 0x1c(R10)
+   \   00000C   8A451E00     MOV.W   R5, 0x1e(R10)
+     76              s_PID->LastError = s_PID->Error; 				       // 简单赋值运算
+   \   000010   9A4A14001800 MOV.W   0x14(R10), 0x18(R10)
+   \   000016   9A4A16001A00 MOV.W   0x16(R10), 0x1a(R10)
+     77           
+     78              //输出限幅
+     79              if(s_PID->Result > s_PID->OutMax)s_PID->Result = s_PID->OutMax;
+   \   00001C   184A2400     MOV.W   0x24(R10), R8
+   \   000020   194A2600     MOV.W   0x26(R10), R9
+   \   000024   1C4A2800     MOV.W   0x28(R10), R12
+   \   000028   1D4A2A00     MOV.W   0x2a(R10), R13
+   \   00002C   0E48         MOV.W   R8, R14
+   \   00002E   0F49         MOV.W   R9, R15
+   \   000030   ........     CALLA   #?FLT_LT
+   \   000034   0528         JNC     ??Subroutine0_1
+   \   000036   8A4C2400     MOV.W   R12, 0x24(R10)
+   \   00003A   8A4D2600     MOV.W   R13, 0x26(R10)
+   \   00003E   0D3C         JMP     ??Subroutine0_0
+     80              else if(s_PID->Result < s_PID->OutMin)s_PID->Result = s_PID->OutMin;
+   \                     ??Subroutine0_1:
+   \   000040   1E4A2C00     MOV.W   0x2c(R10), R14
+   \   000044   1F4A2E00     MOV.W   0x2e(R10), R15
+   \   000048   0C48         MOV.W   R8, R12
+   \   00004A   0D49         MOV.W   R9, R13
+   \   00004C   ........     CALLA   #?FLT_LT
+   \   000050   0428         JNC     ??Subroutine0_0
+   \   000052   8A4E2400     MOV.W   R14, 0x24(R10)
+   \   000056   8A4F2600     MOV.W   R15, 0x26(R10)
+     81              
+     82              return s_PID->Result;	
+   \                     ??Subroutine0_0:
+   \   00005A   1C4A2400     MOV.W   0x24(R10), R12
+   \   00005E   1D4A2600     MOV.W   0x26(R10), R13
+   \   000062   6416         POPM.A  #0x7, R10
+   \   000064   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine2:
+   \   000000   ........     CALLA   #_Add32f
+   \   000004   064C         MOV.W   R12, R6
+   \   000006   074D         MOV.W   R13, R7
+   \   000008   0C48         MOV.W   R8, R12
+   \   00000A   0D49         MOV.W   R9, R13
+   \   00000C   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_11:
+   \   000010   1C4A0C00     MOV.W   0xc(R10), R12
+   \   000014   1D4A0E00     MOV.W   0xe(R10), R13
+   \   000018   ........     CALLA   #?Subroutine6
+   \                     ??CrossCallReturnLabel_8:
+   \   00001C   ........     BRA     #_Add32f
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine1:
+   \   000000   CA0C         MOVA    R12, R10
+   \   000002   9C4C24002000 MOV.W   0x24(R12), 0x20(R12)
+   \   000008   9C4C26002200 MOV.W   0x26(R12), 0x22(R12)
+   \   00000E   2C4A         MOV.W   @R10, R12
+   \   000010   1D4A0200     MOV.W   0x2(R10), R13
+   \   000014   ........     CALLA   #_Sub32f
+   \   000018   084C         MOV.W   R12, R8
+   \   00001A   094D         MOV.W   R13, R9
+   \   00001C   8A481400     MOV.W   R8, 0x14(R10)
+   \   000020   8A491600     MOV.W   R9, 0x16(R10)
+   \   000024   1C4A1000     MOV.W   0x10(R10), R12
+   \   000028   1D4A1200     MOV.W   0x12(R10), R13
+   \   00002C   0E48         MOV.W   R8, R14
+   \   00002E   0F49         MOV.W   R9, R15
+   \   000030   ........     CALLA   #_Add32f
+   \   000034   8A4C1000     MOV.W   R12, 0x10(R10)
+   \   000038   8A4D1200     MOV.W   R13, 0x12(R10)
+   \   00003C   1E4A0800     MOV.W   0x8(R10), R14
+   \   000040   1F4A0A00     MOV.W   0xa(R10), R15
+   \   000044   ........     CALLA   #_Mul32f
+   \   000048   064C         MOV.W   R12, R6
+   \   00004A   074D         MOV.W   R13, R7
+   \   00004C   1C4A3000     MOV.W   0x30(R10), R12
+   \   000050   1D4A3200     MOV.W   0x32(R10), R13
+   \   000054   0E46         MOV.W   R6, R14
+   \   000056   0F47         MOV.W   R7, R15
+   \   000058   ........     CALLA   #?FLT_LT
+   \   00005C   0328         JNC     ??Position_PID_Cal_0
+   \   00005E   064C         MOV.W   R12, R6
+   \   000060   074D         MOV.W   R13, R7
+   \   000062   0B3C         JMP     ??Position_PID_Cal_1
+   \                     ??Position_PID_Cal_0:
+   \   000064   1E4A3400     MOV.W   0x34(R10), R14
+   \   000068   1F4A3600     MOV.W   0x36(R10), R15
+   \   00006C   0C46         MOV.W   R6, R12
+   \   00006E   0D47         MOV.W   R7, R13
+   \   000070   ........     CALLA   #?FLT_LT
+   \   000074   0228         JNC     ??Position_PID_Cal_1
+   \   000076   064E         MOV.W   R14, R6
+   \   000078   074F         MOV.W   R15, R7
+   \                     ??Position_PID_Cal_1:
+   \   00007A   144A1800     MOV.W   0x18(R10), R4
+   \   00007E   154A1A00     MOV.W   0x1a(R10), R5
+   \   000082   1001         RETA
+     83          }
+     84          //比例外置式PID
+
+   \                                 In  segment CODE, align 2
+     85          PID_VAR_TYPE PID_Cal(PID * s_PID,PID_VAR_TYPE now_point)
+   \                     PID_Cal:
+     86          {  
+   \   000000   6A14         PUSHM.A #0x7, R10
+   \   000002   ........     CALLA   #?Subroutine1
+     87              s_PID->LastResult = s_PID->Result;			       // 简单赋值运算
+     88              //误差计算
+     89              s_PID->Error = s_PID->SetPoint - now_point;
+     90              s_PID->SumError += s_PID->Error;                            //积分误差累加
+     91              //积分限幅
+     92              PID_VAR_TYPE IOutValue = s_PID->SumError * s_PID->Integral;
+     93              if(IOutValue > s_PID->IntegralMax)IOutValue = s_PID->IntegralMax;
+     94              else if(IOutValue < s_PID->IntegralMin)IOutValue = s_PID->IntegralMin;
+     95              //PID计算   
+     96              s_PID->Result = s_PID->Proportion *
+     97                 (s_PID->Error + IOutValue + s_PID->Derivative * (s_PID->Error - s_PID->LastError) );
+   \                     ??CrossCallReturnLabel_1:
+   \   000006   0C48         MOV.W   R8, R12
+   \   000008   0D49         MOV.W   R9, R13
+   \   00000A   0E46         MOV.W   R6, R14
+   \   00000C   0F47         MOV.W   R7, R15
+   \   00000E   ........     CALLA   #?Subroutine2
+   \                     ??CrossCallReturnLabel_3:
+   \   000012   0E4C         MOV.W   R12, R14
+   \   000014   0F4D         MOV.W   R13, R15
+   \   000016   1C4A0400     MOV.W   0x4(R10), R12
+   \   00001A   1D4A0600     MOV.W   0x6(R10), R13
+   \   00001E   ........     CALLA   #_Mul32f
+   \   000022   ....         JMP     ?Subroutine0
+   \   000024   0343         NOP
+     98             
+     99              s_PID->PrevError = s_PID->LastError;		                       // 简单赋值运算
+    100              s_PID->LastError = s_PID->Error; 				       // 简单赋值运算
+    101              //输出限幅
+    102              if(s_PID->Result > s_PID->OutMax)s_PID->Result = s_PID->OutMax;
+    103              else if(s_PID->Result < s_PID->OutMin)s_PID->Result = s_PID->OutMin;
+    104              
+    105              return s_PID->Result;
+    106          }
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     36   Increment_PID_Cal
+       36 ?FLT_LT
+       36 _Add32f
+       40 _Add32f
+       36 _Mul32f
+       40 _Mul32f
+       36 _Sub32f
+       40 _Sub32f
+     32   PID_Cal
+       32 ?FLT_LT
+       36 ?FLT_LT
+       32 _Add32f
+       36 _Add32f
+       32 _Mul32f
+       36 _Mul32f
+       40 _Mul32f
+       36 _Sub32f
+       40 _Sub32f
+      4   PID_Init
+      4   PID_SetIntegralOutRange
+      4   PID_SetOutRange
+      4   PID_SetPoint
+     32   Position_PID_Cal
+       32 ?FLT_LT
+       36 ?FLT_LT
+       32 _Add32f
+       36 _Add32f
+       36 _Mul32f
+       40 _Mul32f
+       36 _Sub32f
+       40 _Sub32f
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      10  ??Subroutine7_0
+     102  ?Subroutine0
+     132  ?Subroutine1
+      32  ?Subroutine2
+      22  ?Subroutine3
+       4  ?Subroutine5
+      14  ?Subroutine6
+     220  Increment_PID_Cal
+      38  PID_Cal
+     118  PID_Init
+      22  PID_SetIntegralOutRange
+      22  PID_SetOutRange
+      10  PID_SetPoint
+      26  Position_PID_Cal
+
+ 
+ 772 bytes in segment CODE
+ 
+ 772 bytes of CODE memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,839 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           03/Aug/2021  16:28:06
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\Project\TI_Car\HardWare\motor\motor.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EW181E.tmp
+#        (D:\Dev\Project\TI_Car\HardWare\motor\motor.c -D NDEBUG -D RAM_VECTOR
+#        -lC D:\Dev\Project\TI_Car\Release\List -lA
+#        D:\Dev\Project\TI_Car\Release\List -o
+#        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+#        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+#        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+#        D:\Dev\Project\TI_Car\HardWare\key\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+#        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+#        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+#        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+#        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+#        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+#        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+#        D:\Dev\Project\TI_Car\User\USER\ -I
+#        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+#        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\Project\TI_Car\Release\List\motor.lst
+#    Object file   =  D:\Dev\Project\TI_Car\Release\Obj\motor.r43
+#
+###############################################################################
+
+D:\Dev\Project\TI_Car\HardWare\motor\motor.c
+      1          /*
+      2           *
+      3           *
+      4                      麦克纳姆轮安装方向
+      5          
+      6                       TA0.1(P1.2)  A轮 \\   ------   //  B轮     TA0.2(P1.3)
+      7                                       \\   ------  //
+      8                                            ------
+      9                                            ------
+     10                                            ------
+     11                                        //  ------  \\
+     12                        TA0.3(P1.4) D轮  //   ------   \\  C轮     TA0.4(P1.5)
+     13          
+     14                          A轮 //左前
+     15                          B轮 //右前
+     16                          C轮 //右后
+     17                          D轮 //左后
+     18          
+     19          
+     20                      A轮：控制前后运动   P6.0 --- AIN1，P6.1 --- AIN2
+     21                      B轮：控制前后运动   P6.2 --- BIN1，P6.3 --- BIN2
+     22          
+     23                      C轮：控制前后运动   P6.4 --- BIN1，P7.0 --- BIN1
+     24                      D轮：控制前后运动   P8.1 --- AIN1，P3.6 --- AIN2
+     25          */
+     26          
+     27          
+     28          #include "motor.h"
+
+   \                                 In  segment CODE, align 2
+     29          void MOTOR_Init()
+   \                     MOTOR_Init:
+     30          {
+   \   000000   3B14         PUSHM.A #0x4, R11
+     31            //定时器A0，频率1K,占空比为0,初始化4个通道，分别是：TIMER_CH1(P1.2), TIMER_CH2(P1.3), TIMER_CH3(P1.4), TIMER_CH4(P1.5)
+     32            TIMER_PWM_Init(TIMER_A0,10000, TIMER_CH1, TIMER_CH2, TIMER_CH3, TIMER_CH4);
+   \   000002   2212         PUSH.W  #0x4
+   \   000004   031870120200 PUSHX.A #0x30002
+   \   00000A   1312         PUSH.W  #0x1
+   \   00000C   6D42         MOV.B   #0x4, R13
+   \   00000E   3E401027     MOV.W   #0x2710, R14
+   \   000012   0F43         MOV.W   #0x0, R15
+   \   000014   4C43         MOV.B   #0x0, R12
+   \   000016   ........     CALLA   #TIMER_PWM_MultiChannel_Init
+     33            TIMER_PWM_SetChannelDuty  (TIMER_A0,TIMER_CH1,500);       //设置某一个定时器某一个通道的占空比
+   \   00001A   ........     MOVA    #TIMER_PWM_SetChannelDuty, R8
+   \   00001E   3A40F401     MOV.W   #0x1f4, R10
+   \   000022   0E4A         MOV.W   R10, R14
+   \   000024   0F43         MOV.W   #0x0, R15
+   \   000026   5D43         MOV.B   #0x1, R13
+   \   000028   ........     CALLA   #?Subroutine7
+     34            TIMER_PWM_SetChannelDuty  (TIMER_A0,TIMER_CH2,500);     //设置某一个定时器某一个通道的占空比
+   \                     ??CrossCallReturnLabel_4:
+   \   00002C   6D43         MOV.B   #0x2, R13
+   \   00002E   ........     CALLA   #?Subroutine7
+     35            TIMER_PWM_SetChannelDuty  (TIMER_A0,TIMER_CH3,500);     //设置某一个定时器某一个通道的占空比
+   \                     ??CrossCallReturnLabel_5:
+   \   000032   7D400300     MOV.B   #0x3, R13
+   \   000036   ........     CALLA   #?Subroutine7
+     36            TIMER_PWM_SetChannelDuty  (TIMER_A0,TIMER_CH4,500);    //设置某一个定时器某一个通道的占空比
+   \                     ??CrossCallReturnLabel_6:
+   \   00003A   6D42         MOV.B   #0x4, R13
+   \   00003C   4C43         MOV.B   #0x0, R12
+   \   00003E   4813         CALLA   R8
+     37            
+     38            GPIO_MultiBits_Init(P6,BIT0,GPO|HDS); 
+   \   000040   ........     MOVA    #GPIO_MultiBits_Init, R11
+   \   000044   7A400500     MOV.B   #0x5, R10
+   \   000048   38400A00     MOV.W   #0xa, R8
+   \   00004C   0E48         MOV.W   R8, R14
+   \   00004E   1D43         MOV.W   #0x1, R13
+   \   000050   ........     CALLA   #?Subroutine9
+     39            GPIO_MultiBits_Init(P6,BIT1,GPO|HDS);
+   \                     ??CrossCallReturnLabel_11:
+   \   000054   2D43         MOV.W   #0x2, R13
+   \   000056   ........     CALLA   #?Subroutine9
+     40            GPIO_MultiBits_Init(P6,BIT2,GPO|HDS);
+   \                     ??CrossCallReturnLabel_12:
+   \   00005A   2D42         MOV.W   #0x4, R13
+   \   00005C   ........     CALLA   #?Subroutine9
+     41            GPIO_MultiBits_Init(P6,BIT3,GPO|HDS);
+   \                     ??CrossCallReturnLabel_13:
+   \   000060   3D42         MOV.W   #0x8, R13
+   \   000062   ........     CALLA   #?Subroutine9
+     42            GPIO_MultiBits_Init(P6,BIT4,GPO|HDS);
+   \                     ??CrossCallReturnLabel_14:
+   \   000066   3D401000     MOV.W   #0x10, R13
+   \   00006A   ........     CALLA   #?Subroutine9
+     43            GPIO_MultiBits_Init(P7,BIT0,GPO|HDS);
+   \                     ??CrossCallReturnLabel_15:
+   \   00006E   1D43         MOV.W   #0x1, R13
+   \   000070   7C400600     MOV.B   #0x6, R12
+   \   000074   4B13         CALLA   R11
+     44            GPIO_MultiBits_Init(P8,BIT1,GPO|HDS);
+   \   000076   0E48         MOV.W   R8, R14
+   \   000078   2D43         MOV.W   #0x2, R13
+   \   00007A   7C400700     MOV.B   #0x7, R12
+   \   00007E   4B13         CALLA   R11
+     45            GPIO_MultiBits_Init(P3,BIT6,GPO|HDS);
+   \   000080   0E48         MOV.W   R8, R14
+   \   000082   3D404000     MOV.W   #0x40, R13
+   \   000086   6C43         MOV.B   #0x2, R12
+   \   000088   4B13         CALLA   R11
+     46            
+     47            
+     48          }
+   \   00008A   A1000800     ADDA    #0x8, SP
+   \   00008E   3816         POPM.A  #0x4, R11
+   \   000090   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine9:
+   \   000000   4C4A         MOV.B   R10, R12
+   \   000002   4B13         CALLA   R11
+   \   000004   0E48         MOV.W   R8, R14
+   \   000006   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine7:
+   \   000000   4C43         MOV.B   #0x0, R12
+   \   000002   4813         CALLA   R8
+   \   000004   0E4A         MOV.W   R10, R14
+   \   000006   0F43         MOV.W   #0x0, R15
+   \   000008   1001         RETA
+     49          
+     50          //改变四个电机pwm占空比
+
+   \                                 In  segment CODE, align 2
+     51          void MOTOR_PWM_Out(int dutyCycle_A,int dutyCycle_B,int dutyCycle_C,int dutyCycle_D)
+   \                     MOTOR_PWM_Out:
+     52          {
+   \   000000   3B14         PUSHM.A #0x4, R11
+   \   000002   0B4D         MOV.W   R13, R11
+   \   000004   0A4E         MOV.W   R14, R10
+   \   000006   084F         MOV.W   R15, R8
+     53              TIMER_PWM_SetChannelDuty(TIMER_A0,TIMER_CH1,dutyCycle_A);
+   \   000008   ........     MOVA    #TIMER_PWM_SetChannelDuty, R9
+   \   00000C   0E4C         MOV.W   R12, R14
+   \   00000E   0F4C         MOV.W   R12, R15
+   \   000010   0F5F         RLA.W   R15
+   \   000012   0F7F         SUBC.W  R15, R15
+   \   000014   3FE3         XOR.W   #0xffff, R15
+   \   000016   5D43         MOV.B   #0x1, R13
+   \   000018   4C43         MOV.B   #0x0, R12
+   \   00001A   4913         CALLA   R9
+     54              TIMER_PWM_SetChannelDuty(TIMER_A0,TIMER_CH2,dutyCycle_B);
+   \   00001C   0E4B         MOV.W   R11, R14
+   \   00001E   0F4B         MOV.W   R11, R15
+   \   000020   0F5F         RLA.W   R15
+   \   000022   0F7F         SUBC.W  R15, R15
+   \   000024   3FE3         XOR.W   #0xffff, R15
+   \   000026   6D43         MOV.B   #0x2, R13
+   \   000028   4C43         MOV.B   #0x0, R12
+   \   00002A   4913         CALLA   R9
+     55              TIMER_PWM_SetChannelDuty(TIMER_A0,TIMER_CH3,dutyCycle_C);
+   \   00002C   0E4A         MOV.W   R10, R14
+   \   00002E   0F4A         MOV.W   R10, R15
+   \   000030   0F5F         RLA.W   R15
+   \   000032   0F7F         SUBC.W  R15, R15
+   \   000034   3FE3         XOR.W   #0xffff, R15
+   \   000036   7D400300     MOV.B   #0x3, R13
+   \   00003A   4C43         MOV.B   #0x0, R12
+   \   00003C   4913         CALLA   R9
+     56              TIMER_PWM_SetChannelDuty(TIMER_A0,TIMER_CH4,dutyCycle_D);
+   \   00003E   0E48         MOV.W   R8, R14
+   \   000040   0F48         MOV.W   R8, R15
+   \   000042   0F5F         RLA.W   R15
+   \   000044   0F7F         SUBC.W  R15, R15
+   \   000046   3FE3         XOR.W   #0xffff, R15
+   \   000048   6D42         MOV.B   #0x4, R13
+   \   00004A   4C43         MOV.B   #0x0, R12
+   \   00004C   4913         CALLA   R9
+     57          }
+   \   00004E   3816         POPM.A  #0x4, R11
+   \   000050   1001         RETA
+     58          
+
+   \                                 In  segment CODE, align 2, keep-with-next
+     59          void MOTOR_A(char state)
+   \                     MOTOR_A:
+     60          {
+     61              if(state == GO)
+   \   000000   4C93         CMP.B   #0x0, R12
+   \   000002   0520         JNE     ??MOTOR_A_1
+     62              {
+     63                  GPIO_SetBits(PORT6, GPIO_Pin_0);
+   \   000004   1D43         MOV.W   #0x1, R13
+   \   000006   ........     CALLA   #?Subroutine14
+     64                  GPIO_ResetBits(PORT6, GPIO_Pin_1);
+   \                     ??CrossCallReturnLabel_31:
+   \   00000A   2D43         MOV.W   #0x2, R13
+   \   00000C   063C         JMP     ??MOTOR_A_0
+     65              }
+     66              if(state == BACK)
+   \                     ??MOTOR_A_1:
+   \   00000E   5C93         CMP.B   #0x1, R12
+   \   000010   0520         JNE     ??MOTOR_A_2
+     67              {
+     68                  GPIO_SetBits(PORT6, GPIO_Pin_1);
+   \   000012   2D43         MOV.W   #0x2, R13
+   \   000014   ........     CALLA   #?Subroutine14
+     69                  GPIO_ResetBits(PORT6, GPIO_Pin_0);
+   \                     ??CrossCallReturnLabel_32:
+   \   000018   1D43         MOV.W   #0x1, R13
+     70              }
+   \                     ??MOTOR_A_0:
+   \   00001A   ....         JMP     ?Subroutine0
+     71              if(state == STOP)
+   \                     ??MOTOR_A_2:
+   \   00001C   6C93         CMP.B   #0x2, R12
+   \   00001E   0220         JNE     ??MOTOR_A_3
+     72              {
+     73                  GPIO_SetBits(PORT6, GPIO_Pin_0);
+   \   000020   ........     CALLA   #?Subroutine4
+     74                  GPIO_SetBits(PORT6, GPIO_Pin_1);
+     75              }
+     76          }
+   \                     ??MOTOR_A_3:
+   \   000024   1001         RETA
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   7C400500     MOV.B   #0x5, R12
+   \   000004   ........     BRA     #GPIO_ResetBits
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine4:
+   \   000000   1D43         MOV.W   #0x1, R13
+   \   000002   ........     CALLA   #?Subroutine14
+   \                     ??CrossCallReturnLabel_28:
+   \   000006   2D43         MOV.W   #0x2, R13
+   \   000008                REQUIRE ?Subroutine14
+   \   000008                // Fall through to label ?Subroutine14
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine14:
+   \   000000   7C400500     MOV.B   #0x5, R12
+   \   000004   ........     BRA     #GPIO_SetBits
+     77          
+
+   \                                 In  segment CODE, align 2, keep-with-next
+     78          void MOTOR_B(char state)
+   \                     MOTOR_B:
+     79          {
+     80              if(state == GO)
+   \   000000   4C93         CMP.B   #0x0, R12
+   \   000002   0320         JNE     ??MOTOR_B_1
+     81              {
+     82                  GPIO_SetBits(PORT6, GPIO_Pin_2);
+   \   000004   ........     CALLA   #?Subroutine10
+     83                  GPIO_ResetBits(PORT6, GPIO_Pin_3);
+     84              }
+   \                     ??CrossCallReturnLabel_16:
+   \   000008   063C         JMP     ??MOTOR_B_0
+     85              if(state == BACK)
+   \                     ??MOTOR_B_1:
+   \   00000A   5C93         CMP.B   #0x1, R12
+   \   00000C   0520         JNE     ??MOTOR_B_2
+     86              {
+     87                  GPIO_SetBits(PORT6, GPIO_Pin_3);
+   \   00000E   3D42         MOV.W   #0x8, R13
+   \   000010   ........     CALLA   #?Subroutine14
+     88                  GPIO_ResetBits(PORT6, GPIO_Pin_2);
+   \                     ??CrossCallReturnLabel_33:
+   \   000014   2D42         MOV.W   #0x4, R13
+     89              }
+   \                     ??MOTOR_B_0:
+   \   000016   ....         JMP     ?Subroutine0
+     90              if(state == STOP)
+   \                     ??MOTOR_B_2:
+   \   000018   6C93         CMP.B   #0x2, R12
+   \   00001A   0420         JNE     ??MOTOR_B_3
+     91              {
+     92                  GPIO_SetBits(PORT6, GPIO_Pin_2);
+   \   00001C   ........     CALLA   #?Subroutine10
+     93                  GPIO_SetBits(PORT6, GPIO_Pin_3);
+     94              }
+   \                     ??CrossCallReturnLabel_17:
+   \   000020   ........     CALLA   #?Subroutine14
+     95          }
+   \                     ??MOTOR_B_3:
+   \   000024   1001         RETA
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine10:
+   \   000000   2D42         MOV.W   #0x4, R13
+   \   000002   ........     CALLA   #?Subroutine14
+   \                     ??CrossCallReturnLabel_30:
+   \   000006   3D42         MOV.W   #0x8, R13
+   \   000008   1001         RETA
+     96          
+
+   \                                 In  segment CODE, align 2
+     97          void MOTOR_C(char state)
+   \                     MOTOR_C:
+     98          {
+     99              if(state == GO)
+   \   000000   4C93         CMP.B   #0x0, R12
+   \   000002   0420         JNE     ??MOTOR_C_0
+    100              {
+    101                  GPIO_SetBits(PORT6, GPIO_Pin_4);
+   \   000004   ........     CALLA   #?Subroutine5
+    102                  GPIO_ResetBits(PORT7, GPIO_Pin_0);
+    103              }
+   \                     ??CrossCallReturnLabel_0:
+   \   000008   ........     BRA     #GPIO_ResetBits
+    104              if(state == BACK)
+   \                     ??MOTOR_C_0:
+   \   00000C   5C93         CMP.B   #0x1, R12
+   \   00000E   0820         JNE     ??MOTOR_C_1
+    105              {
+    106                  GPIO_SetBits(PORT7, GPIO_Pin_0);
+   \   000010   1D43         MOV.W   #0x1, R13
+   \   000012   7C400600     MOV.B   #0x6, R12
+   \   000016   ........     CALLA   #GPIO_SetBits
+    107                  GPIO_ResetBits(PORT6, GPIO_Pin_4);
+   \   00001A   3D401000     MOV.W   #0x10, R13
+   \   00001E   ....         JMP     ?Subroutine0
+    108              }
+    109              if(state == STOP)
+   \                     ??MOTOR_C_1:
+   \   000020   6C93         CMP.B   #0x2, R12
+   \   000022   0420         JNE     ??MOTOR_C_2
+    110              {
+    111                  GPIO_SetBits(PORT6, GPIO_Pin_4);
+   \   000024   ........     CALLA   #?Subroutine5
+    112                  GPIO_SetBits(PORT7, GPIO_Pin_0);
+    113              }
+   \                     ??CrossCallReturnLabel_1:
+   \   000028   ........     CALLA   #GPIO_SetBits
+    114          }
+   \                     ??MOTOR_C_2:
+   \   00002C   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine5:
+   \   000000   3D401000     MOV.W   #0x10, R13
+   \   000004   ........     CALLA   #?Subroutine14
+   \                     ??CrossCallReturnLabel_29:
+   \   000008   1D43         MOV.W   #0x1, R13
+   \   00000A   7C400600     MOV.B   #0x6, R12
+   \   00000E   1001         RETA
+    115          
+
+   \                                 In  segment CODE, align 2
+    116          void MOTOR_D(char state)
+   \                     MOTOR_D:
+    117          {
+    118              if(state == GO)
+   \   000000   4C93         CMP.B   #0x0, R12
+   \   000002   0420         JNE     ??MOTOR_D_0
+    119              {
+    120                  GPIO_SetBits(PORT8, GPIO_Pin_1);
+   \   000004   ........     CALLA   #?Subroutine6
+    121                  GPIO_ResetBits(PORT3, GPIO_Pin_6);
+    122              }
+   \                     ??CrossCallReturnLabel_2:
+   \   000008   ........     BRA     #GPIO_ResetBits
+    123              if(state == BACK)
+   \                     ??MOTOR_D_0:
+   \   00000C   5C93         CMP.B   #0x1, R12
+   \   00000E   0A20         JNE     ??MOTOR_D_1
+    124              {
+    125                  GPIO_SetBits(PORT3, GPIO_Pin_6);
+   \   000010   3D404000     MOV.W   #0x40, R13
+   \   000014   6C43         MOV.B   #0x2, R12
+   \   000016   ........     CALLA   #GPIO_SetBits
+    126                  GPIO_ResetBits(PORT8, GPIO_Pin_1);
+   \   00001A   2D43         MOV.W   #0x2, R13
+   \   00001C   7C400700     MOV.B   #0x7, R12
+   \   000020   ........     BRA     #GPIO_ResetBits
+    127              }
+    128              if(state == STOP)
+   \                     ??MOTOR_D_1:
+   \   000024   6C93         CMP.B   #0x2, R12
+   \   000026   0420         JNE     ??MOTOR_D_2
+    129              {
+    130                  GPIO_SetBits(PORT8, GPIO_Pin_1);
+   \   000028   ........     CALLA   #?Subroutine6
+    131                  GPIO_SetBits(PORT3, GPIO_Pin_6);
+    132              }
+   \                     ??CrossCallReturnLabel_3:
+   \   00002C   ........     CALLA   #GPIO_SetBits
+    133          }
+   \                     ??MOTOR_D_2:
+   \   000030   1001         RETA
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine6:
+   \   000000   2D43         MOV.W   #0x2, R13
+   \   000002   7C400700     MOV.B   #0x7, R12
+   \   000006   ........     CALLA   #GPIO_SetBits
+   \   00000A   3D404000     MOV.W   #0x40, R13
+   \   00000E   6C43         MOV.B   #0x2, R12
+   \   000010   1001         RETA
+    134          
+    135          //***************************前进***************************//
+    136          //只要配置INx()的状态就可以改变电机转动方向
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    137          void Car_Go(void)
+   \                     Car_Go:
+    138          {
+    139              //左前电机 前    //右前电机 前
+    140              MOTOR_A(GO);       MOTOR_B(GO);
+   \   000000   ........     CALLA   #?Subroutine8
+   \                     ??CrossCallReturnLabel_10:
+   \   000004   4C43         MOV.B   #0x0, R12
+   \   000006   ........     CALLA   #MOTOR_B
+    141          
+    142              //左后电机 前   //右后电机 前
+    143              MOTOR_D(GO);       MOTOR_C(GO);
+   \   00000A   4C43         MOV.B   #0x0, R12
+   \   00000C   ....         JMP     ??Subroutine1_0
+    144          
+    145          
+    146          }
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ??Subroutine1_0:
+   \   000000   ........     CALLA   #MOTOR_D
+   \   000004   4C43         MOV.B   #0x0, R12
+   \   000006   ........     BRA     #MOTOR_C
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine8:
+   \   000000   4C43         MOV.B   #0x0, R12
+   \   000002   ........     BRA     #MOTOR_A
+    147          
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    148          void Car_Back(void)
+   \                     Car_Back:
+    149          {
+    150                  //左前电机 后    //右前电机 后
+    151          MOTOR_A(BACK);       MOTOR_B(BACK);
+   \   000000   ........     CALLA   #?Subroutine13
+   \                     ??CrossCallReturnLabel_24:
+   \   000004   5C43         MOV.B   #0x1, R12
+   \   000006   ........     CALLA   #MOTOR_B
+    152          
+    153              //左后电机 后   //右后电机 后
+    154          MOTOR_D(BACK);       MOTOR_C(BACK);
+   \   00000A   5C43         MOV.B   #0x1, R12
+   \   00000C   ....         JMP     ??Subroutine2_0
+    155          }
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ??Subroutine2_0:
+   \   000000   ........     CALLA   #MOTOR_D
+   \   000004   5C43         MOV.B   #0x1, R12
+   \   000006   ........     BRA     #MOTOR_C
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine13:
+   \   000000   5C43         MOV.B   #0x1, R12
+   \   000002   ........     BRA     #MOTOR_A
+    156          
+    157          //***************************原地左转圈***************************//
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine1:
+   \   000000   ........     CALLA   #MOTOR_B
+   \   000004   5C43         MOV.B   #0x1, R12
+   \   000006                REQUIRE ??Subroutine1_0
+   \   000006                // Fall through to label ??Subroutine1_0
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    158          void Car_Turn_Left_Around(void)
+   \                     Car_Turn_Left_Around:
+    159          {
+    160          
+    161              //左前电机 后    //右前电机 前
+    162          MOTOR_A(BACK);       MOTOR_B(GO);
+   \   000000   ........     CALLA   #?Subroutine13
+   \                     ??CrossCallReturnLabel_23:
+   \   000004   4C43         MOV.B   #0x0, R12
+   \   000006   ....         JMP     ?Subroutine1
+   \   000008   0343         NOP
+    163          
+    164              //左后电机 后   //右后电机 前
+    165          MOTOR_D(BACK);       MOTOR_C(GO);
+    166          
+    167          }
+    168          //***************************原地右转圈***************************//
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine2:
+   \   000000   ........     CALLA   #MOTOR_B
+   \   000004   4C43         MOV.B   #0x0, R12
+   \   000006                REQUIRE ??Subroutine2_0
+   \   000006                // Fall through to label ??Subroutine2_0
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    169          void Car_Turn_Right_Around(void)
+   \                     Car_Turn_Right_Around:
+    170          {
+    171          
+    172              //左前电机 前    //右前电机 后
+    173          MOTOR_A(GO);       MOTOR_B(BACK);
+   \   000000   ........     CALLA   #?Subroutine8
+   \                     ??CrossCallReturnLabel_9:
+   \   000004   5C43         MOV.B   #0x1, R12
+   \   000006   ....         JMP     ?Subroutine2
+   \   000008   0343         NOP
+    174          
+    175              //左后电机 前   //右后电机 后
+    176          MOTOR_D(GO);       MOTOR_C(BACK);
+    177          
+    178          }
+    179          
+    180          
+    181          //***************************右横运动***************************//
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    182          void Car_Right(void)
+   \                     Car_Right:
+    183          {
+    184              //左前电机     //右前电机
+    185          MOTOR_A(GO);       MOTOR_B(BACK);
+   \   000000   ........     CALLA   #?Subroutine8
+   \                     ??CrossCallReturnLabel_8:
+   \   000004   5C43         MOV.B   #0x1, R12
+   \   000006   ....         JMP     ?Subroutine1
+   \   000008   0343         NOP
+    186          
+    187              //左后电机    //右后电机
+    188            MOTOR_D(BACK);       MOTOR_C(GO);
+    189          
+    190          }
+    191          //***************************左横运动***************************//
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    192          void Car_Left(void)
+   \                     Car_Left:
+    193          {
+    194          
+    195              //左前电机     //右前电机
+    196          MOTOR_A(BACK);       MOTOR_B(GO);
+   \   000000   ........     CALLA   #?Subroutine13
+   \                     ??CrossCallReturnLabel_22:
+   \   000004   4C43         MOV.B   #0x0, R12
+   \   000006   ....         JMP     ?Subroutine2
+   \   000008   0343         NOP
+    197          
+    198              //左后电机    //右后电机
+    199          MOTOR_D(GO);       MOTOR_C(BACK);
+    200          }
+    201          //***************************右前45°运动***************************//
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    202          void Car_Right_45Q(void)
+   \                     Car_Right_45Q:
+    203          {
+    204              //左前电机     //右前电机
+    205          MOTOR_A(GO);       MOTOR_B(STOP);
+   \   000000   ........     CALLA   #?Subroutine8
+   \                     ??CrossCallReturnLabel_7:
+   \   000004   ........     CALLA   #?Subroutine12
+    206          
+    207              //左后电机    //右后电机
+    208            MOTOR_D(STOP);       MOTOR_C(GO);
+   \                     ??CrossCallReturnLabel_18:
+   \   000008   ....         JMP     ??Subroutine1_0
+   \   00000A   0343         NOP
+    209          
+    210          }
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine12:
+   \   000000   6C43         MOV.B   #0x2, R12
+   \   000002   ........     CALLA   #MOTOR_B
+   \   000006   6C43         MOV.B   #0x2, R12
+   \   000008   1001         RETA
+    211          //***************************右后45°运动***************************//
+
+   \                                 In  segment CODE, align 2
+    212          void Car_Left_45H(void)
+   \                     Car_Left_45H:
+    213          {
+    214              //左前电机     //右前电机
+    215          MOTOR_A(BACK);       MOTOR_B(STOP);
+   \   000000   ........     CALLA   #?Subroutine13
+   \                     ??CrossCallReturnLabel_21:
+   \   000004   ........     CALLA   #?Subroutine12
+    216          
+    217              //左后电机    //右后电机
+    218            MOTOR_D(STOP);       MOTOR_C(BACK);
+   \                     ??CrossCallReturnLabel_19:
+   \   000008   ....         JMP     ??Subroutine2_0
+   \   00000A   0343         NOP
+    219          
+    220          }
+    221          //***************************左前45运动***************************//
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    222          void Car_Left_45Q(void)
+   \                     Car_Left_45Q:
+    223          {
+    224          
+    225              //左前电机     //右前电机
+    226          MOTOR_A(STOP);       MOTOR_B(GO);
+   \   000000   ........     CALLA   #?Subroutine4
+   \                     ??CrossCallReturnLabel_25:
+   \   000004   4C43         MOV.B   #0x0, R12
+   \   000006   ........     CALLA   #MOTOR_B
+    227          
+    228              //左后电机    //右后电机
+    229          MOTOR_D(GO);       MOTOR_C(STOP);
+   \   00000A   4C43         MOV.B   #0x0, R12
+   \   00000C                REQUIRE ?Subroutine3
+   \   00000C                // Fall through to label ?Subroutine3
+    230          
+    231          }
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine3:
+   \   000000   ........     CALLA   #MOTOR_D
+   \   000004   6C43         MOV.B   #0x2, R12
+   \   000006   ........     BRA     #MOTOR_C
+    232          //***************************左后45运动***************************//
+
+   \                                 In  segment CODE, align 2, keep-with-next
+    233          void Car_Right_45H(void)
+   \                     Car_Right_45H:
+    234          {
+    235          
+    236              //左前电机     //右前电机
+    237          MOTOR_A(STOP);       MOTOR_B(BACK);
+   \   000000   ........     CALLA   #?Subroutine4
+   \                     ??CrossCallReturnLabel_26:
+   \   000004   5C43         MOV.B   #0x1, R12
+   \   000006   ........     CALLA   #MOTOR_B
+    238          
+    239              //左后电机    //右后电机
+    240          MOTOR_D(BACK);       MOTOR_C(STOP);
+   \   00000A   5C43         MOV.B   #0x1, R12
+   \   00000C   ....         JMP     ?Subroutine3
+   \   00000E   0343         NOP
+    241          
+    242          }
+    243          //***************************停车***************************//
+
+   \                                 In  segment CODE, align 2
+    244          void Car_Stop(void)
+   \                     Car_Stop:
+    245          {
+    246              //左前电机 停    //右前电机 停
+    247          MOTOR_A(STOP);       MOTOR_B(STOP);
+   \   000000   ........     CALLA   #?Subroutine4
+   \                     ??CrossCallReturnLabel_27:
+   \   000004   ........     CALLA   #?Subroutine12
+    248          
+    249              //左后电机 停   //右后电机 停
+    250            MOTOR_D(STOP);       MOTOR_C(STOP);
+   \                     ??CrossCallReturnLabel_20:
+   \   000008   ....         JMP     ?Subroutine3
+   \   00000A   0343         NOP
+    251          }
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+      4   Car_Back
+        4   -> MOTOR_A
+        4   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Go
+        4   -> MOTOR_A
+        4   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Left
+        4   -> MOTOR_A
+        4   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Left_45H
+        4   -> MOTOR_A
+        8   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Left_45Q
+        4   -> GPIO_SetBits
+        8   -> GPIO_SetBits
+        4   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Right
+        4   -> MOTOR_A
+        4   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Right_45H
+        4   -> GPIO_SetBits
+        8   -> GPIO_SetBits
+        4   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Right_45Q
+        4   -> MOTOR_A
+        8   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Stop
+        4   -> GPIO_SetBits
+        8   -> GPIO_SetBits
+        8   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Turn_Left_Around
+        4   -> MOTOR_A
+        4   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   Car_Turn_Right_Around
+        4   -> MOTOR_A
+        4   -> MOTOR_B
+        0   -> MOTOR_C
+        4   -> MOTOR_D
+      4   MOTOR_A
+        0   -> GPIO_ResetBits
+        4   -> GPIO_SetBits
+        8   -> GPIO_SetBits
+      4   MOTOR_B
+        0   -> GPIO_ResetBits
+        4   -> GPIO_SetBits
+        8   -> GPIO_SetBits
+      4   MOTOR_C
+        0   -> GPIO_ResetBits
+        4   -> GPIO_SetBits
+        8   -> GPIO_SetBits
+      4   MOTOR_D
+        0   -> GPIO_ResetBits
+        4   -> GPIO_SetBits
+        8   -> GPIO_SetBits
+     28   MOTOR_Init
+       28   -> GPIO_MultiBits_Init
+       32   -> GPIO_MultiBits_Init
+       28   -> TIMER_PWM_MultiChannel_Init
+       28   -> TIMER_PWM_SetChannelDuty
+       32   -> TIMER_PWM_SetChannelDuty
+     20   MOTOR_PWM_Out
+       20   -> TIMER_PWM_SetChannelDuty
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      10  ??Subroutine1_0
+      10  ??Subroutine2_0
+       8  ?Subroutine0
+       6  ?Subroutine1
+      10  ?Subroutine10
+      10  ?Subroutine12
+       6  ?Subroutine13
+       8  ?Subroutine14
+       6  ?Subroutine2
+      10  ?Subroutine3
+       8  ?Subroutine4
+      16  ?Subroutine5
+      18  ?Subroutine6
+      10  ?Subroutine7
+       6  ?Subroutine8
+       8  ?Subroutine9
+      14  Car_Back
+      14  Car_Go
+      10  Car_Left
+      12  Car_Left_45H
+      12  Car_Left_45Q
+      10  Car_Right
+      16  Car_Right_45H
+      12  Car_Right_45Q
+      12  Car_Stop
+      10  Car_Turn_Left_Around
+      10  Car_Turn_Right_Around
+      38  MOTOR_A
+      38  MOTOR_B
+      46  MOTOR_C
+      50  MOTOR_D
+     146  MOTOR_Init
+      82  MOTOR_PWM_Out
+
+ 
+ 682 bytes in segment CODE
+ 
+ 682 bytes of CODE memory
+
+Errors: none
+Warnings: none

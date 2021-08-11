@@ -1,0 +1,558 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// IAR C/C++ Compiler V7.10.1.973/W32 for MSP430          03/Aug/2021  16:28:02
+// Copyright 1996-2017 IAR Systems AB.
+// Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+//
+//    __rt_version  =  3
+//    __double_size =  32
+//    __reg_r4      =  free
+//    __reg_r5      =  free
+//    __pic         =  no
+//    __core        =  430X
+//    __data_model  =  large
+//    __code_model  =  large
+//    Source file   =  D:\Dev\Project\TI_Car\User\app_main.c
+//    Command line  =  
+//        -f C:\Users\Jeans\AppData\Local\Temp\EWAF5.tmp
+//        (D:\Dev\Project\TI_Car\User\app_main.c -D NDEBUG -D RAM_VECTOR -lC
+//        D:\Dev\Project\TI_Car\Release\List -lA
+//        D:\Dev\Project\TI_Car\Release\List -o
+//        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+//        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+//        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+//        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+//        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+//        D:\Dev\Project\TI_Car\HardWare\key\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+//        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+//        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+//        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+//        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+//        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+//        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+//        D:\Dev\Project\TI_Car\User\USER\ -I
+//        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+//        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+//        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+//        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+//    Locale        =  Chinese (Simplified)_CHN.936
+//    List file     =  D:\Dev\Project\TI_Car\Release\List\app_main.s43
+//
+///////////////////////////////////////////////////////////////////////////////
+
+        NAME app_main
+
+        RTMODEL "__SystemLibrary", "DLib"
+        RTMODEL "__code_model", "large"
+        RTMODEL "__core", "430X"
+        RTMODEL "__data_model", "large"
+        RTMODEL "__double_size", "32"
+        RTMODEL "__pic", "no"
+        RTMODEL "__reg_r4", "free"
+        RTMODEL "__reg_r5", "free"
+        RTMODEL "__rt_version", "3"
+
+        RSEG CSTACK:DATA:SORT:NOROOT(0)
+
+        EXTERN ?cstart_init_zero20
+        EXTERN ?longjmp_r4
+        EXTERN ?longjmp_r5
+        EXTERN ?setjmp_r4
+        EXTERN ?setjmp_r5
+
+        PUBWEAK ?setjmp_save_r4
+        PUBWEAK ?setjmp_save_r5
+        PUBLIC UART_RX_IRQ_Handler
+        PUBLIC app_main
+        PUBLIC app_main_init
+        PUBLIC databuf
+        PUBLIC display
+        PUBLIC flag
+        
+          CFI Names cfiNames0
+          CFI StackFrame CFA SP DATA
+          CFI Resource PC:20, SP:20, SR:16, R4L:16, R4H:4, R4:20, R5L:16, R5H:4
+          CFI Resource R5:20, R6L:16, R6H:4, R6:20, R7L:16, R7H:4, R7:20, R8L:16
+          CFI Resource R8H:4, R8:20, R9L:16, R9H:4, R9:20, R10L:16, R10H:4
+          CFI Resource R10:20, R11L:16, R11H:4, R11:20, R12L:16, R12H:4, R12:20
+          CFI Resource R13L:16, R13H:4, R13:20, R14L:16, R14H:4, R14:20, R15L:16
+          CFI Resource R15H:4, R15:20
+          CFI ResourceParts R4 R4H, R4L
+          CFI ResourceParts R5 R5H, R5L
+          CFI ResourceParts R6 R6H, R6L
+          CFI ResourceParts R7 R7H, R7L
+          CFI ResourceParts R8 R8H, R8L
+          CFI ResourceParts R9 R9H, R9L
+          CFI ResourceParts R10 R10H, R10L
+          CFI ResourceParts R11 R11H, R11L
+          CFI ResourceParts R12 R12H, R12L
+          CFI ResourceParts R13 R13H, R13L
+          CFI ResourceParts R14 R14H, R14L
+          CFI ResourceParts R15 R15H, R15L
+          CFI EndNames cfiNames0
+        
+          CFI Common cfiCommon0 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC or(load(2, DATA, add(CFA, literal(-2))), lshift(and(load(2, DATA, add(CFA, literal(-4))), 61440), 4))
+          CFI SR Frame(CFA, -4)
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L SameValue
+          CFI R12H SameValue
+          CFI R12 Concat
+          CFI R13L SameValue
+          CFI R13H SameValue
+          CFI R13 Concat
+          CFI R14L SameValue
+          CFI R14H SameValue
+          CFI R14 Concat
+          CFI R15L SameValue
+          CFI R15H SameValue
+          CFI R15 Concat
+          CFI EndCommon cfiCommon0
+        
+        
+          CFI Common cfiCommon1 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L Undefined
+          CFI R12H Undefined
+          CFI R12 Undefined
+          CFI R13L Undefined
+          CFI R13H Undefined
+          CFI R13 Undefined
+          CFI R14L Undefined
+          CFI R14H Undefined
+          CFI R14 Undefined
+          CFI R15L Undefined
+          CFI R15H Undefined
+          CFI R15 Undefined
+          CFI EndCommon cfiCommon1
+        
+        EXTERN UART_GetITStatus
+        EXTERN UART_GetChar
+        EXTERN UART_ClearITPendingBit
+        EXTERN DisableWatchDog
+        EXTERN LED_Init
+        EXTERN MOTOR_Init
+        EXTERN UART_Init
+        EXTERN Set_Vector_Handler
+        EXTERN UART_ITConfig
+        EXTERN Encoder_Init
+        EXTERN OLED_Init
+        EXTERN OLED_Clear
+        EXTERN Car_Go
+        EXTERN OLED_DispStringAt
+        EXTERN OLED_DispDecAt
+        EXTERN RPM_A
+        EXTERN RPM_B
+        EXTERN RPM_C
+        EXTERN RPM_D
+        EXTERN speed
+        EXTERN OLED_DispFolatAt
+        EXTERN speed_Handle
+
+// D:\Dev\Project\TI_Car\User\app_main.c
+//    1 #include "app_main.h"
+//    2 
+//    3 
+//    4 
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(0)
+        REQUIRE ?cstart_init_zero20
+//    5 char databuf[256];
+databuf:
+        DS8 256
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//    6 static int num=0;
+num:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(0)
+        REQUIRE ?cstart_init_zero20
+//    7 uint8_t flag = 0;
+flag:
+        DS8 1
+//    8 
+//    9 
+
+        RSEG ISR_CODE:CODE:REORDER:NOROOT(1)
+        CALL_GRAPH_ROOT UART_RX_IRQ_Handler, "interrupt"
+//   10 __interrupt void UART_RX_IRQ_Handler()
+UART_RX_IRQ_Handler:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function UART_RX_IRQ_Handler
+//   11 { 
+        PUSHM.A #0x4, R15
+          CFI R12L Frame(CFA, -20)
+          CFI R12H Frame(CFA, -18)
+          CFI R13L Frame(CFA, -16)
+          CFI R13H Frame(CFA, -14)
+          CFI R14L Frame(CFA, -12)
+          CFI R14H Frame(CFA, -10)
+          CFI R15L Frame(CFA, -8)
+          CFI R15H Frame(CFA, -6)
+          CFI CFA SP+20
+//   12   if(UART_GetITStatus(UART1,UART_RX_IRQn) == TRUE)   //清除串口某一个中断标志
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall UART_GetITStatus
+        CALLA   #UART_GetITStatus
+        CMP.B   #0x1, R12
+        JNE     ??UART_RX_IRQ_Handler_0
+//   13   {
+//   14     //传输速率高时，接收中断里不要做其他事件，否则会丢失数据，另外主时钟也要设高一点
+//   15     databuf[num]=UART_GetChar     (UART1);                 //读取一个字节1个字节
+        MOV.B   #0x1, R12
+          CFI FunCall UART_GetChar
+        CALLA   #UART_GetChar
+        MOVX.W  &num, R15
+        MOVX.B  R12, databuf(R15)
+//   16     num++;
+        ADDX.W  #0x1, &num
+//   17     UART_ClearITPendingBit(UART1,UART_RX_IRQn);    //清除串口某一个中断标志
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall UART_ClearITPendingBit
+        CALLA   #UART_ClearITPendingBit
+//   18   }
+//   19 }
+??UART_RX_IRQ_Handler_0:
+        POPM.A  #0x4, R15
+          CFI R12H SameValue
+          CFI R13H SameValue
+          CFI R14H SameValue
+          CFI R15H SameValue
+          CFI R12L SameValue
+          CFI R13L SameValue
+          CFI R14L SameValue
+          CFI R15L SameValue
+          CFI CFA SP+4
+        RETI
+          CFI EndBlock cfiBlock0
+//   20 
+//   21 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   22 void app_main_init()
+app_main_init:
+          CFI Block cfiBlock1 Using cfiCommon1
+          CFI Function app_main_init
+//   23 {
+//   24   DisableInterrupts();          //禁止总中断
+        DINT
+        NOP
+//   25   DisableWatchDog();     //关闭开门狗
+          CFI FunCall DisableWatchDog
+        CALLA   #DisableWatchDog
+//   26   LED_Init(LED_ALL);            //LED初始化
+        MOV.B   #0x2, R12
+          CFI FunCall LED_Init
+        CALLA   #LED_Init
+//   27   MOTOR_Init();  //电机pwm初始化、电机控制io口初始化
+          CFI FunCall MOTOR_Init
+        CALLA   #MOTOR_Init
+//   28   UART_Init        (UART1,115200);                      //初始化UART1模块,波特率115200，波特率高时最好把主时钟 设高些
+        MOV.W   #0xc200, R14
+        MOV.W   #0x1, R15
+        MOV.B   #0x1, R12
+          CFI FunCall UART_Init
+        CALLA   #UART_Init
+//   29   Set_Vector_Handler(VECTOR_UART1,UART_RX_IRQ_Handler);    //设置接收中断向量
+        MOVA    #UART_RX_IRQ_Handler, R13
+        MOV.B   #0x2e, R12
+          CFI FunCall Set_Vector_Handler
+        CALLA   #Set_Vector_Handler
+//   30   UART_ITConfig  (UART1,UART_RX_IRQn,TRUE);                //开串口接收中断
+        MOV.B   #0x1, R14
+        MOV.B   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall UART_ITConfig
+        CALLA   #UART_ITConfig
+//   31   Encoder_Init();   //编码器初始化
+          CFI FunCall Encoder_Init
+        CALLA   #Encoder_Init
+//   32   OLED_Init();   //OLED初始化
+          CFI FunCall OLED_Init
+        CALLA   #OLED_Init
+//   33   OLED_Clear();
+          CFI FunCall OLED_Clear
+        CALLA   #OLED_Clear
+//   34   Car_Go();
+          CFI FunCall Car_Go
+        CALLA   #Car_Go
+        NOP
+//   35   EnableInterrupts();     //开启总中断
+        EINT
+//   36 }
+        RETA
+          CFI EndBlock cfiBlock1
+//   37 
+//   38 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   39 void app_main()
+app_main:
+          CFI Block cfiBlock2 Using cfiCommon1
+          CFI Function app_main
+//   40 {
+//   41   display();
+          CFI FunCall display
+        CALLA   #display
+//   42   speed_Handle();    //速度处理函数
+          CFI TailCall speed_Handle
+        BRA     #speed_Handle
+//   43 //  Remote_Scan();
+//   44 //    LED_Turn(LED2);
+//   45 
+//   46     
+//   47 //    UART_Printf(UART1," Hello-CTGU!\n UART-TEST!\n");         //发送字符串
+//   48 //    UART_Printf(UART1,"编码器1：%d\r\n",encoderCnt_A);
+//   49 //    UART_Printf(UART1,"编码器2：%d\r\n",encoderCnt_B);
+//   50 //    UART_Printf(UART1,"编码器3：%d\r\n",encoderCnt_C);
+//   51 //    UART_Printf(UART1,"编码器4：%d\r\n",encoderCnt_D);
+//   52 }
+          CFI EndBlock cfiBlock2
+//   53 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   54 void display()
+display:
+          CFI Block cfiBlock3 Using cfiCommon1
+          CFI Function display
+//   55 {
+        PUSHM.A #0x2, R11
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+12
+//   56         //显示提示字
+//   57         OLED_DispStringAt(FONT_ASCII_6X8,0,0,"Speed:");  //显示提示字：Speed
+        MOVA    #OLED_DispStringAt, R11
+        MOVA    #`?<Constant "Speed:">`, R15
+        MOV.B   #0x0, R14
+        MOV.B   #0x0, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispStringAt
+        CALLA   R11
+//   58         OLED_DispStringAt(FONT_ASCII_6X8,0,90,"m/min");
+        MOVA    #`?<Constant "m/min">`, R15
+        MOV.B   #0x5a, R14
+        MOV.B   #0x0, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispStringAt
+        CALLA   R11
+//   59         OLED_DispStringAt(FONT_ASCII_6X8,2,0,"A:         B:     ");
+        MOVA    #`?<Constant "A:         B:     ">`, R15
+        MOV.B   #0x0, R14
+        MOV.B   #0x2, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispStringAt
+        CALLA   R11
+//   60         OLED_DispStringAt(FONT_ASCII_6X8,4,0,"C:         D:     ");
+        MOVA    #`?<Constant "C:         D:     ">`, R15
+        MOV.B   #0x0, R14
+        MOV.B   #0x4, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispStringAt
+        CALLA   R11
+//   61         OLED_DispStringAt(FONT_ASCII_6X8,6,0,"P:   I:   D:");
+        MOVA    #`?<Constant "P:   I:   D:">`, R15
+        MOV.B   #0x0, R14
+        MOV.B   #0x6, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispStringAt
+        CALLA   R11
+//   62         
+//   63         //显示车轮转速
+//   64         OLED_DispDecAt(FONT_ASCII_6X8,2,15,RPM_A,3);
+        MOVA    #OLED_DispDecAt, R10
+        MOV.B   #0x3, R11
+        MOVX.W  &RPM_A, R14
+        PUSH.W  #0x0
+          CFI CFA SP+14
+        PUSH.W  R14
+          CFI CFA SP+16
+        MOV.B   R11, R15
+        MOV.B   #0xf, R14
+        MOV.B   #0x2, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispDecAt
+        CALLA   R10
+//   65         OLED_DispDecAt(FONT_ASCII_6X8,2,80,RPM_B,3);
+        MOVX.W  &RPM_B, R14
+        PUSH.W  #0x0
+          CFI CFA SP+18
+        PUSH.W  R14
+          CFI CFA SP+20
+        MOV.B   R11, R15
+        MOV.B   #0x50, R14
+        MOV.B   #0x2, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispDecAt
+        CALLA   R10
+//   66         OLED_DispDecAt(FONT_ASCII_6X8,4,15,RPM_C,3);
+        MOVX.W  &RPM_C, R14
+        PUSH.W  #0x0
+          CFI CFA SP+22
+        PUSH.W  R14
+          CFI CFA SP+24
+        MOV.B   R11, R15
+        MOV.B   #0xf, R14
+        MOV.B   #0x4, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispDecAt
+        CALLA   R10
+//   67         OLED_DispDecAt(FONT_ASCII_6X8,4,80,RPM_D,3);
+        MOVX.W  &RPM_D, R14
+        PUSH.W  #0x0
+          CFI CFA SP+26
+        PUSH.W  R14
+          CFI CFA SP+28
+        MOV.B   R11, R15
+        MOV.B   #0x50, R14
+        MOV.B   #0x4, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispDecAt
+        CALLA   R10
+//   68 
+//   69         //显示速度
+//   70         OLED_DispFolatAt(FONT_ASCII_6X8,0,50,speed,2);
+        PUSHX.W &speed + 2
+          CFI CFA SP+30
+        PUSHX.W &speed
+          CFI CFA SP+32
+        MOV.B   #0x2, R15
+        MOV.B   #0x32, R14
+        MOV.B   #0x0, R13
+        MOV.B   #0x0, R12
+          CFI FunCall OLED_DispFolatAt
+        CALLA   #OLED_DispFolatAt
+//   71 
+//   72 //	ssd1306_SetCursor(20, 15);
+//   73 //	ssd1306_WriteString(showRPM(1), Font_7x10,White);     //A轮实际减速箱输出转速  单位RPM
+//   74 //
+//   75 //	ssd1306_SetCursor(80, 15);
+//   76 //	ssd1306_WriteString(showRPM(2), Font_7x10,White);     //B轮实际减速箱输出转速  单位RPM
+//   77 //
+//   78 //	ssd1306_SetCursor(20, 30);
+//   79 //	ssd1306_WriteString(showRPM(3), Font_7x10,White);     //C轮实际减速箱输出转速  单位RPM
+//   80 //
+//   81 //	ssd1306_SetCursor(80, 30);
+//   82 //	ssd1306_WriteString(showRPM(4), Font_7x10,White);    //D轮实际减速箱输出转速  单位RPM
+//   83 //
+//   84 //	ssd1306_UpdateScreen();
+//   85 //	ssd1306_Fill(Black);	//清屏
+//   86 }
+        ADDA    #0x14, SP
+          CFI CFA SP+12
+        POPM.A  #0x2, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock3
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r4:
+        REQUIRE ?setjmp_r4
+        REQUIRE ?longjmp_r4
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r5:
+        REQUIRE ?setjmp_r5
+        REQUIRE ?longjmp_r5
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(0)
+`?<Constant "Speed:">`:
+        DC8 "Speed:"
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(0)
+`?<Constant "m/min">`:
+        DC8 "m/min"
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(0)
+`?<Constant "A:         B:     ">`:
+        DC8 "A:         B:     "
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(0)
+`?<Constant "C:         D:     ">`:
+        DC8 "C:         D:     "
+
+        RSEG DATA20_C:CONST:SORT:NOROOT(0)
+`?<Constant "P:   I:   D:">`:
+        DC8 "P:   I:   D:"
+
+        END
+// 
+// 282 bytes in segment CODE
+//  64 bytes in segment DATA20_C
+// 259 bytes in segment DATA20_Z
+//  50 bytes in segment ISR_CODE
+// 
+// 332 bytes of CODE  memory
+//  64 bytes of CONST memory
+// 259 bytes of DATA  memory
+//
+//Errors: none
+//Warnings: none

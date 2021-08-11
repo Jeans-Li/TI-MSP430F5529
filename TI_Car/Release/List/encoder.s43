@@ -1,0 +1,1058 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// IAR C/C++ Compiler V7.10.1.973/W32 for MSP430          03/Aug/2021  16:28:02
+// Copyright 1996-2017 IAR Systems AB.
+// Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+//
+//    __rt_version  =  3
+//    __double_size =  32
+//    __reg_r4      =  free
+//    __reg_r5      =  free
+//    __pic         =  no
+//    __core        =  430X
+//    __data_model  =  large
+//    __code_model  =  large
+//    Source file   =  D:\Dev\Project\TI_Car\HardWare\encoder\encoder.c
+//    Command line  =  
+//        -f C:\Users\Jeans\AppData\Local\Temp\EWB15.tmp
+//        (D:\Dev\Project\TI_Car\HardWare\encoder\encoder.c -D NDEBUG -D
+//        RAM_VECTOR -lC D:\Dev\Project\TI_Car\Release\List -lA
+//        D:\Dev\Project\TI_Car\Release\List -o
+//        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+//        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+//        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+//        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+//        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+//        D:\Dev\Project\TI_Car\HardWare\key\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+//        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+//        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+//        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+//        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+//        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+//        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+//        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+//        D:\Dev\Project\TI_Car\User\USER\ -I
+//        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+//        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+//        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+//        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+//    Locale        =  Chinese (Simplified)_CHN.936
+//    List file     =  D:\Dev\Project\TI_Car\Release\List\encoder.s43
+//
+///////////////////////////////////////////////////////////////////////////////
+
+        NAME encoder
+
+        RTMODEL "__SystemLibrary", "DLib"
+        RTMODEL "__code_model", "large"
+        RTMODEL "__core", "430X"
+        RTMODEL "__data_model", "large"
+        RTMODEL "__double_size", "32"
+        RTMODEL "__pic", "no"
+        RTMODEL "__reg_r4", "free"
+        RTMODEL "__reg_r5", "free"
+        RTMODEL "__rt_version", "3"
+
+        RSEG CSTACK:DATA:SORT:NOROOT(0)
+
+        EXTERN ?ShiftLeft32_10
+        EXTERN ?ShiftRight16s_4
+        EXTERN __iar_HWMUL
+        EXTERN _Cast32uto32f
+        EXTERN _Mul32f
+        EXTERN ?cstart_init_copy20
+        EXTERN ?cstart_init_zero20
+        EXTERN ?longjmp_r4
+        EXTERN ?longjmp_r5
+        EXTERN ?setjmp_r4
+        EXTERN ?setjmp_r5
+
+        PUBWEAK ?setjmp_save_r4
+        PUBWEAK ?setjmp_save_r5
+        PUBLIC Encoder_Init
+        PUBLIC GPIO_IRQ_Handler
+        PUBLIC PulseValue1
+        PUBLIC PulseValue2
+        PUBLIC RPM_A
+        PUBLIC RPM_B
+        PUBLIC RPM_C
+        PUBLIC RPM_D
+        PUBLIC TIMER_TA1_A0_IRQ_Handler
+        PUBLIC cnt_Temp_A
+        PUBLIC cnt_Temp_B
+        PUBLIC cnt_Temp_C
+        PUBLIC cnt_Temp_D
+        PUBLIC encoderCnt_A
+        PUBLIC encoderCnt_B
+        PUBLIC encoderCnt_C
+        PUBLIC encoderCnt_D
+        PUBLIC overflowTime
+        PUBLIC speed
+        PUBLIC speed_Handle
+        
+          CFI Names cfiNames0
+          CFI StackFrame CFA SP DATA
+          CFI Resource PC:20, SP:20, SR:16, R4L:16, R4H:4, R4:20, R5L:16, R5H:4
+          CFI Resource R5:20, R6L:16, R6H:4, R6:20, R7L:16, R7H:4, R7:20, R8L:16
+          CFI Resource R8H:4, R8:20, R9L:16, R9H:4, R9:20, R10L:16, R10H:4
+          CFI Resource R10:20, R11L:16, R11H:4, R11:20, R12L:16, R12H:4, R12:20
+          CFI Resource R13L:16, R13H:4, R13:20, R14L:16, R14H:4, R14:20, R15L:16
+          CFI Resource R15H:4, R15:20
+          CFI ResourceParts R4 R4H, R4L
+          CFI ResourceParts R5 R5H, R5L
+          CFI ResourceParts R6 R6H, R6L
+          CFI ResourceParts R7 R7H, R7L
+          CFI ResourceParts R8 R8H, R8L
+          CFI ResourceParts R9 R9H, R9L
+          CFI ResourceParts R10 R10H, R10L
+          CFI ResourceParts R11 R11H, R11L
+          CFI ResourceParts R12 R12H, R12L
+          CFI ResourceParts R13 R13H, R13L
+          CFI ResourceParts R14 R14H, R14L
+          CFI ResourceParts R15 R15H, R15L
+          CFI EndNames cfiNames0
+        
+          CFI Common cfiCommon0 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC or(load(2, DATA, add(CFA, literal(-2))), lshift(and(load(2, DATA, add(CFA, literal(-4))), 61440), 4))
+          CFI SR Frame(CFA, -4)
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L SameValue
+          CFI R12H SameValue
+          CFI R12 Concat
+          CFI R13L SameValue
+          CFI R13H SameValue
+          CFI R13 Concat
+          CFI R14L SameValue
+          CFI R14H SameValue
+          CFI R14 Concat
+          CFI R15L SameValue
+          CFI R15H SameValue
+          CFI R15 Concat
+          CFI EndCommon cfiCommon0
+        
+        
+          CFI Common cfiCommon1 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L SameValue
+          CFI R12H SameValue
+          CFI R12 Concat
+          CFI R13L SameValue
+          CFI R13H SameValue
+          CFI R13 Concat
+          CFI R14L SameValue
+          CFI R14H SameValue
+          CFI R14 Concat
+          CFI R15L SameValue
+          CFI R15H SameValue
+          CFI R15 Concat
+          CFI EndCommon cfiCommon1
+        
+        
+          CFI Common cfiCommon2 Using cfiNames0
+          CFI CodeAlign 2
+          CFI DataAlign 2
+          CFI ReturnAddress PC CODE
+          CFI CFA SP+4
+          CFI PC Frame(CFA, -4)
+          CFI SR Undefined
+          CFI R4L SameValue
+          CFI R4H SameValue
+          CFI R4 Concat
+          CFI R5L SameValue
+          CFI R5H SameValue
+          CFI R5 Concat
+          CFI R6L SameValue
+          CFI R6H SameValue
+          CFI R6 Concat
+          CFI R7L SameValue
+          CFI R7H SameValue
+          CFI R7 Concat
+          CFI R8L SameValue
+          CFI R8H SameValue
+          CFI R8 Concat
+          CFI R9L SameValue
+          CFI R9H SameValue
+          CFI R9 Concat
+          CFI R10L SameValue
+          CFI R10H SameValue
+          CFI R10 Concat
+          CFI R11L SameValue
+          CFI R11H SameValue
+          CFI R11 Concat
+          CFI R12L Undefined
+          CFI R12H Undefined
+          CFI R12 Undefined
+          CFI R13L Undefined
+          CFI R13H Undefined
+          CFI R13 Undefined
+          CFI R14L Undefined
+          CFI R14H Undefined
+          CFI R14 Undefined
+          CFI R15L Undefined
+          CFI R15H Undefined
+          CFI R15 Undefined
+          CFI EndCommon cfiCommon2
+        
+        EXTERN GPIO_GetITStatus
+        EXTERN GPIO_ClearITPendingBit
+        EXTERN Set_Vector_Handler
+        EXTERN TIMER_Interval_Us
+        EXTERN TIMER_ITConfig
+        EXTERN GPIO_MultiBits_Init
+        EXTERN GPIO_ITConfig
+
+// D:\Dev\Project\TI_Car\HardWare\encoder\encoder.c
+//    1 #include "encoder.h"
+//    2   
+//    3 #define wheelDiam 0.08     //车轮直径
+//    4 #define pulseNum  4680     //编码器一圈脉冲数
+//    5 
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//    6 uint32_t PulseValue1=0;      //脉冲计数
+PulseValue1:
+        DS8 4
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//    7 uint32_t PulseValue2=0;      //脉冲计数
+PulseValue2:
+        DS8 4
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//    8 int16_t overflowTime=0;     //溢出次数
+overflowTime:
+        DS8 2
+
+        RSEG DATA20_I:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_copy20
+//    9 uint16_t encoderCnt_A = 30000;
+encoderCnt_A:
+        DS8 2
+        REQUIRE `?<Initializer for encoderCnt_A>`
+
+        RSEG DATA20_I:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_copy20
+//   10 uint16_t encoderCnt_B = 30000;
+encoderCnt_B:
+        DS8 2
+        REQUIRE `?<Initializer for encoderCnt_B>`
+
+        RSEG DATA20_I:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_copy20
+//   11 uint16_t encoderCnt_C = 30000;
+encoderCnt_C:
+        DS8 2
+        REQUIRE `?<Initializer for encoderCnt_C>`
+
+        RSEG DATA20_I:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_copy20
+//   12 uint16_t encoderCnt_D = 30000;
+encoderCnt_D:
+        DS8 2
+        REQUIRE `?<Initializer for encoderCnt_D>`
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   13 uint16_t cnt_Temp_A = 0;
+cnt_Temp_A:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   14 uint16_t cnt_Temp_B = 0;
+cnt_Temp_B:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   15 uint16_t cnt_Temp_C = 0;
+cnt_Temp_C:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   16 uint16_t cnt_Temp_D = 0;
+cnt_Temp_D:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   17 uint16_t RPM_A = 0;
+RPM_A:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   18 uint16_t RPM_B = 0;
+RPM_B:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   19 uint16_t RPM_C = 0;
+RPM_C:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   20 uint16_t RPM_D = 0;
+RPM_D:
+        DS8 2
+
+        RSEG DATA20_Z:DATA:SORT:NOROOT(1)
+        REQUIRE ?cstart_init_zero20
+//   21 float speed = 0;
+speed:
+        DS8 4
+//   22 //100ms定时中断
+
+        RSEG ISR_CODE:CODE:REORDER:NOROOT(1)
+        CALL_GRAPH_ROOT TIMER_TA1_A0_IRQ_Handler, "interrupt"
+//   23 __interrupt void TIMER_TA1_A0_IRQ_Handler()
+TIMER_TA1_A0_IRQ_Handler:
+          CFI Block cfiBlock0 Using cfiCommon0
+          CFI Function TIMER_TA1_A0_IRQ_Handler
+          CFI NoCalls
+//   24 { 
+        PUSHM.A #0x2, R15
+          CFI R14L Frame(CFA, -12)
+          CFI R14H Frame(CFA, -10)
+          CFI R15L Frame(CFA, -8)
+          CFI R15H Frame(CFA, -6)
+          CFI CFA SP+12
+//   25    cnt_Temp_A = encoderCnt_A - 30000;
+        MOV.W   #0x8ad0, R15
+        MOV.W   R15, R14
+        ADDX.W  &encoderCnt_A, R14
+        MOVX.W  R14, &cnt_Temp_A
+//   26    cnt_Temp_B = encoderCnt_B - 30000;
+        MOV.W   R15, R14
+        ADDX.W  &encoderCnt_B, R14
+        MOVX.W  R14, &cnt_Temp_B
+//   27    cnt_Temp_C = encoderCnt_C - 30000;
+        MOV.W   R15, R14
+        ADDX.W  &encoderCnt_C, R14
+        MOVX.W  R14, &cnt_Temp_C
+//   28    cnt_Temp_D = encoderCnt_D - 30000;
+        ADDX.W  &encoderCnt_D, R15
+        MOVX.W  R15, &cnt_Temp_D
+//   29    encoderCnt_A = 30000;
+        MOV.W   #0x7530, R15
+        MOVX.W  R15, &encoderCnt_A
+//   30    encoderCnt_B = 30000;
+        MOVX.W  R15, &encoderCnt_B
+//   31    encoderCnt_C = 30000;
+        MOVX.W  R15, &encoderCnt_C
+//   32    encoderCnt_D = 30000;
+        MOVX.W  R15, &encoderCnt_D
+//   33 }
+        POPM.A  #0x2, R15
+          CFI R14H SameValue
+          CFI R15H SameValue
+          CFI R14L SameValue
+          CFI R15L SameValue
+          CFI CFA SP+4
+        RETI
+          CFI EndBlock cfiBlock0
+//   34 
+//   35 
+
+        RSEG ISR_CODE:CODE:REORDER:NOROOT(1)
+        CALL_GRAPH_ROOT GPIO_IRQ_Handler, "interrupt"
+//   36 __interrupt void GPIO_IRQ_Handler()
+GPIO_IRQ_Handler:
+          CFI Block cfiBlock1 Using cfiCommon0
+          CFI Function GPIO_IRQ_Handler
+//   37 {
+        PUSHM.A #0x6, R15
+          CFI R10L Frame(CFA, -28)
+          CFI R10H Frame(CFA, -26)
+          CFI R11L Frame(CFA, -24)
+          CFI R11H Frame(CFA, -22)
+          CFI R12L Frame(CFA, -20)
+          CFI R12H Frame(CFA, -18)
+          CFI R13L Frame(CFA, -16)
+          CFI R13H Frame(CFA, -14)
+          CFI R14L Frame(CFA, -12)
+          CFI R14H Frame(CFA, -10)
+          CFI R15L Frame(CFA, -8)
+          CFI R15H Frame(CFA, -6)
+          CFI CFA SP+28
+//   38   //2.0中断
+//   39  if(GPIO_GetITStatus(P2,0)==TRUE)
+        MOVA    #GPIO_GetITStatus, R10
+        MOV.B   #0x0, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_GetITStatus
+        CALLA   R10
+        CMP.B   #0x1, R12
+        JNE     ??GPIO_IRQ_Handler_0
+//   40  {
+//   41     encoderCnt_A++;
+        ADDX.W  #0x1, &encoderCnt_A
+//   42   GPIO_ClearITPendingBit(P2,0);                //清除位中断标志
+        MOV.B   #0x0, R13
+        CALLA   #?Subroutine0
+//   43  }
+//   44  //2.2中断
+//   45   if(GPIO_GetITStatus(P2,2)==TRUE)
+??GPIO_IRQ_Handler_0:
+        MOV.B   #0x2, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_GetITStatus
+        CALLA   R10
+        CMP.B   #0x1, R12
+        JNE     ??GPIO_IRQ_Handler_1
+//   46  {
+//   47     encoderCnt_B++;
+        ADDX.W  #0x1, &encoderCnt_B
+//   48   GPIO_ClearITPendingBit(P2,2);                //清除位中断标志
+        MOV.B   #0x2, R13
+        CALLA   #?Subroutine0
+//   49  }
+//   50  //2.5中断
+//   51    if(GPIO_GetITStatus(P2,5)==TRUE)
+??GPIO_IRQ_Handler_1:
+        MOV.B   #0x5, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_GetITStatus
+        CALLA   R10
+        CMP.B   #0x1, R12
+        JNE     ??GPIO_IRQ_Handler_2
+//   52  {
+//   53     encoderCnt_C++;
+        ADDX.W  #0x1, &encoderCnt_C
+//   54   GPIO_ClearITPendingBit(P2,5);                //清除位中断标志
+        MOV.B   #0x5, R13
+        CALLA   #?Subroutine0
+//   55  }
+//   56  //2.6中断
+//   57    if(GPIO_GetITStatus(P2,6)==TRUE)
+??GPIO_IRQ_Handler_2:
+        MOV.B   #0x6, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_GetITStatus
+        CALLA   R10
+        CMP.B   #0x1, R12
+        JNE     ??GPIO_IRQ_Handler_3
+//   58  {
+//   59     encoderCnt_D++;
+        ADDX.W  #0x1, &encoderCnt_D
+//   60   GPIO_ClearITPendingBit(P2,6);                //清除位中断标志
+        MOV.B   #0x6, R13
+        CALLA   #?Subroutine0
+//   61  }
+//   62  
+//   63 }
+??GPIO_IRQ_Handler_3:
+        POPM.A  #0x6, R15
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R12H SameValue
+          CFI R13H SameValue
+          CFI R14H SameValue
+          CFI R15H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R12L SameValue
+          CFI R13L SameValue
+          CFI R14L SameValue
+          CFI R15L SameValue
+          CFI CFA SP+4
+        RETI
+          CFI EndBlock cfiBlock1
+
+        RSEG ISR_CODE:CODE:REORDER:NOROOT(1)
+?Subroutine0:
+          CFI Block cfiCond2 Using cfiCommon0
+          CFI Function GPIO_IRQ_Handler
+          CFI Conditional ??GPIO_IRQ_Handler_0
+          CFI R10L Frame(CFA, -28)
+          CFI R10H Frame(CFA, -26)
+          CFI R11L Frame(CFA, -24)
+          CFI R11H Frame(CFA, -22)
+          CFI R12L Frame(CFA, -20)
+          CFI R12H Frame(CFA, -18)
+          CFI R13L Frame(CFA, -16)
+          CFI R13H Frame(CFA, -14)
+          CFI R14L Frame(CFA, -12)
+          CFI R14H Frame(CFA, -10)
+          CFI R15L Frame(CFA, -8)
+          CFI R15H Frame(CFA, -6)
+          CFI CFA SP+32
+          CFI Block cfiCond3 Using cfiCommon0
+          CFI (cfiCond3) Function GPIO_IRQ_Handler
+          CFI (cfiCond3) Conditional ??GPIO_IRQ_Handler_1
+          CFI (cfiCond3) R10L Frame(CFA, -28)
+          CFI (cfiCond3) R10H Frame(CFA, -26)
+          CFI (cfiCond3) R11L Frame(CFA, -24)
+          CFI (cfiCond3) R11H Frame(CFA, -22)
+          CFI (cfiCond3) R12L Frame(CFA, -20)
+          CFI (cfiCond3) R12H Frame(CFA, -18)
+          CFI (cfiCond3) R13L Frame(CFA, -16)
+          CFI (cfiCond3) R13H Frame(CFA, -14)
+          CFI (cfiCond3) R14L Frame(CFA, -12)
+          CFI (cfiCond3) R14H Frame(CFA, -10)
+          CFI (cfiCond3) R15L Frame(CFA, -8)
+          CFI (cfiCond3) R15H Frame(CFA, -6)
+          CFI (cfiCond3) CFA SP+32
+          CFI Block cfiCond4 Using cfiCommon0
+          CFI (cfiCond4) Function GPIO_IRQ_Handler
+          CFI (cfiCond4) Conditional ??GPIO_IRQ_Handler_2
+          CFI (cfiCond4) R10L Frame(CFA, -28)
+          CFI (cfiCond4) R10H Frame(CFA, -26)
+          CFI (cfiCond4) R11L Frame(CFA, -24)
+          CFI (cfiCond4) R11H Frame(CFA, -22)
+          CFI (cfiCond4) R12L Frame(CFA, -20)
+          CFI (cfiCond4) R12H Frame(CFA, -18)
+          CFI (cfiCond4) R13L Frame(CFA, -16)
+          CFI (cfiCond4) R13H Frame(CFA, -14)
+          CFI (cfiCond4) R14L Frame(CFA, -12)
+          CFI (cfiCond4) R14H Frame(CFA, -10)
+          CFI (cfiCond4) R15L Frame(CFA, -8)
+          CFI (cfiCond4) R15H Frame(CFA, -6)
+          CFI (cfiCond4) CFA SP+32
+          CFI Block cfiCond5 Using cfiCommon0
+          CFI (cfiCond5) Function GPIO_IRQ_Handler
+          CFI (cfiCond5) Conditional ??GPIO_IRQ_Handler_3
+          CFI (cfiCond5) R10L Frame(CFA, -28)
+          CFI (cfiCond5) R10H Frame(CFA, -26)
+          CFI (cfiCond5) R11L Frame(CFA, -24)
+          CFI (cfiCond5) R11H Frame(CFA, -22)
+          CFI (cfiCond5) R12L Frame(CFA, -20)
+          CFI (cfiCond5) R12H Frame(CFA, -18)
+          CFI (cfiCond5) R13L Frame(CFA, -16)
+          CFI (cfiCond5) R13H Frame(CFA, -14)
+          CFI (cfiCond5) R14L Frame(CFA, -12)
+          CFI (cfiCond5) R14H Frame(CFA, -10)
+          CFI (cfiCond5) R15L Frame(CFA, -8)
+          CFI (cfiCond5) R15H Frame(CFA, -6)
+          CFI (cfiCond5) CFA SP+32
+          CFI Block cfiPicker6 Using cfiCommon1
+          CFI (cfiPicker6) NoFunction
+          CFI (cfiPicker6) Picker
+        MOV.B   #0x1, R12
+          CFI (cfiCond2) TailCall GPIO_IRQ_Handler GPIO_ClearITPendingBit
+          CFI (cfiCond2) TailCall GPIO_IRQ_Handler GPIO_ClearITPendingBit
+          CFI (cfiCond2) TailCall GPIO_IRQ_Handler GPIO_ClearITPendingBit
+          CFI (cfiCond2) TailCall GPIO_IRQ_Handler GPIO_ClearITPendingBit
+        BRA     #GPIO_ClearITPendingBit
+          CFI EndBlock cfiCond2
+          CFI EndBlock cfiCond3
+          CFI EndBlock cfiCond4
+          CFI EndBlock cfiCond5
+          CFI EndBlock cfiPicker6
+//   64 
+//   65 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   66 void Encoder_Init()
+Encoder_Init:
+          CFI Block cfiBlock7 Using cfiCommon2
+          CFI Function Encoder_Init
+//   67 {  
+        PUSHM.A #0x4, R11
+          CFI R8L Frame(CFA, -20)
+          CFI R8H Frame(CFA, -18)
+          CFI R9L Frame(CFA, -16)
+          CFI R9H Frame(CFA, -14)
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+20
+//   68   
+//   69   Set_Vector_Handler(VECTOR_TIMER1_A0,TIMER_TA1_A0_IRQ_Handler);    //设置中断向量，最好先设置中断向量，在开启中断
+        MOVA    #TIMER_TA1_A0_IRQ_Handler, R13
+        MOV.B   #0x31, R12
+          CFI FunCall Set_Vector_Handler
+        CALLA   #Set_Vector_Handler
+//   70   TIMER_Interval_Ms(TIMER_A1,100);                    //初始化一个100ms的定时中断
+        MOV.W   #0x86a0, R14
+        MOV.W   #0x1, R15
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_Interval_Us
+        CALLA   #TIMER_Interval_Us
+//   71   TIMER_ITConfig (TIMER_A1,TIMER_CCR0_IRQn,ENABLE);              //使能TIMER的某一个中断
+        MOV.B   #0x1, R14
+        MOV.B   #0x0, R13
+        MOV.B   #0x1, R12
+          CFI FunCall TIMER_ITConfig
+        CALLA   #TIMER_ITConfig
+//   72   
+//   73   Set_Vector_Handler(VECTOR_PORT2,GPIO_IRQ_Handler);    //设置中断向量，最好先设置中断向量，在开启中断
+        MOVA    #GPIO_IRQ_Handler, R13
+        MOV.B   #0x2a, R12
+          CFI FunCall Set_Vector_Handler
+        CALLA   #Set_Vector_Handler
+//   74   GPIO_Init     (P2,0 ,GPI|PULL_UP|IRQ_FALLING);                   //设为上拉且下降沿触发中断
+        MOVA    #GPIO_MultiBits_Init, R10
+        MOV.W   #0xa1, R11
+        MOV.W   R11, R14
+        MOV.W   #0x1, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   R10
+//   75   GPIO_ITConfig (P2,0 ,ENABLE);                           //使能中断
+        MOVA    #GPIO_ITConfig, R8
+        MOV.B   #0x1, R14
+        MOV.B   #0x0, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_ITConfig
+        CALLA   R8
+//   76   GPIO_Init     (P2,2 ,GPI|PULL_UP|IRQ_FALLING);                   //设为上拉且下降沿触发中断
+        MOV.W   R11, R14
+        MOV.W   #0x4, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   R10
+//   77   GPIO_ITConfig (P2,2 ,ENABLE);                           //使能中断
+        MOV.B   #0x1, R14
+        MOV.B   #0x2, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_ITConfig
+        CALLA   R8
+//   78   GPIO_Init     (P2,5 ,GPI|PULL_UP|IRQ_FALLING);                   //设为上拉且下降沿触发中断
+        MOV.W   R11, R14
+        MOV.W   #0x20, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   R10
+//   79   GPIO_ITConfig (P2,5 ,ENABLE);                           //使能中断
+        MOV.B   #0x1, R14
+        MOV.B   #0x5, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_ITConfig
+        CALLA   R8
+//   80   GPIO_Init     (P2,6 ,GPI|PULL_UP|IRQ_FALLING);                   //设为上拉且下降沿触发中断
+        MOV.W   R11, R14
+        MOV.W   #0x40, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_MultiBits_Init
+        CALLA   R10
+//   81   GPIO_ITConfig (P2,6 ,ENABLE);                           //使能中断
+        MOV.B   #0x1, R14
+        MOV.B   #0x6, R13
+        MOV.B   #0x1, R12
+          CFI FunCall GPIO_ITConfig
+        CALLA   R8
+//   82   
+//   83 }
+        POPM.A  #0x4, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R8H SameValue
+          CFI R9H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI R8L SameValue
+          CFI R9L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock7
+//   84 
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+//   85 void speed_Handle()
+speed_Handle:
+          CFI Block cfiBlock8 Using cfiCommon2
+          CFI Function speed_Handle
+//   86 {
+        PUSHM.A #0x2, R11
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+12
+//   87 //  UART_Printf(UART1,"A:%d B:%d C:%d D:%d",cnt_Temp_A,cnt_Temp_B,cnt_Temp_C,cnt_Temp_D);
+//   88   speed = (cnt_Temp_A+cnt_Temp_B+cnt_Temp_C+cnt_Temp_D)/4/pulseNum*wheelDiam*3.14159*600;
+        MOV.W   #0xe00e, R10
+        MOV.W   #0x0, R11
+        MOVX.W  &cnt_Temp_A, R15
+        ADDX.W  &cnt_Temp_B, R15
+        ADDX.W  &cnt_Temp_C, R15
+        ADDX.W  &cnt_Temp_D, R15
+        RRUM.W  #0x2, R15
+        CALLA   #??Subroutine4_0
+??CrossCallReturnLabel_2:
+        MOV.W   #0x0, R13
+          CFI FunCall _Cast32uto32f
+        CALLA   #_Cast32uto32f
+        MOV.W   #0xd70a, R14
+        MOV.W   #0x3da3, R15
+          CFI FunCall _Mul32f
+        CALLA   #_Mul32f
+        MOV.W   #0xfd0, R14
+        MOV.W   #0x4049, R15
+          CFI FunCall _Mul32f
+        CALLA   #_Mul32f
+        MOV.W   #0x0, R14
+        MOV.W   #0x4416, R15
+          CFI FunCall _Mul32f
+        CALLA   #_Mul32f
+        MOVX.W  R12, &speed
+        MOVX.W  R13, &speed + 2
+//   89   RPM_A = cnt_Temp_A *600 /pulseNum;
+        MOVX.W  &cnt_Temp_A, R15
+        CALLA   #?Subroutine1
+??CrossCallReturnLabel_3:
+        MOVX.W  R12, &RPM_A
+//   90   RPM_B = cnt_Temp_B *600 /pulseNum;
+        MOVX.W  &cnt_Temp_B, R15
+        CALLA   #?Subroutine1
+??CrossCallReturnLabel_4:
+        MOVX.W  R12, &RPM_B
+//   91   RPM_C = cnt_Temp_C *600 /pulseNum;
+        MOVX.W  &cnt_Temp_C, R15
+        CALLA   #?Subroutine1
+??CrossCallReturnLabel_5:
+        MOVX.W  R12, &RPM_C
+//   92   RPM_D = cnt_Temp_D *600 /pulseNum;
+        MOVX.W  &cnt_Temp_D, R15
+        CALLA   #?Subroutine2
+??CrossCallReturnLabel_0:
+        PUSH.W  SR
+          CFI CFA SP+14
+        CALLA   #?Subroutine3
+??CrossCallReturnLabel_6:
+        ADD.W   &__iar_HWMUL + 10, R10         // RESLO
+        ADDC.W  &__iar_HWMUL + 12, R11         // RESHI
+        NOP
+        POP.W   SR
+          CFI CFA SP+12
+        MOV.W   R11, R13
+        SWPB    R13
+        MOV.B   R13, R12
+          CFI FunCall ?ShiftRight16s_4
+        CALLA   #?ShiftRight16s_4
+        MOVX.W  R12, &RPM_D
+//   93 }
+        POPM.A  #0x2, R11
+          CFI R10H SameValue
+          CFI R11H SameValue
+          CFI R10L SameValue
+          CFI R11L SameValue
+          CFI CFA SP+4
+        RETA
+          CFI EndBlock cfiBlock8
+
+        RSEG `CODE`:CODE:NOROOT(1)
+?Subroutine1:
+          CFI Block cfiCond9 Using cfiCommon2
+          CFI Function speed_Handle
+          CFI Conditional ??CrossCallReturnLabel_3
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+16
+          CFI Block cfiCond10 Using cfiCommon2
+          CFI (cfiCond10) Function speed_Handle
+          CFI (cfiCond10) Conditional ??CrossCallReturnLabel_4
+          CFI (cfiCond10) R10L Frame(CFA, -12)
+          CFI (cfiCond10) R10H Frame(CFA, -10)
+          CFI (cfiCond10) R11L Frame(CFA, -8)
+          CFI (cfiCond10) R11H Frame(CFA, -6)
+          CFI (cfiCond10) CFA SP+16
+          CFI Block cfiCond11 Using cfiCommon2
+          CFI (cfiCond11) Function speed_Handle
+          CFI (cfiCond11) Conditional ??CrossCallReturnLabel_5
+          CFI (cfiCond11) R10L Frame(CFA, -12)
+          CFI (cfiCond11) R10H Frame(CFA, -10)
+          CFI (cfiCond11) R11L Frame(CFA, -8)
+          CFI (cfiCond11) R11H Frame(CFA, -6)
+          CFI (cfiCond11) CFA SP+16
+          CFI Block cfiPicker12 Using cfiCommon1
+          CFI (cfiPicker12) NoFunction
+          CFI (cfiPicker12) Picker
+        CALLA   #?Subroutine2
+??CrossCallReturnLabel_1:
+          CFI EndBlock cfiCond9
+          CFI EndBlock cfiCond10
+          CFI EndBlock cfiCond11
+          CFI EndBlock cfiPicker12
+        REQUIRE ??Subroutine4_0
+        // Fall through to label ??Subroutine4_0
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+??Subroutine4_0:
+          CFI Block cfiCond13 Using cfiCommon2
+          CFI Function speed_Handle
+          CFI Conditional ??CrossCallReturnLabel_2
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+16
+          CFI Block cfiCond14 Using cfiCommon2
+          CFI (cfiCond14) Function speed_Handle
+          CFI (cfiCond14) Conditional ??CrossCallReturnLabel_3
+          CFI (cfiCond14) R10L Frame(CFA, -12)
+          CFI (cfiCond14) R10H Frame(CFA, -10)
+          CFI (cfiCond14) R11L Frame(CFA, -8)
+          CFI (cfiCond14) R11H Frame(CFA, -6)
+          CFI (cfiCond14) CFA SP+16
+          CFI Block cfiCond15 Using cfiCommon2
+          CFI (cfiCond15) Function speed_Handle
+          CFI (cfiCond15) Conditional ??CrossCallReturnLabel_4
+          CFI (cfiCond15) R10L Frame(CFA, -12)
+          CFI (cfiCond15) R10H Frame(CFA, -10)
+          CFI (cfiCond15) R11L Frame(CFA, -8)
+          CFI (cfiCond15) R11H Frame(CFA, -6)
+          CFI (cfiCond15) CFA SP+16
+          CFI Block cfiCond16 Using cfiCommon2
+          CFI (cfiCond16) Function speed_Handle
+          CFI (cfiCond16) Conditional ??CrossCallReturnLabel_5
+          CFI (cfiCond16) R10L Frame(CFA, -12)
+          CFI (cfiCond16) R10H Frame(CFA, -10)
+          CFI (cfiCond16) R11L Frame(CFA, -8)
+          CFI (cfiCond16) R11H Frame(CFA, -6)
+          CFI (cfiCond16) CFA SP+16
+          CFI Block cfiPicker17 Using cfiCommon1
+          CFI (cfiPicker17) NoFunction
+          CFI (cfiPicker17) Picker
+        MOV.W   R10, R12
+        MOV.W   #0x0, R13
+        PUSH.W  SR
+          CFI (cfiCond13) CFA SP+18
+          CFI (cfiCond14) CFA SP+18
+          CFI (cfiCond15) CFA SP+18
+          CFI (cfiCond16) CFA SP+18
+          CFI (cfiPicker17) CFA SP+6
+        CALLA   #?Subroutine3
+??CrossCallReturnLabel_7:
+        ADD.W   &__iar_HWMUL + 10, R12         // RESLO
+        ADDC.W  &__iar_HWMUL + 12, R13         // RESHI
+        NOP
+        POP.W   SR
+          CFI (cfiCond13) CFA SP+16
+          CFI (cfiCond14) CFA SP+16
+          CFI (cfiCond15) CFA SP+16
+          CFI (cfiCond16) CFA SP+16
+          CFI (cfiPicker17) CFA SP+4
+        SWPB    R13
+        MOV.B   R13, R12
+          CFI (cfiCond13) TailCall speed_Handle ?ShiftRight16s_4
+          CFI (cfiCond13) TailCall speed_Handle ?ShiftRight16s_4
+          CFI (cfiCond13) TailCall speed_Handle ?ShiftRight16s_4
+          CFI (cfiCond13) TailCall speed_Handle ?ShiftRight16s_4
+        BRA     #?ShiftRight16s_4
+          CFI EndBlock cfiCond13
+          CFI EndBlock cfiCond14
+          CFI EndBlock cfiCond15
+          CFI EndBlock cfiCond16
+          CFI EndBlock cfiPicker17
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine3:
+          CFI Block cfiCond18 Using cfiCommon2
+          CFI Function speed_Handle
+          CFI Conditional ??CrossCallReturnLabel_6
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+18
+          CFI Block cfiCond19 Using cfiCommon2
+          CFI (cfiCond19) Function speed_Handle
+          CFI (cfiCond19) Conditional ??CrossCallReturnLabel_7, ??CrossCallReturnLabel_3
+          CFI (cfiCond19) R10L Frame(CFA, -12)
+          CFI (cfiCond19) R10H Frame(CFA, -10)
+          CFI (cfiCond19) R11L Frame(CFA, -8)
+          CFI (cfiCond19) R11H Frame(CFA, -6)
+          CFI (cfiCond19) CFA SP+22
+          CFI Block cfiCond20 Using cfiCommon2
+          CFI (cfiCond20) Function speed_Handle
+          CFI (cfiCond20) Conditional ??CrossCallReturnLabel_7, ??CrossCallReturnLabel_4
+          CFI (cfiCond20) R10L Frame(CFA, -12)
+          CFI (cfiCond20) R10H Frame(CFA, -10)
+          CFI (cfiCond20) R11L Frame(CFA, -8)
+          CFI (cfiCond20) R11H Frame(CFA, -6)
+          CFI (cfiCond20) CFA SP+22
+          CFI Block cfiCond21 Using cfiCommon2
+          CFI (cfiCond21) Function speed_Handle
+          CFI (cfiCond21) Conditional ??CrossCallReturnLabel_7, ??CrossCallReturnLabel_5
+          CFI (cfiCond21) R10L Frame(CFA, -12)
+          CFI (cfiCond21) R10H Frame(CFA, -10)
+          CFI (cfiCond21) R11L Frame(CFA, -8)
+          CFI (cfiCond21) R11H Frame(CFA, -6)
+          CFI (cfiCond21) CFA SP+22
+          CFI Block cfiCond22 Using cfiCommon2
+          CFI (cfiCond22) Function speed_Handle
+          CFI (cfiCond22) Conditional ??CrossCallReturnLabel_7, ??CrossCallReturnLabel_2
+          CFI (cfiCond22) R10L Frame(CFA, -12)
+          CFI (cfiCond22) R10H Frame(CFA, -10)
+          CFI (cfiCond22) R11L Frame(CFA, -8)
+          CFI (cfiCond22) R11H Frame(CFA, -6)
+          CFI (cfiCond22) CFA SP+22
+          CFI Block cfiPicker23 Using cfiCommon1
+          CFI (cfiPicker23) NoFunction
+          CFI (cfiPicker23) Picker
+        DINT
+        NOP
+        MOV.W   R15, &__iar_HWMUL              // MPY
+        MOV.W   R10, &__iar_HWMUL + 8          // OP2
+        RETA
+          CFI EndBlock cfiCond18
+          CFI EndBlock cfiCond19
+          CFI EndBlock cfiCond20
+          CFI EndBlock cfiCond21
+          CFI EndBlock cfiCond22
+          CFI EndBlock cfiPicker23
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?Subroutine2:
+          CFI Block cfiCond24 Using cfiCommon2
+          CFI Function speed_Handle
+          CFI Conditional ??CrossCallReturnLabel_0
+          CFI R10L Frame(CFA, -12)
+          CFI R10H Frame(CFA, -10)
+          CFI R11L Frame(CFA, -8)
+          CFI R11H Frame(CFA, -6)
+          CFI CFA SP+16
+          CFI Block cfiCond25 Using cfiCommon2
+          CFI (cfiCond25) Function speed_Handle
+          CFI (cfiCond25) Conditional ??CrossCallReturnLabel_1, ??CrossCallReturnLabel_3
+          CFI (cfiCond25) R10L Frame(CFA, -12)
+          CFI (cfiCond25) R10H Frame(CFA, -10)
+          CFI (cfiCond25) R11L Frame(CFA, -8)
+          CFI (cfiCond25) R11H Frame(CFA, -6)
+          CFI (cfiCond25) CFA SP+20
+          CFI Block cfiCond26 Using cfiCommon2
+          CFI (cfiCond26) Function speed_Handle
+          CFI (cfiCond26) Conditional ??CrossCallReturnLabel_1, ??CrossCallReturnLabel_4
+          CFI (cfiCond26) R10L Frame(CFA, -12)
+          CFI (cfiCond26) R10H Frame(CFA, -10)
+          CFI (cfiCond26) R11L Frame(CFA, -8)
+          CFI (cfiCond26) R11H Frame(CFA, -6)
+          CFI (cfiCond26) CFA SP+20
+          CFI Block cfiCond27 Using cfiCommon2
+          CFI (cfiCond27) Function speed_Handle
+          CFI (cfiCond27) Conditional ??CrossCallReturnLabel_1, ??CrossCallReturnLabel_5
+          CFI (cfiCond27) R10L Frame(CFA, -12)
+          CFI (cfiCond27) R10H Frame(CFA, -10)
+          CFI (cfiCond27) R11L Frame(CFA, -8)
+          CFI (cfiCond27) R11H Frame(CFA, -6)
+          CFI (cfiCond27) CFA SP+20
+          CFI Block cfiPicker28 Using cfiCommon1
+          CFI (cfiPicker28) NoFunction
+          CFI (cfiPicker28) Picker
+        RLAM.W  #0x3, R15
+        MOV.W   R15, R14
+        RLA.W   R15
+        ADD.W   R15, R14
+        RLAM.W  #0x2, R15
+        ADD.W   R15, R14
+        RLAM.W  #0x3, R15
+        ADD.W   R14, R15
+        RETA
+          CFI EndBlock cfiCond24
+          CFI EndBlock cfiCond25
+          CFI EndBlock cfiCond26
+          CFI EndBlock cfiCond27
+          CFI EndBlock cfiPicker28
+
+        RSEG DATA20_ID:CONST:SORT:NOROOT(1)
+`?<Initializer for encoderCnt_A>`:
+        DATA16
+        DC16 30000
+
+        RSEG DATA20_ID:CONST:SORT:NOROOT(1)
+`?<Initializer for encoderCnt_B>`:
+        DATA16
+        DC16 30000
+
+        RSEG DATA20_ID:CONST:SORT:NOROOT(1)
+`?<Initializer for encoderCnt_C>`:
+        DATA16
+        DC16 30000
+
+        RSEG DATA20_ID:CONST:SORT:NOROOT(1)
+`?<Initializer for encoderCnt_D>`:
+        DATA16
+        DC16 30000
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r4:
+        REQUIRE ?setjmp_r4
+        REQUIRE ?longjmp_r4
+
+        RSEG `CODE`:CODE:REORDER:NOROOT(1)
+?setjmp_save_r5:
+        REQUIRE ?setjmp_r5
+        REQUIRE ?longjmp_r5
+
+        END
+// 
+// 388 bytes in segment CODE
+//   8 bytes in segment DATA20_I
+//   8 bytes in segment DATA20_ID
+//  30 bytes in segment DATA20_Z
+// 204 bytes in segment ISR_CODE
+// 
+// 592 bytes of CODE  memory
+//   8 bytes of CONST memory
+//  38 bytes of DATA  memory
+//
+//Errors: none
+//Warnings: none

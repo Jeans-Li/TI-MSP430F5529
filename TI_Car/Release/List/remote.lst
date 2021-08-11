@@ -1,0 +1,139 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           04/Aug/2021  14:40:33
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\Project\TI_Car\HardWare\remote\remote.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EWFFF7.tmp
+#        (D:\Dev\Project\TI_Car\HardWare\remote\remote.c -D NDEBUG -D
+#        RAM_VECTOR -lC D:\Dev\Project\TI_Car\Release\List -lA
+#        D:\Dev\Project\TI_Car\Release\List -o
+#        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+#        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+#        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+#        D:\Dev\Project\TI_Car\HardWare\key\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+#        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+#        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+#        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+#        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+#        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+#        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+#        D:\Dev\Project\TI_Car\User\USER\ -I
+#        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+#        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\Project\TI_Car\Release\List\remote.lst
+#    Object file   =  D:\Dev\Project\TI_Car\Release\Obj\remote.r43
+#
+###############################################################################
+
+D:\Dev\Project\TI_Car\HardWare\remote\remote.c
+      1          //#include "remote.h"
+      2          //
+      3          //uint32_t upCount = 0;   //向上计数
+      4          //uint16_t valueUp = 0;   //高电平计数
+      5          //uint16_t valueDown = 0;   //低电平计数
+      6          //uint8_t isUpCompare = 1;      //是否为上升沿捕获标记
+      7          //uint16_t width;           //脉宽
+      8          //uint16_t buffer[128] = {0};    //接收缓冲区
+      9          //uint16_t bufferId = 0;        //接收缓冲区数组下标
+     10          //uint8_t recFlag = 0;    //接收完成标志位
+     11          //char IRCodes[4] = {0,0,0,0};
+     12          //
+     13          //__interrupt void TIMER2_A0_IRQ_Handler()
+     14          //{
+     15          //  if(TIMER_GetITStatus(TIMER_A2,TIMER_OverFlow_IRQn) == TRUE)//如果溢出
+     16          //   {
+     17          //     upCount++;          //溢出值加1
+     18          ////     TIMER_ClearITPendingBit(TIMER_A2,TIMER_OverFlow_IRQn);     //清除TIMER的某一个中断标志
+     19          //   }
+     20          //  //如果是上升沿捕获
+     21          //  if(isUpCompare)
+     22          //  {
+     23          //    valueUp = TIMER_Capture_GetValue  (TIMER_A2,TIMER_CH0);
+     24          //    isUpCompare = 0;
+     25          //    TIMER_Capture_SetMode   (TIMER_A2, TIMER_CH0, CAP_Falling);    //设置为下降沿捕获
+     26          //    upCount = 0;
+     27          //  }
+     28          //  else
+     29          //  {
+     30          //      valueDown = TIMER_Capture_GetValue  (TIMER_A2,TIMER_CH0);
+     31          //      isUpCompare = 1;
+     32          //      TIMER_Capture_SetMode   (TIMER_A2, TIMER_CH0, CAP_Rising);    //设置为上升沿捕获
+     33          //      width = valueDown + upCount*65536 - valueUp;
+     34          //      if(width>4400 && width<4600)
+     35          //      {
+     36          //          bufferId = 0;
+     37          //          buffer[bufferId++] = width;
+     38          //      }
+     39          //      else if(bufferId > 0)
+     40          //      {
+     41          //          buffer[bufferId++] = width;
+     42          //          if(bufferId > 32)   //所有码一共32位已经全部收到
+     43          //          {
+     44          //            recFlag = 1;
+     45          //            bufferId = 0;
+     46          //          }      
+     47          //      }
+     48          //  }
+     49          //  for(int i =0;i < 32; i++)
+     50          //  {
+     51          //      if(buffer[i+1]<1000)
+     52          //      {
+     53          //              IRCodes[i/8] = IRCodes[i/8]<<1;
+     54          //      }
+     55          //      else
+     56          //      {
+     57          //              IRCodes[i/8] = IRCodes[i/8]<<1;
+     58          //              IRCodes[i/8] |= 0x01;
+     59          //      }
+     60          //  }
+     61          //}
+     62          //
+     63          //void Remote_Init()
+     64          //{
+     65          //  Set_Vector_Handler(VECTOR_TIMER2_A0,TIMER2_A0_IRQ_Handler);    //设置接收中断向量
+     66          //  TIMER_Capture_Init  (TIMER_A2, TIMER_CH0, CAP_Rising );        //初始化一个通道为捕获模式，上升沿捕获
+     67          //  TIMER_ITConfig   (TIMER_A2, TIMER_CCR0_IRQn,ENABLE);               //设置是否使能TIMER的某一个中断
+     68          //  TIMER_ITConfig   (TIMER_A2, TIMER_OverFlow_IRQn,ENABLE);               //设置是否使能TIMER的溢出中断
+     69          //}
+     70          //
+     71          //uint8_t Remote_Scan()
+     72          //{
+     73          //	if(recFlag)
+     74          //	{
+     75          //
+     76          //		recFlag = 0;    //防止if语句重复成立
+     77          //		for(int i =0;i<4 ;i++)
+     78          //		{
+     79          //                  UART_Printf(UART1,"%d  ",IRCodes[i]);
+     80          //		}
+     81          //    }
+     82          //
+     83          //	return IRCodes[2];
+     84          //}
+
+
+ 
+
+ 
+
+
+Errors: none
+Warnings: none

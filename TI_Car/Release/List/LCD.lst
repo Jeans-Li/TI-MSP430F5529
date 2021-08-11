@@ -1,0 +1,637 @@
+###############################################################################
+#
+# IAR C/C++ Compiler V7.10.1.973/W32 for MSP430           03/Aug/2021  16:28:03
+# Copyright 1996-2017 IAR Systems AB.
+# Standalone license - IAR Embedded Workbench for Texas Instruments MSP430
+#
+#    __rt_version  =  3
+#    __double_size =  32
+#    __reg_r4      =  free
+#    __reg_r5      =  free
+#    __pic         =  no
+#    __core        =  430X
+#    __data_model  =  large
+#    __code_model  =  large
+#    Source file   =  D:\Dev\Project\TI_Car\HardWare\2.2TFT\LCD.c
+#    Command line  =  
+#        -f C:\Users\Jeans\AppData\Local\Temp\EWC13.tmp
+#        (D:\Dev\Project\TI_Car\HardWare\2.2TFT\LCD.c -D NDEBUG -D RAM_VECTOR
+#        -lC D:\Dev\Project\TI_Car\Release\List -lA
+#        D:\Dev\Project\TI_Car\Release\List -o
+#        D:\Dev\Project\TI_Car\Release\Obj --debug -D__MSP430F5529__ -e
+#        --double=32 --dlib_config D:\Dev\IAR\430\lib\dlib\dl430xllfn.h -I
+#        D:\Dev\Project\TI_Car\ -I D:\Dev\Project\TI_Car\Drivers\inc\ -I
+#        D:\Dev\Project\TI_Car\Drivers\src\ -I D:\Dev\Project\TI_Car\HardWare\
+#        -I D:\Dev\Project\TI_Car\HardWare\led\ -I
+#        D:\Dev\Project\TI_Car\HardWare\key\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd\ -I
+#        D:\Dev\Project\TI_Car\HardWare\lcd_api\ -I
+#        D:\Dev\Project\TI_Car\HardWare\nrf24l01\ -I
+#        D:\Dev\Project\TI_Car\HardWare\oled\ -I
+#        D:\Dev\Project\TI_Car\HardWare\delay\ -I
+#        D:\Dev\Project\TI_Car\HardWare\2.2TFT\ -I
+#        D:\Dev\Project\TI_Car\System\ -I D:\Dev\Project\TI_Car\System\inc\ -I
+#        D:\Dev\Project\TI_Car\System\src\ -I D:\Dev\Project\TI_Car\User\ -I
+#        D:\Dev\Project\TI_Car\User\USER\ -I
+#        D:\Dev\Project\TI_Car\HardWare\motor\ -I D:\Dev\Project\TI_Car\User\
+#        -I D:\Dev\Project\TI_Car\HardWare\encoder\ --core=430X
+#        --data_model=large -Oh --multiplier=32 --hw_workaround=CPU40
+#        --hw_workaround=nop_after_lpm -DNDEBUG --code_model=large)
+#    Locale        =  Chinese (Simplified)_CHN.936
+#    List file     =  D:\Dev\Project\TI_Car\Release\List\LCD.lst
+#    Object file   =  D:\Dev\Project\TI_Car\Release\Obj\LCD.r43
+#
+###############################################################################
+
+D:\Dev\Project\TI_Car\HardWare\2.2TFT\LCD.c
+      1          #include "lcd.h"
+
+   \                                 In  segment DATA16_AN, at 0x202
+   \   union <unnamed> __data16 _A_PAOUT_L
+   \                     _A_PAOUT_L:
+   \   000000                DS8 2
+      2          #include "delay.h" 
+
+   \                                 In  segment CODE, align 2
+      3          void LCD_PORT_Init(void)
+   \                     LCD_PORT_Init:
+      4          {
+      5          #if(LCDHardWareSPI)
+      6            LCDHardWareSPI_Init();
+   \   000000   70120300     PUSH.B  #0x3
+   \   000004   4312         PUSH.B  #0x0
+   \   000006   5D43         MOV.B   #0x1, R13
+   \   000008   3E408096     MOV.W   #0x9680, R14
+   \   00000C   3F409800     MOV.W   #0x98, R15
+   \   000010   6C43         MOV.B   #0x2, R12
+   \   000012   ........     CALLA   #SPI_Master_Init
+      7          #else
+      8            GPIO_Init(LCD_SCL_PORT,LCD_SCL_PIN,GPO);
+      9            GPIO_Init(LCD_SDI_PORT,LCD_SDI_PIN,GPO);
+     10          #endif
+     11            GPIO_Init(LCD_RST_PORT,LCD_RST_PIN,GPO);
+   \   000016   2E43         MOV.W   #0x2, R14
+   \   000018   3D401000     MOV.W   #0x10, R13
+   \   00001C   5C43         MOV.B   #0x1, R12
+   \   00001E   ........     CALLA   #GPIO_MultiBits_Init
+     12            GPIO_Init(LCD_DC_PORT,LCD_DC_PIN,GPO);
+   \   000022   2E43         MOV.W   #0x2, R14
+   \   000024   1D43         MOV.W   #0x1, R13
+   \   000026   5C43         MOV.B   #0x1, R12
+   \   000028   ........     CALLA   #GPIO_MultiBits_Init
+     13            GPIO_Init(LCD_CS_PORT, LCD_CS_PIN,GPO);
+   \   00002C   2E43         MOV.W   #0x2, R14
+   \   00002E   3D408000     MOV.W   #0x80, R13
+   \   000032   5C43         MOV.B   #0x1, R12
+   \   000034   ........     CALLA   #GPIO_MultiBits_Init
+     14          }
+   \   000038   A1000400     ADDA    #0x4, SP
+   \   00003C   1001         RETA
+
+   \                                 In  segment CODE, align 2
+     15          void LCD_Writ_Bus(char data)   //串行数据写入
+   \                     LCD_Writ_Bus:
+     16          {  
+     17          #if(LCDHardWareSPI)
+     18            LCD_CS = RESET;
+   \   000000   F2C080000302 BIC.B   #0x80, &0x203
+     19            LCDHardWareSPI_SendByte(data);
+   \   000006   4D4C         MOV.B   R12, R13
+   \   000008   6C43         MOV.B   #0x2, R12
+   \   00000A   ........     CALLA   #SPI_SendReadByte
+     20            LCD_CS = BIT_SET;
+   \   00000E   F2D080000302 BIS.B   #0x80, &0x203
+     21          #else
+     22            LCD_CS = RESET;	
+     23            LCD_SCL = RESET;
+     24            for(uint8_t i=0;i<8;i++)
+     25            {
+     26              LCD_SDI = (data&0x80) ? BIT_SET : RESET;//上升沿发送数据
+     27              LCD_SCL = BIT_SET;
+     28              LCD_SCL = RESET;		
+     29              data <<= 1;    
+     30            }
+     31            LCD_CS = BIT_SET;
+     32          #endif 
+     33          } 
+   \   000014   1001         RETA
+   \   000016                REQUIRE _A_PAOUT_L
+
+   \                                 In  segment CODE, align 2
+     34          void LCD_Write_DATA8(char da) //发送数据-8位参数
+   \                     LCD_Write_DATA8:
+     35          {
+     36              LCD_DC = BIT_SET;
+   \   000000   D2D30302     BIS.B   #0x1, &0x203
+     37          	LCD_Writ_Bus(da);
+   \   000004   ........     BRA     #LCD_Writ_Bus
+   \   000008                REQUIRE _A_PAOUT_L
+     38          }  
+
+   \                                 In  segment CODE, align 2
+     39           void LCD_Write_DATA16(uint16_t da)
+   \                     LCD_Write_DATA16:
+     40          {
+   \   000000   0A14         PUSHM.A #0x1, R10
+   \   000002   4A4C         MOV.B   R12, R10
+     41              LCD_DC = BIT_SET;
+   \   000004   D2D30302     BIS.B   #0x1, &0x203
+     42          	LCD_Writ_Bus(da>>8);
+   \   000008   8C10         SWPB    R12
+   \   00000A   ........     CALLA   #LCD_Writ_Bus
+     43          	LCD_Writ_Bus(da);
+   \   00000E   4C4A         MOV.B   R10, R12
+   \   000010   ........     CALLA   #LCD_Writ_Bus
+     44          }	  
+   \   000014   0A16         POPM.A  #0x1, R10
+   \   000016   1001         RETA
+   \   000018                REQUIRE _A_PAOUT_L
+
+   \                                 In  segment CODE, align 2
+     45          void LCD_Write_REG(char da)	 
+   \                     LCD_Write_REG:
+     46          {
+     47              LCD_DC = RESET;
+   \   000000   D2C30302     BIC.B   #0x1, &0x203
+     48                  LCD_Writ_Bus(da);
+   \   000004   ........     BRA     #LCD_Writ_Bus
+   \   000008                REQUIRE _A_PAOUT_L
+     49          }
+
+   \                                 In  segment CODE, align 2
+     50           void LCD_Write_REG_DATA(int reg,int da)
+   \                     LCD_Write_REG_DATA:
+     51          {
+   \   000000   0A14         PUSHM.A #0x1, R10
+   \   000002   0A4D         MOV.W   R13, R10
+     52              LCD_Write_REG(reg);
+   \   000004   ........     CALLA   #LCD_Write_REG
+     53          	LCD_Write_DATA16(da);
+   \   000008   0C4A         MOV.W   R10, R12
+   \   00000A   ........     CALLA   #LCD_Write_DATA16
+     54          }
+   \   00000E   0A16         POPM.A  #0x1, R10
+   \   000010   1001         RETA
+
+   \                                 In  segment CODE, align 2
+     55          void LCD_SetPos(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
+   \                     LCD_SetPos:
+     56          {  
+   \   000000   5B14         PUSHM.A #0x6, R11
+   \   000002   0B4C         MOV.W   R12, R11
+   \   000004   084D         MOV.W   R13, R8
+   \   000006   0A4E         MOV.W   R14, R10
+   \   000008   094F         MOV.W   R15, R9
+     57             LCD_Write_REG(0x2a);
+   \   00000A   7C402A00     MOV.B   #0x2a, R12
+   \   00000E   ........     CALLA   #LCD_Write_REG
+     58             LCD_Write_DATA8(x1>>8);
+   \   000012   ........     MOVA    #LCD_Write_DATA8, R6
+   \   000016   0C4B         MOV.W   R11, R12
+   \   000018   8C10         SWPB    R12
+   \   00001A   4613         CALLA   R6
+     59             LCD_Write_DATA8(x1);
+   \   00001C   4C4B         MOV.B   R11, R12
+   \   00001E   4613         CALLA   R6
+     60             LCD_Write_DATA8(x2>>8);
+   \   000020   0C4A         MOV.W   R10, R12
+   \   000022   8C10         SWPB    R12
+   \   000024   4613         CALLA   R6
+     61             LCD_Write_DATA8(x2);
+   \   000026   4C4A         MOV.B   R10, R12
+   \   000028   4613         CALLA   R6
+     62            
+     63             LCD_Write_REG(0x2b);
+   \   00002A   7C402B00     MOV.B   #0x2b, R12
+   \   00002E   ........     CALLA   #LCD_Write_REG
+     64             LCD_Write_DATA8(y1>>8);
+   \   000032   0C48         MOV.W   R8, R12
+   \   000034   8C10         SWPB    R12
+   \   000036   4613         CALLA   R6
+     65             LCD_Write_DATA8(y1);
+   \   000038   4C48         MOV.B   R8, R12
+   \   00003A   4613         CALLA   R6
+     66             LCD_Write_DATA8(y2>>8);
+   \   00003C   0C49         MOV.W   R9, R12
+   \   00003E   8C10         SWPB    R12
+   \   000040   4613         CALLA   R6
+     67             LCD_Write_DATA8(y2);
+   \   000042   4C49         MOV.B   R9, R12
+   \   000044   4613         CALLA   R6
+     68          
+     69             LCD_Write_REG(0x2C);
+   \   000046   7C402C00     MOV.B   #0x2c, R12
+   \   00004A   ........     CALLA   #LCD_Write_REG
+     70          }
+   \   00004E   5616         POPM.A  #0x6, R11
+   \   000050   1001         RETA
+
+   \                                 In  segment CODE, align 2
+     71          void LCD_Init(void)
+   \                     LCD_Init:
+     72          {
+   \   000000   3B14         PUSHM.A #0x4, R11
+     73                  LCD_PORT_Init();
+   \   000002   ........     CALLA   #LCD_PORT_Init
+     74          //调用一次这些函数，免得编译的时候提示警告
+     75             	//LCD_CS=1;   
+     76          	LCD_RST = RESET;
+   \   000006   3A400302     MOV.W   #0x203, R10
+   \   00000A   0F4A         MOV.W   R10, R15
+   \   00000C   FFC010000000 BIC.B   #0x10, 0(R15)
+     77          	delay_ms(10);
+   \   000012   ........     CALLA   #?Subroutine1
+     78          	LCD_RST = BIT_SET;
+   \                     ??CrossCallReturnLabel_2:
+   \   000016   0F4A         MOV.W   R10, R15
+   \   000018   FFD010000000 BIS.B   #0x10, 0(R15)
+     79          	delay_ms(10);
+   \   00001E   ........     CALLA   #?Subroutine1
+     80          	//LCD_CS =0;  //打开片选使能
+     81          
+     82          	LCD_Write_REG(0xCB);  
+   \                     ??CrossCallReturnLabel_1:
+   \   000022   ........     MOVA    #LCD_Write_REG, R11
+   \   000026   7C40CB00     MOV.B   #0xcb, R12
+   \   00002A   4B13         CALLA   R11
+     83                  LCD_Write_DATA8(0x39); 
+   \   00002C   ........     MOVA    #LCD_Write_DATA8, R8
+   \   000030   7C403900     MOV.B   #0x39, R12
+   \   000034   4813         CALLA   R8
+     84                  LCD_Write_DATA8(0x2C); 
+   \   000036   7C402C00     MOV.B   #0x2c, R12
+   \   00003A   4813         CALLA   R8
+     85                  LCD_Write_DATA8(0x00); 
+   \   00003C   4C43         MOV.B   #0x0, R12
+   \   00003E   4813         CALLA   R8
+     86                  LCD_Write_DATA8(0x34); 
+   \   000040   7C403400     MOV.B   #0x34, R12
+   \   000044   4813         CALLA   R8
+     87                  LCD_Write_DATA8(0x02); 
+   \   000046   6C43         MOV.B   #0x2, R12
+   \   000048   4813         CALLA   R8
+     88          
+     89                  LCD_Write_REG(0xCF);  
+   \   00004A   7C40CF00     MOV.B   #0xcf, R12
+   \   00004E   ........     CALLA   #?Subroutine3
+     90                  LCD_Write_DATA8(0x00); 
+     91                  LCD_Write_DATA8(0XC1); 
+   \                     ??CrossCallReturnLabel_7:
+   \   000052   7C40C100     MOV.B   #0xc1, R12
+   \   000056   4813         CALLA   R8
+     92                  LCD_Write_DATA8(0X30); 
+   \   000058   7C403000     MOV.B   #0x30, R12
+   \   00005C   4813         CALLA   R8
+     93           
+     94                  LCD_Write_REG(0xE8);  
+   \   00005E   7C40E800     MOV.B   #0xe8, R12
+   \   000062   4B13         CALLA   R11
+     95                  LCD_Write_DATA8(0x85); 
+   \   000064   7C408500     MOV.B   #0x85, R12
+   \   000068   4813         CALLA   R8
+     96                  LCD_Write_DATA8(0x00); 
+   \   00006A   4C43         MOV.B   #0x0, R12
+   \   00006C   4813         CALLA   R8
+     97                  LCD_Write_DATA8(0x78); 
+   \   00006E   7C407800     MOV.B   #0x78, R12
+   \   000072   4813         CALLA   R8
+     98           
+     99                  LCD_Write_REG(0xEA);  
+   \   000074   7C40EA00     MOV.B   #0xea, R12
+   \   000078   ........     CALLA   #?Subroutine3
+    100                  LCD_Write_DATA8(0x00); 
+    101                  LCD_Write_DATA8(0x00); 
+   \                     ??CrossCallReturnLabel_6:
+   \   00007C   4C43         MOV.B   #0x0, R12
+   \   00007E   4813         CALLA   R8
+    102           
+    103                  LCD_Write_REG(0xED);  
+   \   000080   7C40ED00     MOV.B   #0xed, R12
+   \   000084   4B13         CALLA   R11
+    104                  LCD_Write_DATA8(0x64); 
+   \   000086   7C406400     MOV.B   #0x64, R12
+   \   00008A   4813         CALLA   R8
+    105                  LCD_Write_DATA8(0x03); 
+   \   00008C   4C4A         MOV.B   R10, R12
+   \   00008E   4813         CALLA   R8
+    106                  LCD_Write_DATA8(0X12); 
+   \   000090   7C401200     MOV.B   #0x12, R12
+   \   000094   4813         CALLA   R8
+    107                  LCD_Write_DATA8(0X81); 
+   \   000096   7C408100     MOV.B   #0x81, R12
+   \   00009A   4813         CALLA   R8
+    108          
+    109                  LCD_Write_REG(0xF7);  
+   \   00009C   7C40F700     MOV.B   #0xf7, R12
+   \   0000A0   4B13         CALLA   R11
+    110                  LCD_Write_DATA8(0x20); 
+   \   0000A2   7C402000     MOV.B   #0x20, R12
+   \   0000A6   4813         CALLA   R8
+    111            
+    112                  LCD_Write_REG(0xC0);    //Power control 
+   \   0000A8   7C40C000     MOV.B   #0xc0, R12
+   \   0000AC   4B13         CALLA   R11
+    113                  LCD_Write_DATA8(0x23);   //VRH[5:0] 
+   \   0000AE   7C402300     MOV.B   #0x23, R12
+   \   0000B2   4813         CALLA   R8
+    114           
+    115                  LCD_Write_REG(0xC1);    //Power control 
+   \   0000B4   7C40C100     MOV.B   #0xc1, R12
+   \   0000B8   4B13         CALLA   R11
+    116                  LCD_Write_DATA8(0x10);   //SAP[2:0];BT[3:0] 
+   \   0000BA   7C401000     MOV.B   #0x10, R12
+   \   0000BE   4813         CALLA   R8
+    117           
+    118                  LCD_Write_REG(0xC5);    //VCM control 
+   \   0000C0   7C40C500     MOV.B   #0xc5, R12
+   \   0000C4   4B13         CALLA   R11
+    119                  LCD_Write_DATA8(0x3e); //对比度调节
+   \   0000C6   7C403E00     MOV.B   #0x3e, R12
+   \   0000CA   4813         CALLA   R8
+    120                  LCD_Write_DATA8(0x28); 
+   \   0000CC   7C402800     MOV.B   #0x28, R12
+   \   0000D0   4813         CALLA   R8
+    121           
+    122                  LCD_Write_REG(0xC7);    //VCM control2 
+   \   0000D2   7C40C700     MOV.B   #0xc7, R12
+   \   0000D6   4B13         CALLA   R11
+    123                  LCD_Write_DATA8(0x86);  //--
+   \   0000D8   7C408600     MOV.B   #0x86, R12
+   \   0000DC   4813         CALLA   R8
+    124           
+    125                  LCD_Write_REG(0x36);    // Memory Access Control 
+   \   0000DE   7C403600     MOV.B   #0x36, R12
+   \   0000E2   4B13         CALLA   R11
+    126                  LCD_Write_DATA8(0x48); //C8	   //48 68竖屏//28 E8 横屏
+   \   0000E4   7C404800     MOV.B   #0x48, R12
+   \   0000E8   4813         CALLA   R8
+    127          
+    128                  LCD_Write_REG(0x3A);    
+   \   0000EA   7C403A00     MOV.B   #0x3a, R12
+   \   0000EE   4B13         CALLA   R11
+    129                  LCD_Write_DATA8(0x55); 
+   \   0000F0   7C405500     MOV.B   #0x55, R12
+   \   0000F4   4813         CALLA   R8
+    130          
+    131                  LCD_Write_REG(0xB1);    
+   \   0000F6   7C40B100     MOV.B   #0xb1, R12
+   \   0000FA   ........     CALLA   #?Subroutine3
+    132                  LCD_Write_DATA8(0x00);  
+    133                  LCD_Write_DATA8(0x18); 
+   \                     ??CrossCallReturnLabel_5:
+   \   0000FE   7C401800     MOV.B   #0x18, R12
+   \   000102   4813         CALLA   R8
+    134           
+    135                  LCD_Write_REG(0xB6);    // Display Function Control 
+   \   000104   7C40B600     MOV.B   #0xb6, R12
+   \   000108   4B13         CALLA   R11
+    136                  LCD_Write_DATA8(0x08); 
+   \   00010A   7C42         MOV.B   #0x8, R12
+   \   00010C   4813         CALLA   R8
+    137                  LCD_Write_DATA8(0x82);
+   \   00010E   7C408200     MOV.B   #0x82, R12
+   \   000112   4813         CALLA   R8
+    138                  LCD_Write_DATA8(0x27);  
+   \   000114   7C402700     MOV.B   #0x27, R12
+   \   000118   4813         CALLA   R8
+    139           
+    140                  LCD_Write_REG(0xF2);    // 3Gamma Function Disable 
+   \   00011A   7C40F200     MOV.B   #0xf2, R12
+   \   00011E   ........     CALLA   #?Subroutine3
+    141                  LCD_Write_DATA8(0x00); 
+    142           
+    143                  LCD_Write_REG(0x26);    //Gamma curve selected 
+   \                     ??CrossCallReturnLabel_4:
+   \   000122   7C402600     MOV.B   #0x26, R12
+   \   000126   4B13         CALLA   R11
+    144                  LCD_Write_DATA8(0x01); 
+   \   000128   5C43         MOV.B   #0x1, R12
+   \   00012A   4813         CALLA   R8
+    145           
+    146                  LCD_Write_REG(0xE0);    //Set Gamma 
+   \   00012C   7C40E000     MOV.B   #0xe0, R12
+   \   000130   4B13         CALLA   R11
+    147                  LCD_Write_DATA8(0x0F); 
+   \   000132   7C400F00     MOV.B   #0xf, R12
+   \   000136   4813         CALLA   R8
+    148                  LCD_Write_DATA8(0x31); 
+   \   000138   7C403100     MOV.B   #0x31, R12
+   \   00013C   4813         CALLA   R8
+    149                  LCD_Write_DATA8(0x2B); 
+   \   00013E   7C402B00     MOV.B   #0x2b, R12
+   \   000142   4813         CALLA   R8
+    150                  LCD_Write_DATA8(0x0C); 
+   \   000144   7C400C00     MOV.B   #0xc, R12
+   \   000148   ........     CALLA   #?Subroutine4
+    151                  LCD_Write_DATA8(0x0E); 
+    152                  LCD_Write_DATA8(0x08); 
+   \                     ??CrossCallReturnLabel_20:
+   \   00014C   7C42         MOV.B   #0x8, R12
+   \   00014E   4813         CALLA   R8
+    153                  LCD_Write_DATA8(0x4E); 
+   \   000150   7C404E00     MOV.B   #0x4e, R12
+   \   000154   4813         CALLA   R8
+    154                  LCD_Write_DATA8(0xF1); 
+   \   000156   7C40F100     MOV.B   #0xf1, R12
+   \   00015A   4813         CALLA   R8
+    155                  LCD_Write_DATA8(0x37); 
+   \   00015C   7C403700     MOV.B   #0x37, R12
+   \   000160   4813         CALLA   R8
+    156                  LCD_Write_DATA8(0x07); 
+   \   000162   7C400700     MOV.B   #0x7, R12
+   \   000166   4813         CALLA   R8
+    157                  LCD_Write_DATA8(0x10); 
+   \   000168   7C401000     MOV.B   #0x10, R12
+   \   00016C   4813         CALLA   R8
+    158                  LCD_Write_DATA8(0x03); 
+   \   00016E   4C4A         MOV.B   R10, R12
+   \   000170   ........     CALLA   #?Subroutine4
+    159                  LCD_Write_DATA8(0x0E); 
+    160                  LCD_Write_DATA8(0x09); 
+   \                     ??CrossCallReturnLabel_19:
+   \   000174   7C400900     MOV.B   #0x9, R12
+   \   000178   4813         CALLA   R8
+    161                  LCD_Write_DATA8(0x00); 
+   \   00017A   4C43         MOV.B   #0x0, R12
+   \   00017C   4813         CALLA   R8
+    162          
+    163                  LCD_Write_REG(0XE1);    //Set Gamma 
+   \   00017E   7C40E100     MOV.B   #0xe1, R12
+   \   000182   ........     CALLA   #?Subroutine3
+    164                  LCD_Write_DATA8(0x00); 
+    165                  LCD_Write_DATA8(0x0E); 
+   \                     ??CrossCallReturnLabel_3:
+   \   000186   ........     CALLA   #??Subroutine6_0
+    166                  LCD_Write_DATA8(0x14); 
+   \                     ??CrossCallReturnLabel_18:
+   \   00018A   7C401400     MOV.B   #0x14, R12
+   \   00018E   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_14:
+   \   000192   ........     MOVA    #LCD_Writ_Bus, R8
+   \   000196   4C4A         MOV.B   R10, R12
+   \   000198   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_13:
+   \   00019C   7C401100     MOV.B   #0x11, R12
+   \   0001A0   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_12:
+   \   0001A4   7C400700     MOV.B   #0x7, R12
+   \   0001A8   ........     CALLA   #?Subroutine0
+   \                     ??CrossCallReturnLabel_17:
+   \   0001AC   7C40C100     MOV.B   #0xc1, R12
+   \   0001B0   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_11:
+   \   0001B4   7C404800     MOV.B   #0x48, R12
+   \   0001B8   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_10:
+   \   0001BC   7C42         MOV.B   #0x8, R12
+   \   0001BE   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_9:
+   \   0001C2   7C400F00     MOV.B   #0xf, R12
+   \   0001C6   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_8:
+   \   0001CA   7C400C00     MOV.B   #0xc, R12
+   \   0001CE   ........     CALLA   #?Subroutine0
+   \                     ??CrossCallReturnLabel_16:
+   \   0001D2   7C403600     MOV.B   #0x36, R12
+   \   0001D6   4813         CALLA   R8
+    167                  LCD_Write_DATA8(0x03); 
+    168                  LCD_Write_DATA8(0x11); 
+    169                  LCD_Write_DATA8(0x07); 
+    170                  LCD_Write_DATA8(0x31); 
+    171                  LCD_Write_DATA8(0xC1); 
+    172                  LCD_Write_DATA8(0x48); 
+    173                  LCD_Write_DATA8(0x08); 
+    174                  LCD_Write_DATA8(0x0F); 
+    175                  LCD_Write_DATA8(0x0C); 
+    176                  LCD_Write_DATA8(0x31); 
+    177                  LCD_Write_DATA8(0x36); 
+    178                  LCD_Write_DATA8(0x0F); 
+   \   0001D8   DAD30000     BIS.B   #0x1, 0(R10)
+   \   0001DC   7C400F00     MOV.B   #0xf, R12
+   \   0001E0   4813         CALLA   R8
+    179           
+    180                  LCD_Write_REG(0x11);    //Exit Sleep 
+   \   0001E2   7C401100     MOV.B   #0x11, R12
+   \   0001E6   4B13         CALLA   R11
+    181                  delay_ms(10); 
+   \   0001E8   ........     CALLA   #?Subroutine1
+    182          				
+    183                  LCD_Write_REG(0x29);    //Display on 
+   \                     ??CrossCallReturnLabel_0:
+   \   0001EC   7C402900     MOV.B   #0x29, R12
+   \   0001F0   4B13         CALLA   R11
+    184                  LCD_Write_REG(0x2c); 
+   \   0001F2   7C402C00     MOV.B   #0x2c, R12
+   \   0001F6   4B13         CALLA   R11
+    185          }
+   \   0001F8   3816         POPM.A  #0x4, R11
+   \   0001FA   1001         RETA
+   \   0001FC                REQUIRE _A_PAOUT_L
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine4:
+   \   000000   4813         CALLA   R8
+   \   000002                REQUIRE ??Subroutine6_0
+   \   000002                // Fall through to label ??Subroutine6_0
+
+   \                                 In  segment CODE, align 2
+   \                     ??Subroutine6_0:
+   \   000000   7C400E00     MOV.B   #0xe, R12
+   \   000004   C008         BRA     R8
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine3:
+   \   000000   4B13         CALLA   R11
+   \   000002   4C43         MOV.B   #0x0, R12
+   \   000004   C008         BRA     R8
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine1:
+   \   000000   3C401027     MOV.W   #0x2710, R12
+   \   000004   0D43         MOV.W   #0x0, R13
+   \   000006   ........     BRA     #delay_us
+
+   \                                 In  segment CODE, align 2
+   \                     ?Subroutine5:
+   \   000000   4813         CALLA   R8
+   \   000002   0F4A         MOV.W   R10, R15
+   \   000004   DFD30000     BIS.B   #0x1, 0(R15)
+   \   000008   1001         RETA
+
+   \                                 In  segment CODE, align 2, keep-with-next
+   \                     ?Subroutine0:
+   \   000000   ........     CALLA   #?Subroutine5
+   \                     ??CrossCallReturnLabel_15:
+   \   000004   7C403100     MOV.B   #0x31, R12
+   \   000008                REQUIRE ?Subroutine5
+   \   000008                // Fall through to label ?Subroutine5
+    186          
+    187          
+    188          
+    189          
+    190          
+    191          
+    192          
+
+   Maximum stack usage in bytes:
+
+   CSTACK Function
+   ------ --------
+     20   LCD_Init
+       20   -> LCD_PORT_Init
+       20   -> LCD_Writ_Bus
+       24   -> LCD_Writ_Bus
+       28   -> LCD_Writ_Bus
+       20   -> LCD_Write_DATA8
+       24   -> LCD_Write_DATA8
+       20   -> LCD_Write_REG
+       24   -> LCD_Write_REG
+       20   -> delay_us
+      8   LCD_PORT_Init
+        8   -> GPIO_MultiBits_Init
+        8   -> SPI_Master_Init
+     28   LCD_SetPos
+       28   -> LCD_Write_DATA8
+       28   -> LCD_Write_REG
+      4   LCD_Writ_Bus
+        4   -> SPI_SendReadByte
+      8   LCD_Write_DATA16
+        8   -> LCD_Writ_Bus
+      4   LCD_Write_DATA8
+        0   -> LCD_Writ_Bus
+      4   LCD_Write_REG
+        0   -> LCD_Writ_Bus
+      8   LCD_Write_REG_DATA
+        8   -> LCD_Write_DATA16
+        8   -> LCD_Write_REG
+
+
+   Segment part sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       6  ??Subroutine6_0
+       8  ?Subroutine0
+      10  ?Subroutine1
+       6  ?Subroutine3
+       2  ?Subroutine4
+      10  ?Subroutine5
+     508  LCD_Init
+      62  LCD_PORT_Init
+      82  LCD_SetPos
+      22  LCD_Writ_Bus
+      24  LCD_Write_DATA16
+       8  LCD_Write_DATA8
+       8  LCD_Write_REG
+      18  LCD_Write_REG_DATA
+       2  _A_PAOUT_L
+
+ 
+ 774 bytes in segment CODE
+   2 bytes in segment DATA16_AN
+ 
+ 774 bytes of CODE memory
+   0 bytes of DATA memory (+ 2 bytes shared)
+
+Errors: none
+Warnings: none
